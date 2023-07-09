@@ -1,21 +1,20 @@
-import { Devvit } from '@devvit/public-api-next';
+import { Devvit } from '@devvit/public-api';
 import VirtualPetRoot from './VirtualPet/index.js';
 import { SCHEDULER_JOB_WELFARE_TICK, SCHEDULER_JOB_AGE_TICK } from './VirtualPet/constants.js';
 
 Devvit.configure({
   redditAPI: true,
-  redis: true,
-  scheduler: true
+  kvStore: true,
 });
 
-Devvit.addScheduledJobType({
+Devvit.addSchedulerJob({
   name: SCHEDULER_JOB_WELFARE_TICK,
   onRun: (e) => {
     // todo snoomagotchi welfare tick
   }
 });
 
-Devvit.addScheduledJobType({
+Devvit.addSchedulerJob({
   name: SCHEDULER_JOB_AGE_TICK,
   onRun: (e) => {
     // todo snoomagotchi age tick

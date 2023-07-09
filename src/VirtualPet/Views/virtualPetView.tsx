@@ -1,7 +1,7 @@
-import { Devvit, CustomPostRenderer } from "@devvit/public-api-next"
+import { Devvit, CustomPostType } from "@devvit/public-api"
 import { REDIS_KEY_DEFAULT_SNOOMAGOTCHI_STATE } from "../constants.js";
 
-const virtualPetView: CustomPostRenderer = ({context, reddit, useState}) => {
+const virtualPetView: CustomPostType["render"] = ({postId, reddit, useState}) => {
   const [currentUsername] = useState(async () => {
     const currentUser = await reddit.getCurrentUser();
     return currentUser.username;
@@ -9,7 +9,7 @@ const virtualPetView: CustomPostRenderer = ({context, reddit, useState}) => {
 
   // context.postId points to the snoomagotchi state in redis
   // until custom posts hit prod, it will contain nothing useful
-  const redisKeyState = context.postId ?? REDIS_KEY_DEFAULT_SNOOMAGOTCHI_STATE;
+  const redisKeyState = postId ?? REDIS_KEY_DEFAULT_SNOOMAGOTCHI_STATE;
 
   // todo in the real world, state will be held in kv store and server authoritative
   // the client side render stuff would mean a user could change values locally?
