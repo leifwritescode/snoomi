@@ -21,14 +21,32 @@ Devvit.addSchedulerJob({
   }
 });
 
+const formKeyNewSnoomagotchi = Devvit.createForm({
+  title: "Create a new Snoomagotchi",
+  description: "Use this form to create a brand new snoomagotchi woohoo",
+  acceptLabel: "Hatch",
+  cancelLabel: "Abandon",
+  fields: [
+    {
+      type: "string",
+      name: "virtualPetName",
+      label: "Snoomagotchi's Name",
+      required: true,
+    }
+  ]
+},
+(event, context) => {
+  const virtualPetName = event.values["virtualPetName"] as string;
+
+  context.ui.showToast(`the new virtual pet is called ${virtualPetName}`);
+});
+
 Devvit.addMenuItem({
   label: "Create My Snoomagotchi!",
   description: "Create a new Snoomagotchi for the currently logged in user.",
   location: "subreddit",
   forUserType: ["member", "moderator"],
-  onPress: (e) => {
-    // todo display form, collect response, create snoomagotchi
-  }
+  onPress: (_, context) => context.ui.showForm(formKeyNewSnoomagotchi)
 });
 
 Devvit.addCustomPostType({
