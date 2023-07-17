@@ -1,4 +1,6 @@
 import { Form, FormOnSubmitEventHandler } from "@devvit/public-api";
+import { makeNewVirtualPet } from "../VirtualPet.js";
+import virtualPetView from "../views/virtualPetView.js";
 
 export const newSnoomagotchiForm: Form = {
   title: "Create a new Snoomagotchi",
@@ -43,12 +45,22 @@ export const newSnoomagotchiForm: Form = {
   ]
 };
 
-export const newSnoomagotchiFormSubmitHandler: FormOnSubmitEventHandler = (event, context) => {
+export const newSnoomagotchiFormSubmitHandler: FormOnSubmitEventHandler = async (event, context) => {
   const virtualPetName = event.values["virtualPetName"] as string;
   const eggNumber = event.values["eggNumber"] as number;
   const funMode = event.values["funMode"] as boolean;
 
-  // todo generate genotype, virtualpet structure, make the post, populate kv store
+  const owner = await context.reddit.getCurrentUser();
+  const virtualPet = makeNewVirtualPet(virtualPetName, owner.username);
 
-  context.ui.showToast(`the new virtual pet is called ${virtualPetName}, it has egg ${eggNumber} and funMode=${funMode}`);
+  const subreddit = await context.reddit.getCurrentSubreddit();
+  const post = await context.reddit.submitPost({
+    title: `${owner.username}'s Snoomagotchi, ${virtualPetName}`,
+    subredditName: subreddit.name,
+    preview: `Loading ${owner.username}'s Snoomagotchi...`
+  });
+
+  await context.kvStore.put(post.id, JSON.stringify(virtualPet));
+
+  context.ui.showToast(`Created a ${funMode ? "new fun-mode" : "new" } virtual pet, ${virtualPetName}, for ${owner.username} from egg #${eggNumber}. How eggciting!`);
 };
