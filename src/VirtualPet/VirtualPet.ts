@@ -39,7 +39,12 @@ export function makeNewVirtualPet(name: string, owner: string) : VirtualPet {
             intelligence: makeNewGene(r),
             aging: makeNewGene(r),
         },
-        state: { name: SimulationStateName.Egg },
+        state: {
+            name: SimulationStateName.Egg,
+            happiness: 100,
+            hunger: 100,
+            discipline: 0
+        },
         owner: owner,
     }
 }

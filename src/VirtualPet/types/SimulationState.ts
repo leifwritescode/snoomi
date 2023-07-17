@@ -11,36 +11,70 @@ export enum SimulationStateName {
     Dead = "Dead"
 };
 
+type BaseSimulationState<T extends SimulationStateName> = VariantRecord<T> & {
+  happiness: number,
+  discipline: number,
+  hunger: number
+}
+
 // the virtual pet is newly created and has not hatched yet
-export type Egg = VariantRecord<SimulationStateName.Egg>;
+export type Egg = BaseSimulationState<SimulationStateName.Egg>;
 
 // the virtual pet is in its idle state
-export type Idle = VariantRecord<SimulationStateName.Idle>;
+export type Idle = BaseSimulationState<SimulationStateName.Idle>;
 
 // the virtual pet has become sick and requires medicine
-export type Sick = VariantRecord<SimulationStateName.Sick>;
+export type Sick = BaseSimulationState<SimulationStateName.Sick>;
 
 // the virtual pet is excessively hungry
-export type Hungry = VariantRecord<SimulationStateName.Hungry>;
+export type Hungry = BaseSimulationState<SimulationStateName.Hungry>;
 
 // the virtual pet needs to use the toilet
-export type Pooping = VariantRecord<SimulationStateName.Pooping>;
+export type Pooping = BaseSimulationState<SimulationStateName.Pooping>;
 
 // the virtual pet pooped
-export type Unsanitary = VariantRecord<SimulationStateName.Unsanitary>;
+export type Unsanitary = BaseSimulationState<SimulationStateName.Unsanitary>;
 
 // the virtual pet is unhappy
-export type Unhappy = VariantRecord<SimulationStateName.Unhappy>;
+export type Unhappy = BaseSimulationState<SimulationStateName.Unhappy>;
 
 // the virtual pet has died
-export type Dead = VariantRecord<SimulationStateName.Dead> & {
+export type Dead = BaseSimulationState<SimulationStateName.Dead> & {
   timeOfDeath: Date
 };
 
 // union type of all possible simulation states
 export type SimulationState = Egg | Idle | Sick | Hungry | Pooping | Unsanitary | Unhappy | Dead;
 
-type StateReducer<T> = (action: any, state: T) => T;
+export enum SimulationActionName {
+  IncreaseHunger = "IncreaseHunger",
+  DecreaseHappiness = "DecreaseHappiness",
+  DecreaseDiscipline = "DecreaseDiscipline"
+}
+
+// the virtual pet gets hungrier over time
+export type IncreaseHunger = VariantRecord<SimulationActionName.IncreaseHunger> & {
+  prevHunger: number,
+  currHunger: number
+};
+
+// the virtual pet loses happiness over time
+export type DecreaseHappiness = VariantRecord<SimulationActionName.DecreaseHappiness> & {
+  prevHappiness: number,
+  currHappiness: number
+};
+
+// the virtual pet becomes misbehaved over time
+export type DecreaseDiscipline = VariantRecord<SimulationActionName.DecreaseDiscipline> & {
+  prevDiscipline: number,
+  currDiscipline: number
+};
+
+// union type of all possible simulation actions
+export type SimulationAction = IncreaseHunger | DecreaseHappiness | DecreaseDiscipline;
+
+// method signature for simulation state reducers
+type StateReducer<State extends SimulationState> = (action: SimulationAction, state: State) => SimulationState;
 
 const reduceSimulationStateEgg: StateReducer<Egg> = (action, state) => state;
 const reduceSimulationStateIdle: StateReducer<Idle> = (action, state) => state;
@@ -53,7 +87,7 @@ const reduceSimulationStateDead: StateReducer<Dead> = (action, state) => state;
 
 /**
  * {@link SimulationState} reducer
- * @param {any} action the action
+ * @param {SimulationAction} action the action
  * @param {SimulationState} state the state
  * @returns a new {@link SimulationState} made by applying {@link action} to {@link state}, or {@link state} if no transition occurs
  */
