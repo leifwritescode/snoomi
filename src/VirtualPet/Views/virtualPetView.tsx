@@ -1,19 +1,12 @@
 import { Devvit, CustomPostType } from "@devvit/public-api"
 import { REDIS_KEY_KEITH } from "../constants.js";
 import { VirtualPet } from "../VirtualPet.js";
+import { VirtualPetComponent } from "../types/VirtualPetComponent.js";
 
-const virtualPetView: CustomPostType["render"] = ({postId, reddit, kvStore, useState}) => {
+const virtualPetView: VirtualPetComponent = ({reddit, useState, virtualPet }) => {
   const [currentUsername] = useState(async () => {
     const currentUser = await reddit.getCurrentUser();
     return currentUser.username;
-  });
-
-  // context.postId points to the snoomagotchi state in redis
-  // until custom posts hit prod, it will contain nothing useful
-  const redisKeyState = postId ?? REDIS_KEY_KEITH;
-  const [virtualPet] = useState(async () => {
-    const vps = await kvStore.get<string>(redisKeyState);
-    return JSON.parse(vps!) as VirtualPet;
   });
 
   // todo in the real world, state will be held in kv store and server authoritative
