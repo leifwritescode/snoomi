@@ -1,74 +1,67 @@
-import { Devvit, CustomPostType } from "@devvit/public-api"
-import { REDIS_KEY_KEITH } from "../constants.js";
-import { VirtualPet } from "../VirtualPet.js";
+import { Devvit } from "@devvit/public-api"
 import { VirtualPetComponent } from "../types/VirtualPetComponent.js";
 
-const virtualPetView: VirtualPetComponent = ({reddit, useState, virtualPet }) => {
+const virtualPetView: VirtualPetComponent = ({reddit, useState, getVirtualPet, setVirtualPet}) => {
   const [currentUsername] = useState(async () => {
     const currentUser = await reddit.getCurrentUser();
     return currentUser.username;
   });
-
-  // todo in the real world, state will be held in kv store and server authoritative
-  // the client side render stuff would mean a user could change values locally?
-  // i should investigate the best way to surface the snoomagotchi state object to the views that manipulate it
-  const [hunger, setHunger] = useState(0);
-  const [play, setPlay] = useState(0);
-  const [discipline, setDiscipline] = useState(0);
+   
+  const virtualPet = getVirtualPet();
 
   // we don't want to show the control deck if currentUser != state.owner
-  const controlDeck = (
+  const controlDeck = virtualPet.owner === currentUsername ? (
     <hstack backgroundColor="white" padding="medium">
-      <button grow onPress={() => setHunger(hunger + 1)}>Feed</button>
+      <button grow onPress={() => setVirtualPet({ ...virtualPet, state: { ...virtualPet.state, hunger: virtualPet.state.hunger + 10 }})}>Feed</button>
       <spacer size="large"></spacer>
-      <button grow onPress={() => setPlay(play + 1)}>Play</button>
+      <button grow onPress={() => setVirtualPet({ ...virtualPet, state: { ...virtualPet.state, happiness: virtualPet.state.happiness + 10 }})}>Play</button>
       <spacer size="large"></spacer>
-      <button grow onPress={() => setDiscipline(discipline + 1)}>Discipline</button>
+      <button grow onPress={() => setVirtualPet({ ...virtualPet, state: { ...virtualPet.state, discipline: virtualPet.state.discipline + 10 }})}>Discipline</button>
       <spacer size="large"></spacer>
       <button grow>Toilet</button>
     </hstack>
-  );
+  ) : (<></>);
 
   return (
     <vstack gap="medium" backgroundColor="pink" cornerRadius="medium">
       <hstack backgroundColor="white" padding="medium">
         <zstack grow>
           <hstack alignment="start" backgroundColor="grey" cornerRadius="large">
-            <vstack width={hunger} backgroundColor="red" cornerRadius="large">
+            <vstack width={virtualPet.state.hunger} backgroundColor="red" cornerRadius="large">
               <spacer size="large"></spacer>
             </vstack>
           </hstack>
           <hstack padding="small">
-            <text grow size={"large"} color="black" outline="none">🍔 {hunger}%</text>
+            <text grow size={"large"} color="black" outline="none">🍔 {virtualPet.state.hunger}%</text>
           </hstack>
         </zstack>
         <spacer size="large"></spacer>
         <zstack grow>
           <hstack alignment="start" backgroundColor="grey" cornerRadius="large">
-            <vstack width={play} backgroundColor="green" cornerRadius="large">
+            <vstack width={virtualPet.state.happiness} backgroundColor="green" cornerRadius="large">
               <spacer size="large"></spacer>
             </vstack>
           </hstack>
           <hstack padding="small">
-            <text grow size={"large"} color="black" outline="none">❤️ {play}%</text>
+            <text grow size={"large"} color="black" outline="none">❤️ {virtualPet.state.happiness}%</text>
           </hstack>
         </zstack>
         <spacer size="large"></spacer>
         <zstack grow>
           <hstack alignment="start" backgroundColor="grey" cornerRadius="large">
-            <vstack width={discipline} backgroundColor="blue" cornerRadius="large">
+            <vstack width={virtualPet.state.discipline} backgroundColor="blue" cornerRadius="large">
               <spacer size="large"></spacer>
             </vstack>
           </hstack>
           <hstack padding="small">
-            <text grow size={"large"} color="black" outline="none">👮 {discipline}%</text>
+            <text grow size={"large"} color="black" outline="none">👮 {virtualPet.state.discipline}%</text>
           </hstack>
         </zstack>
       </hstack>
       <text style="heading" size="xxlarge">
         {virtualPet.owner}'s Snoomagotchi, {virtualPet.name}!
       </text>
-      {controlDeck}
+     { controlDeck }
     </vstack>
   );
 };
