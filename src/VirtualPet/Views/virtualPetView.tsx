@@ -1,7 +1,8 @@
 import { Devvit, CustomPostType } from "@devvit/public-api"
-import { REDIS_KEY_DEFAULT_SNOOMAGOTCHI_STATE } from "../constants.js";
+import { REDIS_KEY_KEITH } from "../constants.js";
+import { VirtualPet } from "../VirtualPet.js";
 
-const virtualPetView: CustomPostType["render"] = ({postId, reddit, useState}) => {
+const virtualPetView: CustomPostType["render"] = ({postId, reddit, kvStore, useState}) => {
   const [currentUsername] = useState(async () => {
     const currentUser = await reddit.getCurrentUser();
     return currentUser.username;
@@ -9,7 +10,11 @@ const virtualPetView: CustomPostType["render"] = ({postId, reddit, useState}) =>
 
   // context.postId points to the snoomagotchi state in redis
   // until custom posts hit prod, it will contain nothing useful
-  const redisKeyState = postId ?? REDIS_KEY_DEFAULT_SNOOMAGOTCHI_STATE;
+  const redisKeyState = postId ?? REDIS_KEY_KEITH;
+  const [virtualPet] = useState(async () => {
+    const vps = await kvStore.get<string>(redisKeyState);
+    return JSON.parse(vps!) as VirtualPet;
+  });
 
   // todo in the real world, state will be held in kv store and server authoritative
   // the client side render stuff would mean a user could change values locally?
@@ -68,7 +73,7 @@ const virtualPetView: CustomPostType["render"] = ({postId, reddit, useState}) =>
         </zstack>
       </hstack>
       <text style="heading" size="xxlarge">
-        {currentUsername ?? 'Stranger'}'s Snoomagotchi!
+        {virtualPet.owner}'s Snoomagotchi, {virtualPet.name}!
       </text>
       {controlDeck}
     </vstack>
