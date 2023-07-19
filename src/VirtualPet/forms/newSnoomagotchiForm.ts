@@ -1,6 +1,6 @@
 import { Form, FormOnSubmitEventHandler } from "@devvit/public-api";
 import { makeNewVirtualPet } from "../VirtualPet.js";
-import virtualPetView from "../views/virtualPetView.js";
+import virtualPetView from "../views/VirtualPetView.js";
 
 export const newSnoomagotchiForm: Form = {
   title: "Create a new Snoomagotchi",

@@ -2,24 +2,53 @@ import { Devvit } from '@devvit/public-api';
 import VirtualPetRoot from './VirtualPet/index.js';
 import { SCHEDULER_JOB_WELFARE_TICK, SCHEDULER_JOB_AGE_TICK, REDIS_KEY_AGE_TICK_JOB_ID, REDIS_KEY_WELFARE_TICK_JOB_ID, REDIS_KEY_KEITH } from './VirtualPet/constants.js';
 import { newSnoomagotchiForm, newSnoomagotchiFormSubmitHandler } from './VirtualPet/forms/newSnoomagotchiForm.js';
-import { makeNewVirtualPet } from './VirtualPet/VirtualPet.js';
+import { VirtualPet, makeNewVirtualPet } from './VirtualPet/VirtualPet.js';
 
 Devvit.configure({
   redditAPI: true,
   kvStore: true,
+  http: true,
 });
 
 Devvit.addSchedulerJob({
   name: SCHEDULER_JOB_WELFARE_TICK,
-  onRun: (e) => {
-    // todo snoomagotchi welfare tick
+  onRun: async (_, {kvStore}) => {
+    console.log("welfare tickover");
+    const keys = await kvStore.list();
+    for (const key of keys) {
+      let value = await kvStore.get<string>(key);
+      if (value === undefined) {
+        continue;
+      }
+
+      const virtualPet = JSON.parse(value) as VirtualPet;
+      virtualPet.state.hunger -= 10;
+      virtualPet.state.happiness -= 10;
+      virtualPet.state.discipline -= 5;
+
+      value = JSON.stringify(virtualPet);
+      await kvStore.put(key, value);
+    }
   }
 });
 
 Devvit.addSchedulerJob({
   name: SCHEDULER_JOB_AGE_TICK,
-  onRun: (e) => {
-    // todo snoomagotchi age tick
+  onRun: async (_, {kvStore}) => {
+    console.log("age tickover");
+    const keys = await kvStore.list();
+    for (const key of keys) {
+      let value = await kvStore.get<string>(key);
+      if (value === undefined) {
+        continue;
+      }
+
+      const virtualPet = JSON.parse(value) as VirtualPet;
+      virtualPet.age++;
+
+      value = JSON.stringify(virtualPet);
+      await kvStore.put(key, value);
+    }
   }
 });
 

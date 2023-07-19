@@ -15,5 +15,8 @@
   "protoc": { "options": ["--proto_path=packages/protos/schema"] },
 
   // Use the workspace version of TypeScript, not the IDE version
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "search.exclude": {
+    "**/node_modules": false
+  }
 }

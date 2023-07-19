@@ -1,8 +1,3 @@
-import activitySelectView from "../views/activitySelectView.js";
-import finishedActivityView from "../views/finishedActivityView.js";
-import finishedMealView from "../views/finishedMealView.js";
-import mealSelectView from "../views/mealSelectView.js";
-import virtualPetView from "../views/virtualPetView.js";
 import { VariantRecord } from "./VariantRecord.js";
 
 export enum ViewStateName {
@@ -13,13 +8,13 @@ export enum ViewStateName {
     FinishedActivity = "FinishedActivity"
 }
 
-export type Home = VariantRecord<ViewStateName.VirtualPet>;
-export type MealSelect = VariantRecord<ViewStateName.MealSelect>;
-export type FinishedMeal = VariantRecord<ViewStateName.FinishedMeal> & {
+type Home = VariantRecord<ViewStateName.VirtualPet>;
+type MealSelect = VariantRecord<ViewStateName.MealSelect>;
+type FinishedMeal = VariantRecord<ViewStateName.FinishedMeal> & {
   meal: string
 };
-export type ActivitySelect = VariantRecord<ViewStateName.ActivitySelect>;
-export type FinishedActivity = VariantRecord<ViewStateName.FinishedActivity> & {
+type ActivitySelect = VariantRecord<ViewStateName.ActivitySelect>;
+type FinishedActivity = VariantRecord<ViewStateName.FinishedActivity> & {
   activity: string
 };
 
@@ -51,9 +46,9 @@ type StateReducer<State extends ViewState> = (state: State, action: ViewAction) 
 const reduceViewStateHome: StateReducer<Home> = (state, action) => {
   switch (action.name) {
     case ViewActionName.GoToMealSelect:
-      return <MealSelect> { };
+      return <MealSelect> { name: ViewStateName.MealSelect };
     case ViewActionName.GoToActivitySelect:
-      return <ActivitySelect> { };
+      return <ActivitySelect> { name: ViewStateName.ActivitySelect };
     default:
       return state;
   }
@@ -62,9 +57,9 @@ const reduceViewStateHome: StateReducer<Home> = (state, action) => {
 const reduceViewStateMealSelect: StateReducer<MealSelect> = (state, action) => {
   switch (action.name) {
     case ViewActionName.GoToVirtualPet:
-      return <Home> { };
+      return <Home> { name: ViewStateName.VirtualPet};
     case ViewActionName.GoToFinishedMeal:
-      return <FinishedMeal> { meal: action.meal };
+      return <FinishedMeal> { name: ViewStateName.FinishedMeal, meal: action.meal };
     default:
       return state;
   }
@@ -73,7 +68,7 @@ const reduceViewStateMealSelect: StateReducer<MealSelect> = (state, action) => {
 const reduceViewStateFinishedMeal: StateReducer<FinishedMeal> = (state, action) => {
   switch (action.name) {
     case ViewActionName.GoToVirtualPet:
-      return <Home> { };
+      return <Home> { name: ViewStateName.VirtualPet };
     default:
       return state;
   }
@@ -82,9 +77,9 @@ const reduceViewStateFinishedMeal: StateReducer<FinishedMeal> = (state, action) 
 const reduceViewStateActivitySelect: StateReducer<ActivitySelect> = (state, action) => {
   switch (action.name) {
     case ViewActionName.GoToVirtualPet:
-      return <Home> { };
+      return <Home> { name: ViewStateName.VirtualPet };
     case ViewActionName.GoToFinishedActivity:
-      return <FinishedActivity> { activity: action.activity };
+      return <FinishedActivity> { name: ViewStateName.FinishedActivity, activity: action.activity };
     default:
       return state;
   }
@@ -93,7 +88,7 @@ const reduceViewStateActivitySelect: StateReducer<ActivitySelect> = (state, acti
 const reduceViewStateFinishedActivity: StateReducer<FinishedActivity> = (state, action) => {
   switch (action.name) {
     case ViewActionName.GoToVirtualPet:
-      return <Home> { };
+      return <Home> { name: ViewStateName.VirtualPet };
     default:
       return state;
   }
@@ -117,8 +112,6 @@ export const reduce: StateReducer<ViewState> = (state, action) => {
       return reduceViewStateActivitySelect(state, action);
     case ViewStateName.FinishedActivity:
       return reduceViewStateFinishedActivity(state, action);
-    default:
-      return state;
   }
 }
 
