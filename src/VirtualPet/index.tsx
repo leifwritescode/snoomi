@@ -1,5 +1,5 @@
 import { CustomPostType, KVStore } from "@devvit/public-api";
-import { ViewAction, ViewStateName, initialViewState, reduce } from "./types/ViewState.js";
+import { ViewStateName, initialViewState, reduce } from "./types/ViewState.js";
 import { VirtualPetComponentContext } from "./types/VirtualPetComponent.js";
 import { REDIS_KEY_KEITH } from "./constants.js";
 import { VirtualPet, makeNewVirtualPet } from "./VirtualPet.js";
@@ -10,7 +10,7 @@ import FinishedMealView from "./views/FinishedMealView.js";
 import ActivitySelectView from "./views/ActivitySelectView.js";
 import FinishedActivityView from "./views/FinishedActivityView.js";
 
-const refreshVirtualPet = async (key: string, kvStore: KVStore) : VirtualPet => {
+const refreshVirtualPet = async (key: string, kvStore: KVStore) : Promise<VirtualPet> => {
   let virtualPet = await kvStore.get<string>(key);
   if (virtualPet === undefined) {
     virtualPet = JSON.stringify(makeNewVirtualPet("Keith", "The Computer"));
@@ -21,9 +21,14 @@ const refreshVirtualPet = async (key: string, kvStore: KVStore) : VirtualPet => 
 const VirtualPetRoot: CustomPostType["render"] = (context) => {
   const redisKeyVirtualPetState = context.postId ?? REDIS_KEY_KEITH;
   const [viewState, setViewState] = context.useState(initialViewState());
-  const [virtualPet, setVirtualPet] = context.useState(refreshVirtualPet(redisKeyVirtualPetState, context.kvStore));
-  const interval = context.useInterval(() => {
-    const virtualPet = refreshVirtualPet(redisKeyVirtualPetState, context.kvStore);
+  const [virtualPet, setVirtualPet] = context.useState(async () => {
+    return await refreshVirtualPet(redisKeyVirtualPetState, context.kvStore)
+  });
+  const [isServerCall, setIsServerCall] = context.useState(false);
+
+  // this shouldn't need to do any fancy server stuff as it happens between draws
+  const interval = context.useInterval(async () => {
+    const virtualPet = await refreshVirtualPet(redisKeyVirtualPetState, context.kvStore);
     setVirtualPet(virtualPet);
   }, 60000);
   interval.start();
@@ -31,17 +36,33 @@ const VirtualPetRoot: CustomPostType["render"] = (context) => {
   const virtualPetComponentContext: VirtualPetComponentContext = {
     ...context, 
     getVirtualPet: () => virtualPet,
-    setVirtualPet: (virtualPet: VirtualPet) => {
+    setVirtualPet: (virtualPet) => {
       context.kvStore.put(redisKeyVirtualPetState, JSON.stringify(virtualPet));
       setVirtualPet(virtualPet);
     },
     getViewState: () => viewState,
-    setViewState: (action: ViewAction) => {
+    setViewState: (action) => {
       console.log(`attempting to action ${action.name} on ${viewState.name}`);
       const reducedState = reduce(viewState, action);
       console.log(`newly reduced state is ${reducedState.name}`);
       setViewState(reducedState);
-    }
+    },
+    onServer: (delegate) => {
+      try {
+        delegate();
+        setIsServerCall(false);
+      }
+      catch (e) {
+        if ((e as Error).message === "ServerCallRequired") {
+          console.log("needs server call!");
+          setIsServerCall(true);
+        } else {
+          console.log("some other error");
+          throw e;
+        }
+      }
+    },
+    getIsServerCall: () => isServerCall,
   };
 
   switch (viewState.name) {

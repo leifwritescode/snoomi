@@ -1,3 +1,4 @@
+import { Meal } from "../enums/Meal.js";
 import { VariantRecord } from "./VariantRecord.js";
 
 export enum ViewStateName {
@@ -11,7 +12,7 @@ export enum ViewStateName {
 type Home = VariantRecord<ViewStateName.VirtualPet>;
 type MealSelect = VariantRecord<ViewStateName.MealSelect>;
 type FinishedMeal = VariantRecord<ViewStateName.FinishedMeal> & {
-  meal: string
+  meal: Meal
 };
 type ActivitySelect = VariantRecord<ViewStateName.ActivitySelect>;
 type FinishedActivity = VariantRecord<ViewStateName.FinishedActivity> & {
@@ -31,7 +32,7 @@ export enum ViewActionName {
 type GoToVirtualPet = VariantRecord<ViewActionName.GoToVirtualPet>;
 type GoToMealSelect = VariantRecord<ViewActionName.GoToMealSelect>;
 type GoToFinishedMeal = VariantRecord<ViewActionName.GoToFinishedMeal> & {
-  meal: string
+  meal: Meal
 };
 type GoToActivitySelect = VariantRecord<ViewActionName.GoToActivitySelect>;
 type GoToFinishedActivity = VariantRecord<ViewActionName.GoToFinishedActivity> & {

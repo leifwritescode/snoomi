@@ -1,44 +1,42 @@
 import { Devvit } from "@devvit/public-api";
 import { VirtualPetComponent } from "../types/VirtualPetComponent.js";
 import { ViewActionName } from "../types/ViewState.js";
+import { Meal } from "../enums/Meal.js";
 
 const MealSelectView: VirtualPetComponent = ({useState, setViewState}) => {
-  const [selectedMeal, setSelectedMeal] = useState("");
+  const [selectedMeal, setSelectedMeal] = useState(Meal.None);
 
   return (
-    <vstack gap="medium" backgroundColor="pink" cornerRadius="medium">
-      <vstack padding="medium">
-      <hstack grow>
-        <vstack grow>
-          <text size="xxlarge" alignment="middle center">🍔</text>
-          <button onPress={() => setSelectedMeal("Hamburger")}>Hamburger</button>
-        </vstack>
-        <spacer size="large" />
-        <vstack grow>
-          <text size="xxlarge" alignment="middle center">🥗</text>
-          <button onPress={() => setSelectedMeal("Salad")}>Salad</button>
-        </vstack>
-      </hstack>
-      <spacer size="large" />
-      <hstack grow>
-        <vstack grow>
-          <text size="xxlarge" alignment="middle center">🍎</text>
-          <button onPress={() => setSelectedMeal("Fruit")}>Fruit</button>
-        </vstack>
-        <spacer size="large" />
-        <vstack grow>
-          <text size="xxlarge" alignment="middle center">🍬</text>
-          <button onPress={() => setSelectedMeal("Sweets")}>Sweets</button>
-        </vstack>
-      </hstack>
-      </vstack>
+    <vstack gap="medium" backgroundColor="pink" grow>
+      <hstack grow alignment="middle center" gap="medium" padding="large">
+      <vstack gap="medium" grow alignment="middle">
+        <hstack gap="medium" grow>
+          <vstack grow>
+            <text size="xxlarge" alignment="middle center">🍔</text>
+            <button onPress={() => setSelectedMeal(Meal.Hamburger)}>{Meal.Hamburger}</button>
+          </vstack>
+          <vstack grow>
+            <text size="xxlarge" alignment="middle center">🥗</text>
+            <button onPress={() => setSelectedMeal(Meal.Salad)}>{Meal.Salad}</button>
+          </vstack>
+        </hstack>
+        <hstack grow gap="medium">
+          <vstack grow>
+            <text size="xxlarge" alignment="middle center">🍎</text>
+            <button onPress={() => setSelectedMeal(Meal.Fruit)}>{Meal.Fruit}</button>
+          </vstack>
+          <vstack grow>
+            <text size="xxlarge" alignment="middle center">🍬</text>
+            <button onPress={() => setSelectedMeal(Meal.Candy)}>{Meal.Candy}</button>
+          </vstack>
+        </hstack>
+      </vstack></hstack>
       <hstack padding="large" backgroundColor="white">
         <button onPress={() => setViewState({ name: ViewActionName.GoToVirtualPet })}>Go back</button>
-        <spacer size="large" />
         <button
           onPress={() => setViewState({ name: ViewActionName.GoToFinishedMeal, meal: selectedMeal })} 
           grow
-          disabled={ selectedMeal === "" }>Eat {selectedMeal}
+          disabled={ selectedMeal === Meal.None }>Eat {selectedMeal}
         </button>
       </hstack>
     </vstack>

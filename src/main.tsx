@@ -64,7 +64,11 @@ Devvit.addMenuItem({
 
 Devvit.addCustomPostType({
   name: 'VirtualPet',
-  render: (props) => <VirtualPetRoot {...props} />,
+  render: (props) => (
+    <blocks height="tall">
+      <VirtualPetRoot {...props} />
+    </blocks>
+  ),
 });
 
 Devvit.addTrigger({

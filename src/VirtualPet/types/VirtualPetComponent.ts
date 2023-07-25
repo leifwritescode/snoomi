@@ -7,6 +7,8 @@ export type VirtualPetComponentContext = Context & {
   setVirtualPet: (virtualPet: VirtualPet) => void;
   getViewState: () => ViewState
   setViewState: (action: ViewAction) => void;
+  onServer: (delegate: {():void}) => void;
+  getIsServerCall: () => boolean;
 }
 
 export type VirtualPetComponent = (context: VirtualPetComponentContext) => JSX.Element;
