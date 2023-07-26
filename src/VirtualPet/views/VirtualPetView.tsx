@@ -15,7 +15,7 @@ const VirtualPetView: VirtualPetComponent = ({reddit, useState, getVirtualPet, s
     const user = await reddit.getCurrentUser();
     return user.username;
   });
-
+ 
   const virtualPet = getVirtualPet();
 
   // hide the control deck if this pet belongs to a different user (but show it if its the default)

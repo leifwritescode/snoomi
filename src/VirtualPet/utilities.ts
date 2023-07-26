@@ -12,3 +12,8 @@ export function getRandomNumberInRange(min: number, max: number) : number {
 export function clamp(value: number, min: number, max: number) : number {
    return Math.min(Math.max(value, min), max);
 }
+
+export function getRandomElementFromArray<T>(inArray: T[]) : T {
+   const index = Math.floor(Math.random() * inArray.length);
+   return inArray[index];
+}
