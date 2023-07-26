@@ -31,9 +31,9 @@ const VirtualPetView: VirtualPetComponent = ({reddit, useState, getVirtualPet, s
 
   return (
     <zstack grow>
-      <image url="https://i.imgur.com/ViJoRwZ.jpg" imageHeight={380} imageWidth={600} resizeMode="fill" width={100} height={100} />
-      <vstack grow>
-        <hstack backgroundColor="lightgrey" padding="medium" gap="large">
+      <image url="https://i.imgur.com/ViJoRwZ.jpg" imageHeight={1} imageWidth={1} resizeMode="fill" width={100} height={100} />
+      <vstack grow gap="medium">
+        <hstack backgroundColor="white" padding="medium" gap="large">
           <ProgressBar progress={virtualPet.state.hunger} icon="🍔" text={`${virtualPet.state.hunger}%`} />
           <ProgressBar progress={virtualPet.state.happiness} icon="❤️" text={`${virtualPet.state.happiness}%`} />
           <ProgressBar progress={virtualPet.state.discipline} icon="👮" text={`${virtualPet.state.discipline}%`} />
