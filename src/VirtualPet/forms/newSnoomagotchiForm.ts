@@ -1,6 +1,7 @@
 import { Form, FormOnSubmitEventHandler } from "@devvit/public-api";
 import { makeNewVirtualPet } from "../VirtualPet.js";
 import virtualPetView from "../views/VirtualPetView.js";
+import { REDIS_KEY_AGE_TICK_BATCHES, REDIS_KEY_WELFARE_TICK_BATCHES } from "../constants.js";
 
 export const newSnoomagotchiForm: Form = {
   title: "Create a new Snoomagotchi",
@@ -62,5 +63,27 @@ export const newSnoomagotchiFormSubmitHandler: FormOnSubmitEventHandler = async 
 
   await context.kvStore.put(post.id, JSON.stringify(virtualPet));
 
-  context.ui.showToast(`Created a ${funMode ? "new fun-mode" : "new" } virtual pet, ${virtualPetName}, for ${owner.username} from egg #${eggNumber}. How eggciting!`);
+  const now = new Date();
+
+  let welfareTickBatches = await context.kvStore.get<string[][]>(REDIS_KEY_WELFARE_TICK_BATCHES);
+  if (welfareTickBatches === undefined) {
+    throw new Error("welfareTickBatch record has not been created");
+  }
+
+  // age tick happens once per minute, and all ids in ageTickBatches[minute] will be ticked.
+  // each pet ticks once per hour
+  welfareTickBatches[now.getMinutes()].push(post.id);
+  await context.kvStore.put(REDIS_KEY_WELFARE_TICK_BATCHES, welfareTickBatches);
+
+  let ageTickBatches = await context.kvStore.get<string[][]>(REDIS_KEY_AGE_TICK_BATCHES);
+  if (ageTickBatches === undefined) {
+    throw new Error("ageTickBatch record has not been created");
+  }
+
+  // age tick happens once per hour, and all ids in ageTickBatches[hour] will be ticked.
+  // each pet gets aged once per day
+  ageTickBatches[now.getHours()].push(post.id);
+  await context.kvStore.put(REDIS_KEY_AGE_TICK_BATCHES, ageTickBatches);
+
+  context.ui.showToast(`Created a ${funMode ? "new fun-mode" : "new" } virtual pet, ${virtualPetName}, in age batch ${now.getHours()} and welfare batch ${now.getMinutes()} for ${owner.username} from egg #${eggNumber}. How eggciting!`);
 };

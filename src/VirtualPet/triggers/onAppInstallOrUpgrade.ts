@@ -9,7 +9,9 @@ import {
   REDIS_KEY_WELFARE_TICK_JOB_ID,
   SCHEDULER_JOB_AGE_TICK,
   SCHEDULER_JOB_WELFARE_TICK,
-  REDIS_KEY_KEITH
+  REDIS_KEY_KEITH,
+  REDIS_KEY_WELFARE_TICK_BATCHES,
+  REDIS_KEY_AGE_TICK_BATCHES
 } from "../constants.js";
 import { makeNewVirtualPet } from "../VirtualPet.js";
 
@@ -47,7 +49,19 @@ const onAppInstallOrUpgrade: TriggerOnEventHandler<TriggerEventType[AppInstall] 
       await context.kvStore.put(REDIS_KEY_KEITH, keith);
     }
 
-    // TODO: initialise batch records
+    // record of virtual pet ids organised by minute of birth
+    let welfareTickBatches = await context.kvStore.get<string[][]>(REDIS_KEY_WELFARE_TICK_BATCHES);
+    if (welfareTickBatches === undefined) {
+      welfareTickBatches = (new Array<string[]>()).fill([], 0, 59);
+      await context.kvStore.put(REDIS_KEY_WELFARE_TICK_BATCHES, welfareTickBatches);
+    }
+
+    // record of virtual pet ids organised by hour of birth
+    let ageTickBatches = await context.kvStore.get<string[][]>(REDIS_KEY_AGE_TICK_BATCHES);
+    if (ageTickBatches === undefined) {
+      ageTickBatches = (new Array<string[]>()).fill([], 0, 23);
+      await context.kvStore.put(REDIS_KEY_AGE_TICK_BATCHES, ageTickBatches);
+    }
 }
 
 export default onAppInstallOrUpgrade;

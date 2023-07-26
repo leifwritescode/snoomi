@@ -1,5 +1,6 @@
 import { ScheduledJobHandler } from "@devvit/public-api";
 import { clamp } from "../utilities.js";
+import { VirtualPet } from "../VirtualPet.js";
 
 const welfareTickJob: ScheduledJobHandler = async (_, { kvStore }) => {
   console.log("welfare tickover");
