@@ -21,7 +21,7 @@ const ProgressBar = (props: ProgressBarProps) : JSX.Element => {
           backgroundColor={props.bgcolor ?? "white"} />
         <hstack
           cornerRadius="full"
-          width={props.progress}
+          width={props.progress === 0 ? 1 : props.progress}
           backgroundColor={props.fgcolor ?? "orangered"}/>
       </zstack>
       <text size="large" color="black" outline="none">{props.text}</text>

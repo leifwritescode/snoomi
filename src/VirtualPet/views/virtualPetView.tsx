@@ -29,17 +29,20 @@ const VirtualPetView: VirtualPetComponent = ({reddit, useState, getVirtualPet, s
   ) : (<></>);
 
   return (
-    <vstack grow gap="medium" backgroundColor="white">
-      <hstack backgroundColor="lightgrey" padding="medium" gap="large">
-        <ProgressBar progress={virtualPet.state.hunger} icon="🍔" text={`${virtualPet.state.hunger}%`} />
-        <ProgressBar progress={virtualPet.state.happiness} icon="❤️" text={`${virtualPet.state.happiness}%`} />
-        <ProgressBar progress={virtualPet.state.discipline} icon="👮" text={`${virtualPet.state.discipline}%`} />
-      </hstack>
-      <hstack grow alignment="middle center">
-        <image url="https://i.imgur.com/EDhRCgI.gif" imageHeight={150} imageWidth={150} resizeMode="fit" />
-      </hstack>
-     { controlDeck }
-    </vstack>
+    <zstack grow>
+      <image url="https://i.imgur.com/ViJoRwZ.jpg" imageHeight={380} imageWidth={600} resizeMode="fill" width={100} height={100} />
+      <vstack grow>
+        <hstack backgroundColor="lightgrey" padding="medium" gap="large">
+          <ProgressBar progress={virtualPet.state.hunger} icon="🍔" text={`${virtualPet.state.hunger}%`} />
+          <ProgressBar progress={virtualPet.state.happiness} icon="❤️" text={`${virtualPet.state.happiness}%`} />
+          <ProgressBar progress={virtualPet.state.discipline} icon="👮" text={`${virtualPet.state.discipline}%`} />
+        </hstack>
+        <zstack grow alignment="middle center">
+          <image url="https://i.imgur.com/EDhRCgI.gif" imageHeight={150} imageWidth={150} resizeMode="fit" />
+        </zstack>
+      { controlDeck }
+      </vstack>
+    </zstack>
   );
 
   /*      <animation

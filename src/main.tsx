@@ -3,6 +3,7 @@ import VirtualPetRoot from './VirtualPet/index.js';
 import { SCHEDULER_JOB_WELFARE_TICK, SCHEDULER_JOB_AGE_TICK, REDIS_KEY_AGE_TICK_JOB_ID, REDIS_KEY_WELFARE_TICK_JOB_ID, REDIS_KEY_KEITH } from './VirtualPet/constants.js';
 import { newSnoomagotchiForm, newSnoomagotchiFormSubmitHandler } from './VirtualPet/forms/newSnoomagotchiForm.js';
 import { VirtualPet, makeNewVirtualPet } from './VirtualPet/VirtualPet.js';
+import { clamp } from './VirtualPet/utilities.js';
 
 Devvit.configure({
   redditAPI: true,
@@ -22,9 +23,9 @@ Devvit.addSchedulerJob({
       }
 
       const virtualPet = JSON.parse(value) as VirtualPet;
-      virtualPet.state.hunger -= 10;
-      virtualPet.state.happiness -= 10;
-      virtualPet.state.discipline -= 5;
+      virtualPet.state.hunger = clamp(virtualPet.state.hunger - 10, 0, 100);
+      virtualPet.state.happiness = clamp(virtualPet.state.happiness - 10, 0, 100);
+      virtualPet.state.discipline = clamp(virtualPet.state.discipline - 5, 0, 100);
 
       value = JSON.stringify(virtualPet);
       await kvStore.put(key, value);
