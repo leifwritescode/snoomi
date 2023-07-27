@@ -1,3 +1,5 @@
+import { Activity } from "../enums/Activity.js";
+import { Meal } from "../enums/Meal.js";
 import { VariantRecord } from "./VariantRecord.js";
 
 export enum SimulationStateName {
@@ -14,7 +16,9 @@ export enum SimulationStateName {
 type BaseSimulationState<T extends SimulationStateName> = VariantRecord<T> & {
   happiness: number,
   discipline: number,
-  hunger: number
+  hunger: number,
+  weight: number,
+  ticks: number, // ticks in the current state, useful for determining transitions e.g. unsanitary -> sick
 }
 
 // the virtual pet is newly created and has not hatched yet
@@ -47,31 +51,29 @@ type Dead = BaseSimulationState<SimulationStateName.Dead> & {
 export type SimulationState = Egg | Idle | Sick | Hungry | Pooping | Unsanitary | Unhappy | Dead;
 
 export enum SimulationActionName {
-  IncreaseHunger = "IncreaseHunger",
-  DecreaseHappiness = "DecreaseHappiness",
-  DecreaseDiscipline = "DecreaseDiscipline"
-}
-
-// the virtual pet gets hungrier over time
-type IncreaseHunger = VariantRecord<SimulationActionName.IncreaseHunger> & {
-  prevHunger: number,
-  currHunger: number
+  Feed = "Feed",
+  AdministerMedicine = "AdministerMedicine",
+  Play = "Play",
+  Clean = "Clean",
+  Discipline = "Discipline"
 };
 
-// the virtual pet loses happiness over time
-type DecreaseHappiness = VariantRecord<SimulationActionName.DecreaseHappiness> & {
-  prevHappiness: number,
-  currHappiness: number
+type Feed = VariantRecord<SimulationActionName.Feed> & {
+  meal: Meal
 };
 
-// the virtual pet becomes misbehaved over time
-type DecreaseDiscipline = VariantRecord<SimulationActionName.DecreaseDiscipline> & {
-  prevDiscipline: number,
-  currDiscipline: number
+type AdministerMedicine = VariantRecord<SimulationActionName.AdministerMedicine>;
+
+type Play = VariantRecord<SimulationActionName.Play> & {
+  activity: Activity
 };
+
+type Clean = VariantRecord<SimulationActionName.Clean>;
+
+type Discipline = VariantRecord<SimulationActionName.Discipline>;
 
 // union type of all possible simulation actions
-type SimulationAction = IncreaseHunger | DecreaseHappiness | DecreaseDiscipline;
+type SimulationAction = Feed | Play | AdministerMedicine | Clean | Discipline;
 
 // method signature for simulation state reducers
 type StateReducer<State extends SimulationState> = (state: State, action: SimulationAction) => SimulationState;
@@ -112,4 +114,14 @@ export const reduce: StateReducer<SimulationState> = (state, action) => {
     default:
       return state;
   }
+}
+
+export const initialSimulationState:{():SimulationState} = () => {
+  return <Egg> {
+    name: SimulationStateName.Egg,
+    happiness: 100,
+    hunger: 100,
+    discipline: 50,
+    weight: 50
+  };
 }
