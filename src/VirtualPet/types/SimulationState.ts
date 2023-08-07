@@ -118,7 +118,8 @@ const reduceSimulationStateIdle: StateReducer<Idle> = (state, action) => {
         ...state,
         hunger: clamp(state.hunger + nutrition.hunger, 0, 100),
         happiness: clamp(state.happiness + nutrition.happiness, 0, 100),
-        weight: clamp(state.weight + nutrition.weight, 0, 100)
+        weight: clamp(state.weight + nutrition.weight, 0, 100),
+        ticks: state.ticks + 1
       };
 
     /**
