@@ -14,21 +14,19 @@ const ageTickJob: ScheduledJobHandler = async (_, { kvStore }) => {
 
   const pets = batches[now.getHours()];
   if (pets.length === 0) {
-    console.log("No pets to process.");
+    console.warn("No pets to process.");
     return;
   }
 
   for (const pet of pets) {
-    let value = await kvStore.get<string>(pet);
-    if (value === undefined) {
+    let virtualPet = await kvStore.get<VirtualPet>(pet);
+    if (virtualPet === undefined) {
+      console.warn(`Pet ${pet} not found.`);
       continue;
     }
 
-    const virtualPet = JSON.parse(value) as VirtualPet;
     virtualPet.age++;
-
-    value = JSON.stringify(virtualPet);
-    await kvStore.put(pet, value);
+    await kvStore.put(pet, virtualPet);
   }
 
   console.log(`Finished processing ${pets.length} pets in batch D+${now.getHours()}.`);

@@ -7,7 +7,7 @@ import { getRandomNumberInRange } from "./utilities.js"
 export type VirtualPet = {
     owner: string, // username
     name: string, // the pets name
-    birthdate: Date, // date and time of creation
+    birthdate: number, // date and time of creation
     age: number, // in ticks
     generation: number, // pet generation 
     genes : Genotype, // genetic make-up of the pet
@@ -22,7 +22,7 @@ export function makeNewVirtualPet(name: string, owner: string) : VirtualPet {
     return {
         owner: owner,
         name: name,
-        birthdate: new Date(),
+        birthdate: Date.now(),
         age: 0,
         generation: 0,
         genes: {

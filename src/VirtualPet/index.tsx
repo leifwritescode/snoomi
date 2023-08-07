@@ -11,11 +11,11 @@ import ActivitySelectView from "./views/ActivitySelectView.js";
 import FinishedActivityView from "./views/FinishedActivityView.js";
 
 const refreshVirtualPet = async (key: string, kvStore: KVStore) : Promise<VirtualPet> => {
-  let virtualPet = await kvStore.get<string>(key);
+  let virtualPet = await kvStore.get<VirtualPet>(key);
   if (virtualPet === undefined) {
-    virtualPet = JSON.stringify(makeNewVirtualPet("Keith", "The Computer"));
+    virtualPet = makeNewVirtualPet("Keith", "The Computer");
   }
-  return JSON.parse(virtualPet) as VirtualPet;
+  return virtualPet;
 }
 
 const VirtualPetRoot: CustomPostType["render"] = (context) => {
@@ -37,7 +37,7 @@ const VirtualPetRoot: CustomPostType["render"] = (context) => {
     ...context, 
     getVirtualPet: () => virtualPet,
     setVirtualPet: (virtualPet) => {
-      context.kvStore.put(redisKeyVirtualPetState, JSON.stringify(virtualPet));
+      context.kvStore.put(redisKeyVirtualPetState, virtualPet);
       setVirtualPet(virtualPet);
     },
     getViewState: () => viewState,

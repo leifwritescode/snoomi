@@ -61,7 +61,7 @@ export const newSnoomagotchiFormSubmitHandler: FormOnSubmitEventHandler = async 
     preview: `Loading ${owner.username}'s Snoomagotchi...`
   });
 
-  await context.kvStore.put(post.id, JSON.stringify(virtualPet));
+  await context.kvStore.put(post.id, virtualPet);
 
   const now = new Date();
 

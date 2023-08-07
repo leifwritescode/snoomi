@@ -44,7 +44,7 @@ type Unhappy = BaseSimulationState<SimulationStateName.Unhappy>;
 
 // the virtual pet has died
 type Dead = BaseSimulationState<SimulationStateName.Dead> & {
-  timeOfDeath: Date
+  timeOfDeath: number // todo: cannot use Date because of JSON serialization
 };
 
 // union type of all possible simulation states

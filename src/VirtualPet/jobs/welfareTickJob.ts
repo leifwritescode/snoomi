@@ -3,7 +3,7 @@ import { clamp } from "../utilities.js";
 import { VirtualPet } from "../VirtualPet.js";
 import { REDIS_KEY_WELFARE_TICK_BATCHES } from "../constants.js";
 
-const welfareTickJob: ScheduledJobHandler = async (e, { kvStore }) => {
+const welfareTickJob: ScheduledJobHandler = async (_, { kvStore }) => {
   const batches = await kvStore.get<string[][]>(REDIS_KEY_WELFARE_TICK_BATCHES);
   if (batches === undefined) {
     console.log("No welfare batches are configured.");
@@ -15,23 +15,22 @@ const welfareTickJob: ScheduledJobHandler = async (e, { kvStore }) => {
 
   const pets = batches[now.getMinutes()];
   if (pets.length === 0) {
-    console.log("No pets to process.");
+    console.warn("No pets to process.");
     return;
   }
 
   for (const pet of pets) {
-    let value = await kvStore.get<string>(pet);
-    if (value === undefined) {
+    let virtualPet = await kvStore.get<VirtualPet>(pet);
+    if (virtualPet === undefined) {
+      console.warn(`Pet ${pet} not found.`);
       continue;
     }
 
-    const virtualPet = JSON.parse(value) as VirtualPet;
+    // todo: changes to simulation state should occur as part of a call to reduce, not here
     virtualPet.state.hunger = clamp(virtualPet.state.hunger - 10, 0, 100);
     virtualPet.state.happiness = clamp(virtualPet.state.happiness - 10, 0, 100);
     virtualPet.state.discipline = clamp(virtualPet.state.discipline - 5, 0, 100);
-
-    value = JSON.stringify(virtualPet);
-    await kvStore.put(pet, value);
+    await kvStore.put(pet, virtualPet);
   }
 
   console.log(`Finished processing ${pets.length} pets in batch H+${now.getMinutes()}.`);
