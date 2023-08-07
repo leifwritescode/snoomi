@@ -2,6 +2,7 @@ import { ScheduledJobHandler } from "@devvit/public-api";
 import { clamp } from "../utilities.js";
 import { VirtualPet } from "../VirtualPet.js";
 import { REDIS_KEY_WELFARE_TICK_BATCHES } from "../constants.js";
+import { SimulationActionName, reduce } from "../types/SimulationState.js";
 
 const welfareTickJob: ScheduledJobHandler = async (_, { kvStore }) => {
   const batches = await kvStore.get<string[][]>(REDIS_KEY_WELFARE_TICK_BATCHES);
@@ -26,10 +27,13 @@ const welfareTickJob: ScheduledJobHandler = async (_, { kvStore }) => {
       continue;
     }
 
-    // todo: changes to simulation state should occur as part of a call to reduce, not here
-    virtualPet.state.hunger = clamp(virtualPet.state.hunger - 10, 0, 100);
-    virtualPet.state.happiness = clamp(virtualPet.state.happiness - 10, 0, 100);
-    virtualPet.state.discipline = clamp(virtualPet.state.discipline - 5, 0, 100);
+    virtualPet.state = reduce(virtualPet.state, {
+      name: SimulationActionName.WelfareTick,
+      hunger: 10,
+      happiness: 10,
+      discipline: 5,
+    });
+
     await kvStore.put(pet, virtualPet);
   }
 

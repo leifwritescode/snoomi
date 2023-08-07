@@ -1,5 +1,6 @@
 import { Activity } from "../enums/Activity.js";
-import { Meal } from "./Meal.js";
+import { clamp } from "../utilities.js";
+import { Meal, getNutritionalValue } from "./Meal.js";
 import { VariantRecord } from "./VariantRecord.js";
 
 export enum SimulationStateName {
@@ -55,7 +56,10 @@ export enum SimulationActionName {
   AdministerMedicine = "AdministerMedicine",
   Play = "Play",
   Clean = "Clean",
-  Discipline = "Discipline"
+  Discipline = "Discipline",
+  WelfareTick = "Special_WelfareTick",
+  AgeTick = "Special_AgeTick",
+  Hatch = "Special_Hatch",
 };
 
 type Feed = VariantRecord<SimulationActionName.Feed> & {
@@ -72,14 +76,98 @@ type Clean = VariantRecord<SimulationActionName.Clean>;
 
 type Discipline = VariantRecord<SimulationActionName.Discipline>;
 
+type WelfareTick = VariantRecord<SimulationActionName.WelfareTick> & {
+  hunger: number,
+  happiness: number,
+  discipline: number,
+};
+
+type AgeTick = VariantRecord<SimulationActionName.AgeTick>;
+
+type Hatch = VariantRecord<SimulationActionName.Hatch>;
+
 // union type of all possible simulation actions
-type SimulationAction = Feed | Play | AdministerMedicine | Clean | Discipline;
+type SimulationAction = Feed | Play | AdministerMedicine | Clean | Discipline | WelfareTick | AgeTick | Hatch;
 
 // method signature for simulation state reducers
 type StateReducer<State extends SimulationState> = (state: State, action: SimulationAction) => SimulationState;
 
-const reduceSimulationStateEgg: StateReducer<Egg> = (state, action) => state;
-const reduceSimulationStateIdle: StateReducer<Idle> = (state, action) => state;
+const reduceSimulationStateEgg: StateReducer<Egg> = (state, action) => {
+  switch (action.name) {
+    case SimulationActionName.Hatch:
+      // todo sensible defaults based on genetics
+      return <Idle> {
+        name: SimulationStateName.Idle,
+        happiness: 100,
+        hunger: 100,
+        discipline: 50,
+        weight: 50,
+        ticks: 0
+      };
+
+    default:
+      return state;
+  }
+};
+
+const reduceSimulationStateIdle: StateReducer<Idle> = (state, action) => {
+  switch (action.name) {
+    case SimulationActionName.Feed:
+      const nutrition = getNutritionalValue(action.meal);
+      return <Idle> {
+        ...state,
+        hunger: clamp(state.hunger + nutrition.hunger, 0, 100),
+        happiness: clamp(state.happiness + nutrition.happiness, 0, 100),
+        weight: clamp(state.weight + nutrition.weight, 0, 100)
+      };
+
+    /**
+     * suuuuuper naive welfare tick calculation
+     * todo: account for genetics. this could be difficult, since the statemachine doesn't have access to the pet's genetics. perhaps the action could accept a genetics object?
+     */
+    case SimulationActionName.WelfareTick:
+      const hunger = state.hunger - action.hunger;
+      const happiness = state.happiness - action.happiness;
+      const discipline = state.discipline - action.discipline;
+
+      if (happiness < 0 || hunger < 0) {
+        return <Sick> {
+          ...state,
+          name: SimulationStateName.Sick,
+          hunger: clamp(hunger, 0, 100),
+          happiness: clamp(happiness, 0, 100),
+          discipline: clamp(discipline, 0, 100),
+          ticks: 0
+        };
+      } else if (hunger < 25) {
+        return <Hungry> {
+          ...state,
+          name: SimulationStateName.Hungry,
+          hunger: clamp(hunger, 0, 100),
+          happiness: clamp(happiness, 0, 100),
+          discipline: clamp(discipline, 0, 100),
+          ticks: 0,
+        };
+      }
+  
+      return <Idle> {
+        ...state,
+        hunger: clamp(hunger, 0, 100),
+        happiness: clamp(happiness, 0, 100),
+        discipline: clamp(discipline, 0, 100),
+        ticks: state.ticks + 1
+      };
+
+    case SimulationActionName.AgeTick:
+      return <Idle> {
+        ...state,
+      };
+
+    default:
+      return state;
+  }
+};
+
 const reduceSimulationStateSick: StateReducer<Sick> = (state, action) => state;
 const reduceSimulationStateHungry: StateReducer<Hungry> = (state, action) => state;
 const reduceSimulationStatePooping: StateReducer<Pooping> = (state, action) => state;
