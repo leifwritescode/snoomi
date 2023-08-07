@@ -14,6 +14,7 @@ import {
   REDIS_KEY_AGE_TICK_BATCHES
 } from "../constants.js";
 import { VirtualPet, makeNewVirtualPet } from "../VirtualPet.js";
+import { sparseArray } from "../utilities.js";
 
 const onAppInstallOrUpgrade: TriggerOnEventHandler<TriggerEventType[AppInstall] | TriggerEventType[AppUpgrade]> = async (_, context) => {
     // The age tickover happens once per hour.
@@ -56,14 +57,14 @@ const onAppInstallOrUpgrade: TriggerOnEventHandler<TriggerEventType[AppInstall] 
     // record of virtual pet ids organised by minute of birth
     let welfareTickBatches = await context.kvStore.get<string[][]>(REDIS_KEY_WELFARE_TICK_BATCHES);
     if (welfareTickBatches === undefined) {
-      welfareTickBatches = (new Array<string[]>(60)).fill([], 0, 59);
+      welfareTickBatches = sparseArray<string[]>(60, []);
       await context.kvStore.put(REDIS_KEY_WELFARE_TICK_BATCHES, welfareTickBatches);
     }
 
     // record of virtual pet ids organised by hour of birth
     let ageTickBatches = await context.kvStore.get<string[][]>(REDIS_KEY_AGE_TICK_BATCHES);
     if (ageTickBatches === undefined) {
-      ageTickBatches = (new Array<string[]>(24)).fill([], 0, 23);
+      ageTickBatches = sparseArray<string[]>(24, []);
       await context.kvStore.put(REDIS_KEY_AGE_TICK_BATCHES, ageTickBatches);
     }
 }

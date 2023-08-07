@@ -17,3 +17,7 @@ export function getRandomElementFromArray<T>(inArray: T[]) : T {
    const index = Math.floor(Math.random() * inArray.length);
    return inArray[index];
 }
+
+export function sparseArray<T>(size: number, defaultValue: T) : T[] {
+   return new Array<T>(size).fill(defaultValue);
+}
