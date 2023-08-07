@@ -12,29 +12,17 @@ type NutritionalValue = {
   weight: number,
 }
 
-interface NutritionalValues {
-  [key: string]: NutritionalValue;
-} 
-
-export const NutritionalValues: NutritionalValues = {
-  Hamburger: {
-    hunger: 20,
-    happiness: 5,
-    weight: 15
-  },
-  Salad: {
-    hunger: 20,
-    happiness: 5,
-    weight: -15,
-  },
-  Fruit: {
-    hunger: 10,
-    happiness: 15,
-    weight: -5
-  },
-  Candy: {
-    hunger: 5,
-    happiness: 20,
-    weight: 30
+export const getNutritionalValue = (meal: Meal) : NutritionalValue => {
+  switch (meal) {
+    case Meal.Hamburger:
+      return { hunger: 20, happiness: 5, weight: 15 };
+    case Meal.Salad:
+      return { hunger: 20, happiness: 5, weight: -15 };
+    case Meal.Fruit:
+      return { hunger: 10, happiness: 15, weight: -5 };
+    case Meal.Candy:
+      return { hunger: 5, happiness: 20, weight: 30 };
+    default:
+      throw new Error(`Unknown meal: ${meal}`);
   }
 };
