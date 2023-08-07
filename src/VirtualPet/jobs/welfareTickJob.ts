@@ -13,14 +13,14 @@ const welfareTickJob: ScheduledJobHandler = async (e, { kvStore }) => {
   const now = new Date();
   console.log(`Begin processing welfare tick batch H+${now.getMinutes()} (Time is ${now}))`);
 
-  const keys = batches[now.getMinutes()];
-  if (keys.length === 0) {
+  const pets = batches[now.getMinutes()];
+  if (pets.length === 0) {
     console.log("No pets to process.");
     return;
   }
 
-  for (const key of keys) {
-    let value = await kvStore.get<string>(key);
+  for (const pet of pets) {
+    let value = await kvStore.get<string>(pet);
     if (value === undefined) {
       continue;
     }
@@ -31,10 +31,10 @@ const welfareTickJob: ScheduledJobHandler = async (e, { kvStore }) => {
     virtualPet.state.discipline = clamp(virtualPet.state.discipline - 5, 0, 100);
 
     value = JSON.stringify(virtualPet);
-    await kvStore.put(key, value);
+    await kvStore.put(pet, value);
   }
 
-  console.log(`Finished processing ${keys.length} pets in batch H+${now.getMinutes()}.`);
+  console.log(`Finished processing ${pets.length} pets in batch H+${now.getMinutes()}.`);
 }
 
 export default welfareTickJob;
