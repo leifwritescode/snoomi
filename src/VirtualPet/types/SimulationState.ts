@@ -1,5 +1,5 @@
 import { Activity } from "../enums/Activity.js";
-import { Meal } from "../enums/Meal.js";
+import { Meal } from "./Meal.js";
 import { VariantRecord } from "./VariantRecord.js";
 
 export enum SimulationStateName {

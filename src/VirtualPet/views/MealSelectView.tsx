@@ -1,7 +1,7 @@
 import { Devvit } from "@devvit/public-api";
 import { VirtualPetComponent } from "../types/VirtualPetComponent.js";
 import { ViewActionName } from "../types/ViewState.js";
-import { Meal } from "../enums/Meal.js";
+import { Meal } from "../types/Meal.js";
 
 /*
 
