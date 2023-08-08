@@ -92,6 +92,21 @@ type SimulationAction = Feed | Play | AdministerMedicine | Clean | Discipline | 
 // method signature for simulation state reducers
 type StateReducer<State extends SimulationState> = (state: State, action: SimulationAction) => SimulationState;
 
+// random pooping occurs if (random number between 0 and 100) + (inverse discipline) > 75
+// todo could alternatively do this as a random between 0 and 100 and reduce the value by x% proportional to discipline
+function randomPoopingOccurs(discipline: number): boolean {
+  const r = Math.random() * 100;
+  const d = (discipline * -1) + 100;
+  return (r + d) > 75;
+}
+
+// random sickness occurs if (random number between 0 and number.max) == date.now()
+// todo this logic makes random sickness exceptionally rare slash unfortunate. needs to be somewhat more likely
+function randomSicknessOccurs(): boolean {
+  const r = Math.random() * Number.MAX_VALUE;
+  return r == Date.now();
+}
+
 const tickState = <State extends SimulationState>(state: State): State => {
   return <State> {
     ...state,
@@ -148,11 +163,7 @@ const reduceSimulationStateIdle: StateReducer<Idle> = (state, action) => {
       happiness = state.happiness - action.happiness;
       discipline = state.discipline - action.discipline;
 
-      // todo this doesn't feel right: if food fell below the hunger threshold, then it would be hungry
-      // such that it would go idle -> hungry -> sick -> hungry -> idle
-      // i need a proper flow chart for this
-      // if welfare tick would take hunger below zero, the pet becomes sick
-      if (happiness < 0 || hunger < 0) {
+      if (randomSicknessOccurs()) {
         return <Sick> {
           ...state,
           name: SimulationStateName.Sick,
@@ -161,7 +172,15 @@ const reduceSimulationStateIdle: StateReducer<Idle> = (state, action) => {
           discipline: clamp(discipline, 0, 100),
           ticks: 0
         };
-      // otherwise, if the hunger falls below a certain threshold, it becomes hungry
+      } else if (randomPoopingOccurs(state.discipline)) {
+        return <Pooping> {
+          ...state,
+          name: SimulationStateName.Pooping,
+          hunger: clamp(hunger, 0, 100),
+          happiness: clamp(happiness, 0, 100),
+          discipline: clamp(discipline, 0, 100),
+          ticks: 0
+        };
       } else if (hunger < 25) {
         return <Hungry> {
           ...state,
@@ -171,7 +190,6 @@ const reduceSimulationStateIdle: StateReducer<Idle> = (state, action) => {
           discipline: clamp(discipline, 0, 100),
           ticks: 0,
         };
-      // otherwise, if the happiness falls below a certain threshold, it becomes unhappy
       } else if (happiness < 25) {
         return <Unhappy> {
           ...state,
@@ -181,21 +199,15 @@ const reduceSimulationStateIdle: StateReducer<Idle> = (state, action) => {
           discipline: clamp(discipline, 0, 100),
           ticks: 0,
         };
-      // if no other special-case state, the pet remains idle
       } else {
         return <Idle> {
           ...state,
           hunger: clamp(hunger, 0, 100),
           happiness: clamp(happiness, 0, 100),
           discipline: clamp(discipline, 0, 100),
-          ticks: state.ticks + 1
+          ticks: ticks
         };
       }
-
-    case SimulationActionName.AgeTick:
-      return <Idle> {
-        ...state,
-      };
 
     default:
       return tickState(state);
