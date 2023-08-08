@@ -92,6 +92,13 @@ type SimulationAction = Feed | Play | AdministerMedicine | Clean | Discipline | 
 // method signature for simulation state reducers
 type StateReducer<State extends SimulationState> = (state: State, action: SimulationAction) => SimulationState;
 
+const tickState = <State extends SimulationState>(state: State): State => {
+  return <State> {
+    ...state,
+    ticks: state.ticks + 1,
+  };
+}
+
 const reduceSimulationStateEgg: StateReducer<Egg> = (state, action) => {
   switch (action.name) {
     case SimulationActionName.Hatch:
@@ -106,20 +113,30 @@ const reduceSimulationStateEgg: StateReducer<Egg> = (state, action) => {
       };
 
     default:
-      return state;
+      return tickState(state);
   }
 };
 
 const reduceSimulationStateIdle: StateReducer<Idle> = (state, action) => {
+  var hunger: number;
+  var happiness: number;
+  var discipline: number;
+  var weight: number;
+  var ticks: number = state.ticks + 1;
+
   switch (action.name) {
     case SimulationActionName.Feed:
       const nutrition = getNutritionalValue(action.meal);
+      hunger = clamp(state.hunger + nutrition.hunger, 0, 100);
+      happiness = clamp(state.happiness + nutrition.happiness, 0, 100);
+      weight = clamp(state.weight + nutrition.weight, 0, 100);
+
       return <Idle> {
         ...state,
-        hunger: clamp(state.hunger + nutrition.hunger, 0, 100),
-        happiness: clamp(state.happiness + nutrition.happiness, 0, 100),
-        weight: clamp(state.weight + nutrition.weight, 0, 100),
-        ticks: state.ticks + 1
+        hunger: hunger,
+        happiness: happiness,
+        weight: weight,
+        ticks: ticks
       };
 
     /**
@@ -127,10 +144,14 @@ const reduceSimulationStateIdle: StateReducer<Idle> = (state, action) => {
      * todo: account for genetics. this could be difficult, since the statemachine doesn't have access to the pet's genetics. perhaps the action could accept a genetics object?
      */
     case SimulationActionName.WelfareTick:
-      const hunger = state.hunger - action.hunger;
-      const happiness = state.happiness - action.happiness;
-      const discipline = state.discipline - action.discipline;
+      hunger = state.hunger - action.hunger;
+      happiness = state.happiness - action.happiness;
+      discipline = state.discipline - action.discipline;
 
+      // todo this doesn't feel right: if food fell below the hunger threshold, then it would be hungry
+      // such that it would go idle -> hungry -> sick -> hungry -> idle
+      // i need a proper flow chart for this
+      // if welfare tick would take hunger below zero, the pet becomes sick
       if (happiness < 0 || hunger < 0) {
         return <Sick> {
           ...state,
@@ -140,6 +161,7 @@ const reduceSimulationStateIdle: StateReducer<Idle> = (state, action) => {
           discipline: clamp(discipline, 0, 100),
           ticks: 0
         };
+      // otherwise, if the hunger falls below a certain threshold, it becomes hungry
       } else if (hunger < 25) {
         return <Hungry> {
           ...state,
@@ -149,15 +171,26 @@ const reduceSimulationStateIdle: StateReducer<Idle> = (state, action) => {
           discipline: clamp(discipline, 0, 100),
           ticks: 0,
         };
+      // otherwise, if the happiness falls below a certain threshold, it becomes unhappy
+      } else if (happiness < 25) {
+        return <Unhappy> {
+          ...state,
+          name: SimulationStateName.Unhappy,
+          hunger: clamp(hunger, 0, 100),
+          happiness: clamp(happiness, 0, 100),
+          discipline: clamp(discipline, 0, 100),
+          ticks: 0,
+        };
+      // if no other special-case state, the pet remains idle
+      } else {
+        return <Idle> {
+          ...state,
+          hunger: clamp(hunger, 0, 100),
+          happiness: clamp(happiness, 0, 100),
+          discipline: clamp(discipline, 0, 100),
+          ticks: state.ticks + 1
+        };
       }
-  
-      return <Idle> {
-        ...state,
-        hunger: clamp(hunger, 0, 100),
-        happiness: clamp(happiness, 0, 100),
-        discipline: clamp(discipline, 0, 100),
-        ticks: state.ticks + 1
-      };
 
     case SimulationActionName.AgeTick:
       return <Idle> {
@@ -165,16 +198,62 @@ const reduceSimulationStateIdle: StateReducer<Idle> = (state, action) => {
       };
 
     default:
-      return state;
+      return tickState(state);
   }
 };
 
-const reduceSimulationStateSick: StateReducer<Sick> = (state, action) => state;
-const reduceSimulationStateHungry: StateReducer<Hungry> = (state, action) => state;
-const reduceSimulationStatePooping: StateReducer<Pooping> = (state, action) => state;
-const reduceSimulationStateUnsanitary: StateReducer<Unsanitary> = (state, action) => state;
-const reduceSimulationStateUnhappy: StateReducer<Unhappy> = (state, action) => state;
-const reduceSimulationStateDead: StateReducer<Dead> = (state, action) => state;
+const reduceSimulationStateSick: StateReducer<Sick> = (state, action) => {
+  switch (action.name) {
+    case SimulationActionName.AdministerMedicine:
+      return <Idle> {
+        ...state,
+        name: SimulationStateName.Idle,
+        ticks: 0,
+      };
+
+    default:
+      if (state.ticks > 3) {
+        return <Dead> {
+          ...state,
+          name: SimulationStateName.Dead,
+          timeOfDeath: Date.now(),
+        };
+      } else {
+        return tickState(state);
+      }
+  }
+};
+
+const reduceSimulationStateHungry: StateReducer<Hungry> = (state, action) => {
+  switch (action.name) {
+    default:
+      return tickState(state);
+  }
+};
+
+const reduceSimulationStatePooping: StateReducer<Pooping> = (state, action) => {
+  switch (action.name) {
+    default:
+      return tickState(state);
+  }
+};
+
+const reduceSimulationStateUnsanitary: StateReducer<Unsanitary> = (state, action) => {
+  switch (action.name) {
+    default:
+      return tickState(state);
+  }
+};
+
+const reduceSimulationStateUnhappy: StateReducer<Unhappy> = (state, action) => {
+  switch (action.name) {
+    default:
+      return tickState(state);
+  }
+};
+
+// dead pets cannot transition to any other state
+const reduceSimulationStateDead: StateReducer<Dead> = (state, _) => state;
 
 /**
  * {@link SimulationState} reducer
