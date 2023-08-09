@@ -1,9 +1,38 @@
 import {
+  NUMERICS_MAX_DATE_MS
+} from "../src/VirtualPet/constants.js";
+import {
   reduce,
   SimulationActionName,
   SimulationState,
   SimulationStateName
 } from "../src/VirtualPet/types/SimulationState.js";
+import {
+  vi,
+  expect,
+  beforeAll,
+  beforeEach,
+  afterEach,
+  afterAll,
+  describe,
+  it
+} from 'vitest';
+
+const fakeRandom = vi.spyOn(global.Math, 'random');
+
+beforeAll(() => { });
+
+beforeEach(() => {
+  fakeRandom.mockReturnValue(0);
+  vi.useFakeTimers();
+});
+
+afterEach(() => {
+  fakeRandom.mockClear();
+  vi.useRealTimers();
+});
+
+afterAll(() => { });
 
 describe(`A virtual pet in the ${SimulationStateName.Egg} state`, () => {
   it('can hatch', () => {
@@ -112,6 +141,9 @@ describe(`A virtual pet in the ${SimulationStateName.Idle} state`, () => {
     });
 
     it(`transitions to ${SimulationStateName.Pooping} when a type-a random event occurs`, () => {
+      fakeRandom.mockReturnValue(1);
+      vi.setSystemTime(2); // guarantee that sickness doesn't occur
+
       var sut: SimulationState = {
         name: SimulationStateName.Idle,
         hunger: 30,
@@ -132,6 +164,9 @@ describe(`A virtual pet in the ${SimulationStateName.Idle} state`, () => {
     });
 
     it(`transitions to ${SimulationStateName.Sick} when a type-b random event occurs`, () => {
+      fakeRandom.mockReturnValue(1);
+      vi.setSystemTime(NUMERICS_MAX_DATE_MS);
+
       var sut: SimulationState = {
         name: SimulationStateName.Idle,
         hunger: 30,

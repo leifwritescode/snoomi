@@ -2,6 +2,7 @@ import { Activity } from "../enums/Activity.js";
 import { clamp } from "../utilities.js";
 import { Meal, getNutritionalValue } from "./Meal.js";
 import { VariantRecord } from "./VariantRecord.js";
+import { NUMERICS_MAX_DATE_MS } from "../constants.js";
 
 export enum SimulationStateName {
     Egg = "Egg", // egg is a special simulation state where nothing can happen
@@ -103,8 +104,8 @@ function randomPoopingOccurs(discipline: number): boolean {
 // random sickness occurs if (random number between 0 and number.max) == date.now()
 // todo this logic makes random sickness exceptionally rare slash unfortunate. needs to be somewhat more likely
 function randomSicknessOccurs(): boolean {
-  const r = Math.random() * Number.MAX_VALUE;
-  return r == Date.now();
+  const r = Math.random() * NUMERICS_MAX_DATE_MS;
+  return r === Date.now();
 }
 
 const tickState = <State extends SimulationState>(state: State): State => {
