@@ -266,8 +266,69 @@ const reduceSimulationStateSick: StateReducer<Sick> = (state, action) => {
 
 const reduceSimulationStateHungry: StateReducer<Hungry> = (state, action) => {
   switch (action.name) {
-    default:
-      return tickState(state);
+    case SimulationActionName.Feed: {
+      const nutrition = getNutritionalValue(action.meal);
+      const happiness = clamp(state.happiness + nutrition.happiness, 0, 100);
+      const hunger = clamp(state.hunger + nutrition.hunger, 0, 100);
+      const weight = clamp(state.weight + nutrition.weight, 0, 100);
+
+      if (SIMULATION_THRESHOLD_HUNGER >= hunger) {
+        return {
+          ...state,
+          happiness: happiness,
+          hunger: hunger,
+          weight: weight,
+          ticks: state.ticks + 1,
+        };
+      } else if (SIMULATION_THRESHOLD_UNHAPPY >= happiness) {
+        return <Unhappy> {
+          ...state,
+          name: SimulationStateName.Unhappy,
+          happiness: happiness,
+          hunger: hunger,
+          weight: weight,
+          ticks: 0,
+        };
+      } else {
+        return <Idle> {
+          ...state,
+          name: SimulationStateName.Idle,
+          happiness: happiness,
+          hunger: hunger,
+          weight: weight,
+          ticks: 0,
+        };
+      }
+    }
+
+    case SimulationActionName.WelfareTick: {
+      const happiness = clamp(state.happiness - action.happiness, 0, 100);
+      const hunger = clamp(state.hunger - action.hunger, 0, 100);
+      const discipline = clamp(state.discipline - action.discipline, 0, 100);
+
+      if (SIMULATION_THRESHOLD_EXPIRY >= state.ticks) {
+        return <Sick> {
+          ...state,
+          name: SimulationStateName.Sick,
+          ticks: 0,
+          happiness: happiness,
+          hunger: hunger,
+          discipline: discipline
+        };
+      } else {
+        return {
+          ...state,
+          ticks: state.ticks + 1,
+          happiness: happiness,
+          hunger: hunger,
+          discipline: discipline
+        };
+      }
+    }
+
+    default: {
+      return state;
+    }
   }
 };
 

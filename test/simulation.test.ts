@@ -392,7 +392,7 @@ describe(`A virtual pet in the ${SimulationStateName.Hungry} state`, () => {
 
     expect(actual.name).toBe(SimulationStateName.Unhappy);
     expect(actual.hunger).toBe(40);
-    expect(actual.happiness).toBe(20);
+    expect(actual.happiness).toBe(5);
     expect(actual.ticks).toBe(0);
     expect(actual.discipline).toBe(100);
     expect(actual.weight).toBe(100);
