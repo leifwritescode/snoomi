@@ -61,6 +61,7 @@ export enum SimulationActionName {
   WelfareTick = "Special_WelfareTick",
   AgeTick = "Special_AgeTick",
   Hatch = "Special_Hatch",
+  GoToBathroom = "GoToBathroom",
 };
 
 type Feed = VariantRecord<SimulationActionName.Feed> & {
@@ -87,8 +88,10 @@ type AgeTick = VariantRecord<SimulationActionName.AgeTick>;
 
 type Hatch = VariantRecord<SimulationActionName.Hatch>;
 
+type GoToBathroom = VariantRecord<SimulationActionName.GoToBathroom>;
+
 // union type of all possible simulation actions
-type SimulationAction = Feed | Play | AdministerMedicine | Clean | Discipline | WelfareTick | AgeTick | Hatch;
+type SimulationAction = Feed | Play | AdministerMedicine | Clean | Discipline | WelfareTick | AgeTick | Hatch | GoToBathroom;
 
 // method signature for simulation state reducers
 type StateReducer<State extends SimulationState> = (state: State, action: SimulationAction) => SimulationState;
