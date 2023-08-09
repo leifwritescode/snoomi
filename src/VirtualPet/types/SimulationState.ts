@@ -2,7 +2,7 @@ import { Activity } from "../enums/Activity.js";
 import { clamp, scalarInverse } from "../utilities.js";
 import { Meal, getNutritionalValue } from "./Meal.js";
 import { VariantRecord } from "./VariantRecord.js";
-import { NUMERICS_MAX_DATE_MS, NUMERICS_SCALAR_HUNDRED, NUMERICS_SCALAR_NEGATIVE_ONE, NUMERICS_SCALAR_THIRTY, SIMULATION_THRESHOLD_DEFIANT_POOPING, SIMULATION_THRESHOLD_EXPIRY, SIMULATION_THRESHOLD_HUNGER, SIMULATION_THRESHOLD_RANDOM_EVENT, SIMULATION_THRESHOLD_UNHAPPY } from "../constants.js";
+import { NUMERICS_MAX_DATE_MS, NUMERICS_SCALAR_HUNDRED, NUMERICS_SCALAR_THIRTY, SIMULATION_THRESHOLD_DEFIANT_POOPING, SIMULATION_THRESHOLD_EXPIRY, SIMULATION_THRESHOLD_HUNGER, SIMULATION_THRESHOLD_RANDOM_EVENT, SIMULATION_THRESHOLD_UNHAPPY } from "../constants.js";
 
 export enum SimulationStateName {
     Egg = "Egg", // egg is a special simulation state where nothing can happen
