@@ -131,8 +131,14 @@ const reduceSimulationStateEgg: StateReducer<Egg> = (state, action) => {
         ticks: 0
       };
 
-    default:
+    // eggs tick, but their welfare is indeterminate until they hatch
+    case SimulationActionName.WelfareTick: {
       return tickState(state);
+    }
+
+    default: {
+      return state;
+    }
   }
 };
 
@@ -267,8 +273,60 @@ const reduceSimulationStateHungry: StateReducer<Hungry> = (state, action) => {
 
 const reduceSimulationStatePooping: StateReducer<Pooping> = (state, action) => {
   switch (action.name) {
-    default:
-      return tickState(state);
+    case SimulationActionName.GoToBathroom: {
+      // todo remove discipline++ magic number
+      if (SIMULATION_THRESHOLD_HUNGER >= state.hunger) {
+        return <Hungry> {
+          ...state,
+          name: SimulationStateName.Hungry,
+          ticks: 0,
+          discipline: clamp(state.discipline + 10, 0, 100),
+        };
+      } else if (SIMULATION_THRESHOLD_UNHAPPY >= state.happiness) {
+        return <Unhappy> {
+          ...state,
+          name: SimulationStateName.Unhappy,
+          ticks: 0,
+          discipline: clamp(state.discipline + 10, 0, 100),
+        };
+      } else {
+        return <Idle> {
+          ...state,
+          name: SimulationStateName.Idle,
+          ticks: 0,
+          discipline: clamp(state.discipline + 10, 0, 100),
+        };
+      }
+    }
+
+    case SimulationActionName.WelfareTick: {
+      const happiness = clamp(state.happiness - action.happiness, 0, 100);
+      const hunger = clamp(state.hunger - action.hunger, 0, 100);
+      const discipline = clamp(state.discipline - action.discipline, 0, 100);
+
+      if (state.ticks >= SIMULATION_THRESHOLD_EXPIRY) {
+        return <Unsanitary> {
+          ...state,
+          name: SimulationStateName.Unsanitary,
+          ticks: 0,
+          discipline: discipline - 10, // todo remove magic number
+          happiness: happiness,
+          hunger: hunger,
+        };
+      } else {
+        return {
+          ...state,
+          ticks: state.ticks + 1,
+          happiness: happiness,
+          hunger: hunger,
+          discipline: discipline
+        };
+      }
+    }
+
+    default: {
+      return state;
+    }
   }
 };
 

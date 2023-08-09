@@ -49,11 +49,12 @@ describe(`A virtual pet in the ${SimulationStateName.Egg} state`, () => {
 
     const actual = reduce(sut, { name: SimulationActionName.Hatch });
 
+    // todo these will change to "sensible" defaults that are based on genetics
     expect(actual.name).toBe(SimulationStateName.Idle);
-    expect(actual.hunger).toBe(0);
-    expect(actual.happiness).toBe(0);
-    expect(actual.discipline).toBe(0);
-    expect(actual.weight).toBe(0);
+    expect(actual.hunger).toBe(100);
+    expect(actual.happiness).toBe(100);
+    expect(actual.discipline).toBe(50);
+    expect(actual.weight).toBe(50);
     expect(actual.ticks).toBe(0);
   });
 });
@@ -445,7 +446,7 @@ describe(`A virtual pet in the ${SimulationStateName.Pooping} state`, () => {
     expect(actual.ticks).toBe(0);
     expect(actual.hunger).toBe(100);
     expect(actual.happiness).toBe(100);
-    expect(actual.discipline).toBe(100);
+    expect(actual.discipline).toBe(90);
     expect(actual.weight).toBe(100);
   });
 
