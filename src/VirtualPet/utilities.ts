@@ -8,3 +8,20 @@ export function getRandomNumberInRange(min: number, max: number) : number {
    const r = Math.random();
    return Math.round(r * (max - min + 1) + min);
 }
+
+export function clamp(value: number, min: number, max: number) : number {
+   return Math.min(Math.max(value, min), max);
+}
+
+export function getRandomElementFromArray<T>(inArray: T[]) : T {
+   const index = Math.floor(Math.random() * inArray.length);
+   return inArray[index];
+}
+
+export function sparseArray<T>(size: number, defaultValue: T) : T[] {
+   return new Array<T>(size).fill(defaultValue);
+}
+
+export function scalarInverse(value: number) : number {
+   return value * -1;
+}
