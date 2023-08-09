@@ -19,7 +19,6 @@ import {
   it
 } from 'vitest';
 import { Activity } from "../src/VirtualPet/enums/Activity.js";
-import exp from "constants";
 
 const fakeRandom = vi.spyOn(global.Math, 'random');
 
