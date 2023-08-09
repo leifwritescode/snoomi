@@ -2,7 +2,7 @@ import { Activity } from "../enums/Activity.js";
 import { clamp } from "../utilities.js";
 import { Meal, getNutritionalValue } from "./Meal.js";
 import { VariantRecord } from "./VariantRecord.js";
-import { NUMERICS_MAX_DATE_MS } from "../constants.js";
+import { NUMERICS_MAX_DATE_MS, SIMULATION_THRESHOLD_EXPIRY, SIMULATION_THRESHOLD_HUNGER, SIMULATION_THRESHOLD_UNHAPPY } from "../constants.js";
 
 export enum SimulationStateName {
     Egg = "Egg", // egg is a special simulation state where nothing can happen
@@ -182,7 +182,7 @@ const reduceSimulationStateIdle: StateReducer<Idle> = (state, action) => {
           discipline: clamp(discipline, 0, 100),
           ticks: 0
         };
-      } else if (hunger < 25) {
+      } else if (hunger < SIMULATION_THRESHOLD_HUNGER) {
         return <Hungry> {
           ...state,
           name: SimulationStateName.Hungry,
@@ -191,7 +191,7 @@ const reduceSimulationStateIdle: StateReducer<Idle> = (state, action) => {
           discipline: clamp(discipline, 0, 100),
           ticks: 0,
         };
-      } else if (happiness < 25) {
+      } else if (happiness < SIMULATION_THRESHOLD_UNHAPPY) {
         return <Unhappy> {
           ...state,
           name: SimulationStateName.Unhappy,
@@ -218,22 +218,40 @@ const reduceSimulationStateIdle: StateReducer<Idle> = (state, action) => {
 const reduceSimulationStateSick: StateReducer<Sick> = (state, action) => {
   switch (action.name) {
     case SimulationActionName.AdministerMedicine:
-      return <Idle> {
-        ...state,
-        name: SimulationStateName.Idle,
-        ticks: 0,
-      };
+      if (state.hunger < SIMULATION_THRESHOLD_HUNGER) {
+        return <Hungry> {
+          ...state,
+          name: SimulationStateName.Hungry,
+          ticks: 0,
+        };
+      } else if (state.happiness < SIMULATION_THRESHOLD_UNHAPPY) {
+        return <Unhappy> {
+          ...state,
+          name: SimulationStateName.Unhappy,
+          ticks: 0,
+        };
+      } else {
+        return <Idle> {
+          ...state,
+          name: SimulationStateName.Idle,
+          ticks: 0,
+        };
+      }
 
-    default:
-      if (state.ticks > 3) {
+    case SimulationActionName.WelfareTick:
+      if (state.ticks >= SIMULATION_THRESHOLD_EXPIRY) {
         return <Dead> {
           ...state,
           name: SimulationStateName.Dead,
           timeOfDeath: Date.now(),
+          ticks: 0,
         };
       } else {
         return tickState(state);
       }
+
+    default:
+      return state;
   }
 };
 
