@@ -64,23 +64,23 @@ describe(`A virtual pet in the ${SimulationStateName.Idle} state`, () => {
     const sut: SimulationState = {
       name: SimulationStateName.Idle,
       hunger: 100,
-      happiness: 50,
-      discipline: 40,
+      happiness: 100,
+      discipline: 100,
       weight: 0,
       ticks: 3
     };
 
     const actual = reduce(sut, {
       name: SimulationActionName.WelfareTick,
-      happiness: 20,
       hunger: 10,
+      happiness: 20,
       discipline: 30,
     });
 
     expect(actual.name).toBe(SimulationStateName.Idle);
     expect(actual.hunger).toBe(90);
-    expect(actual.happiness).toBe(30);
-    expect(actual.discipline).toBe(10);
+    expect(actual.happiness).toBe(80);
+    expect(actual.discipline).toBe(70);
     expect(actual.ticks).toBe(4);
     expect(actual.weight).toBe(0);
   });
@@ -89,24 +89,24 @@ describe(`A virtual pet in the ${SimulationStateName.Idle} state`, () => {
     const sut: SimulationState = {
       name: SimulationStateName.Idle,
       hunger: 30,
-      happiness: 30,
+      happiness: 100,
       discipline: 100,
       weight: 0,
-      ticks: 0
+      ticks: 1
     };
 
     const actual = reduce(sut, {
       name: SimulationActionName.WelfareTick,
-      happiness: 0,
       hunger: 10,
+      happiness: 0,
       discipline: 0,
     });
 
     expect(actual.name).toBe(SimulationStateName.Hungry);
     expect(actual.hunger).toBe(20);
-    expect(actual.happiness).toBe(30);
+    expect(actual.happiness).toBe(100);
     expect(actual.discipline).toBe(100);
-    expect(actual.ticks).toBe(1);
+    expect(actual.ticks).toBe(0);
     expect(actual.weight).toBe(0);
   });
 
@@ -117,7 +117,7 @@ describe(`A virtual pet in the ${SimulationStateName.Idle} state`, () => {
       happiness: 30,
       discipline: 100,
       weight: 0,
-      ticks: 0
+      ticks: 1
     };
 
     const actual = reduce(sut, {
@@ -132,14 +132,14 @@ describe(`A virtual pet in the ${SimulationStateName.Idle} state`, () => {
     expect(actual.hunger).toBe(20);
     expect(actual.happiness).toBe(20);
     expect(actual.discipline).toBe(100);
-    expect(actual.ticks).toBe(1);
+    expect(actual.ticks).toBe(0);
     expect(actual.weight).toBe(0);
   });
 
   it(`can become unhappy`, () => {
     const sut: SimulationState = {
       name: SimulationStateName.Idle,
-      hunger: 30,
+      hunger: 100,
       happiness: 30,
       discipline: 100,
       weight: 0,
@@ -148,16 +148,16 @@ describe(`A virtual pet in the ${SimulationStateName.Idle} state`, () => {
 
     const actual = reduce(sut, {
       name: SimulationActionName.WelfareTick,
-      happiness: 10,
       hunger: 0,
+      happiness: 10,
       discipline: 0,
     });
 
     expect(actual.name).toBe(SimulationStateName.Unhappy);
+    expect(actual.hunger).toBe(100);
     expect(actual.happiness).toBe(20);
-    expect(actual.hunger).toBe(30);
     expect(actual.discipline).toBe(100);
-    expect(actual.ticks).toBe(1);
+    expect(actual.ticks).toBe(0);
     expect(actual.weight).toBe(0);
   });
 
@@ -167,11 +167,11 @@ describe(`A virtual pet in the ${SimulationStateName.Idle} state`, () => {
 
     const sut: SimulationState = {
       name: SimulationStateName.Idle,
-      hunger: 30,
-      happiness: 30,
+      hunger: 100,
+      happiness: 100,
       discipline: 100,
       weight: 0,
-      ticks: 0
+      ticks: 2
     };
 
     const actual = reduce(sut, {
@@ -182,10 +182,10 @@ describe(`A virtual pet in the ${SimulationStateName.Idle} state`, () => {
     });
 
     expect(actual.name).toBe(SimulationStateName.Pooping);
-    expect(actual.happiness).toBe(30);
-    expect(actual.hunger).toBe(30);
+    expect(actual.happiness).toBe(100);
+    expect(actual.hunger).toBe(100);
     expect(actual.discipline).toBe(100);
-    expect(actual.ticks).toBe(1);
+    expect(actual.ticks).toBe(0);
     expect(actual.weight).toBe(0);
   });
 
@@ -195,11 +195,11 @@ describe(`A virtual pet in the ${SimulationStateName.Idle} state`, () => {
 
     const sut: SimulationState = {
       name: SimulationStateName.Idle,
-      hunger: 30,
-      happiness: 30,
+      hunger: 100,
+      happiness: 100,
       discipline: 100,
       weight: 0,
-      ticks: 0
+      ticks: 2
     };
 
     const actual = reduce(sut, {
@@ -210,10 +210,10 @@ describe(`A virtual pet in the ${SimulationStateName.Idle} state`, () => {
     });
 
     expect(actual.name).toBe(SimulationStateName.Sick);
-    expect(actual.happiness).toBe(30);
-    expect(actual.hunger).toBe(30);
+    expect(actual.happiness).toBe(100);
+    expect(actual.hunger).toBe(100);
     expect(actual.discipline).toBe(100);
-    expect(actual.ticks).toBe(1);
+    expect(actual.ticks).toBe(0);
     expect(actual.weight).toBe(0);
   });
 });
@@ -281,7 +281,7 @@ describe(`A virtual pet in the ${SimulationStateName.Sick} state`, () => {
 
     expect(actual.name).toBe(SimulationStateName.Hungry);
     expect(actual.ticks).toBe(0);
-    expect(actual.hunger).toBe(40);
+    expect(actual.hunger).toBe(20);
     expect(actual.happiness).toBe(100);
     expect(actual.discipline).toBe(100);
     expect(actual.weight).toBe(100);
@@ -301,7 +301,7 @@ describe(`A virtual pet in the ${SimulationStateName.Sick} state`, () => {
 
     expect(actual.name).toBe(SimulationStateName.Hungry);
     expect(actual.ticks).toBe(0);
-    expect(actual.hunger).toBe(40);
+    expect(actual.hunger).toBe(20);
     expect(actual.happiness).toBe(20);
     expect(actual.discipline).toBe(100);
     expect(actual.weight).toBe(100);
@@ -322,7 +322,7 @@ describe(`A virtual pet in the ${SimulationStateName.Sick} state`, () => {
     expect(actual.name).toBe(SimulationStateName.Unhappy);
     expect(actual.ticks).toBe(0);
     expect(actual.hunger).toBe(100);
-    expect(actual.happiness).toBe(40);
+    expect(actual.happiness).toBe(20);
     expect(actual.discipline).toBe(100);
     expect(actual.weight).toBe(100);  
   });

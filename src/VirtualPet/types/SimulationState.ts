@@ -150,25 +150,26 @@ const reduceSimulationStateIdle: StateReducer<Idle> = (state, action) => {
   var ticks: number = state.ticks + 1;
 
   switch (action.name) {
-    case SimulationActionName.Feed:
+    case SimulationActionName.Feed: {
       const nutrition = getNutritionalValue(action.meal);
       hunger = clamp(state.hunger + nutrition.hunger, 0, 100);
       happiness = clamp(state.happiness + nutrition.happiness, 0, 100);
       weight = clamp(state.weight + nutrition.weight, 0, 100);
 
-      return <Idle> {
+      return {
         ...state,
         hunger: hunger,
         happiness: happiness,
         weight: weight,
         ticks: ticks
       };
+    }
 
     /**
      * suuuuuper naive welfare tick calculation
      * todo: account for genetics. this could be difficult, since the statemachine doesn't have access to the pet's genetics. perhaps the action could accept a genetics object?
      */
-    case SimulationActionName.WelfareTick:
+    case SimulationActionName.WelfareTick: {
       hunger = state.hunger - action.hunger;
       happiness = state.happiness - action.happiness;
       discipline = state.discipline - action.discipline;
@@ -191,7 +192,7 @@ const reduceSimulationStateIdle: StateReducer<Idle> = (state, action) => {
           discipline: clamp(discipline, 0, 100),
           ticks: 0
         };
-      } else if (hunger < SIMULATION_THRESHOLD_HUNGER) {
+      } else if (SIMULATION_THRESHOLD_HUNGER >= hunger) {
         return <Hungry> {
           ...state,
           name: SimulationStateName.Hungry,
@@ -200,7 +201,7 @@ const reduceSimulationStateIdle: StateReducer<Idle> = (state, action) => {
           discipline: clamp(discipline, 0, 100),
           ticks: 0,
         };
-      } else if (happiness < SIMULATION_THRESHOLD_UNHAPPY) {
+      } else if (SIMULATION_THRESHOLD_UNHAPPY >= happiness) {
         return <Unhappy> {
           ...state,
           name: SimulationStateName.Unhappy,
@@ -218,9 +219,11 @@ const reduceSimulationStateIdle: StateReducer<Idle> = (state, action) => {
           ticks: ticks
         };
       }
+    }
 
-    default:
-      return tickState(state);
+    default: {
+      return state;
+    }
   }
 };
 
