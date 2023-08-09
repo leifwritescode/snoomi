@@ -19,6 +19,7 @@ import {
   it
 } from 'vitest';
 import { Activity } from "../src/VirtualPet/enums/Activity.js";
+import exp from "constants";
 
 const fakeRandom = vi.spyOn(global.Math, 'random');
 
@@ -637,11 +638,36 @@ describe(`A virtual pet in the ${SimulationStateName.Unsanitary} state`, () => {
 });
 
 describe(`A virtual pet in the ${SimulationStateName.Unhappy} state`, () => {
+  it('gets hungier, unhappier, and less disciplined over time', () => {
+    const sut: SimulationState = {
+      name: SimulationStateName.Unhappy,
+      hunger: 100,
+      happiness: 50,
+      discipline: 40,
+      weight: 0,
+      ticks: 1
+    };
+
+    const actual = reduce(sut, {
+      name: SimulationActionName.WelfareTick,
+      hunger: 10,
+      happiness: 20,
+      discipline: 30,
+    });
+
+    expect(actual.name).toBe(SimulationStateName.Unhappy);
+    expect(actual.hunger).toBe(90);
+    expect(actual.happiness).toBe(30);
+    expect(actual.discipline).toBe(10);
+    expect(actual.ticks).toBe(2);
+    expect(actual.weight).toBe(0);
+  });
+
   it('can be made happier', () => {
     const sut: SimulationState = {
       name: SimulationStateName.Unhappy,
       hunger: 100,
-      happiness: 20,
+      happiness: 25,
       discipline: 100,
       weight: 100,
       ticks: 3
@@ -655,7 +681,7 @@ describe(`A virtual pet in the ${SimulationStateName.Unhappy} state`, () => {
     expect(actual.name).toBe(SimulationStateName.Idle);
     expect(actual.ticks).toBe(0);
     expect(actual.hunger).toBe(100);
-    expect(actual.happiness).toBe(40);
+    expect(actual.happiness).toBe(35);
     expect(actual.discipline).toBe(100);
     expect(actual.weight).toBe(100);
   });
@@ -676,9 +702,9 @@ describe(`A virtual pet in the ${SimulationStateName.Unhappy} state`, () => {
     });
 
     expect(actual.name).toBe(SimulationStateName.Unhappy);
-    expect(actual.ticks).toBe(4);
+    expect(actual.ticks).toBe(3);
     expect(actual.hunger).toBe(100);
-    expect(actual.happiness).toBe(25);
+    expect(actual.happiness).toBe(15);
     expect(actual.discipline).toBe(100);
     expect(actual.weight).toBe(100);
   });
@@ -708,7 +734,7 @@ describe(`A virtual pet in the ${SimulationStateName.Unhappy} state`, () => {
     expect(actual.weight).toBe(100);
   });
 
-  it ('may randomly poop defianty', () => {
+  it ('may randomly poop defiantly', () => {
     fakeRandom.mockReturnValue(1);
 
     const sut: SimulationState = {
@@ -717,7 +743,7 @@ describe(`A virtual pet in the ${SimulationStateName.Unhappy} state`, () => {
       happiness: 20,
       discipline: 25,
       weight: 100,
-      ticks: 3
+      ticks: 1
     };
 
     const actual = reduce(sut, {
@@ -731,7 +757,7 @@ describe(`A virtual pet in the ${SimulationStateName.Unhappy} state`, () => {
     expect(actual.ticks).toBe(0);
     expect(actual.hunger).toBe(100);
     expect(actual.happiness).toBe(20);
-    expect(actual.discipline).toBe(0);
+    expect(actual.discipline).toBe(15);
     expect(actual.weight).toBe(100);
   });
 });
@@ -837,5 +863,35 @@ describe(`A virtual pet in the ${SimulationStateName.Dead} state`, () => {
     const actual = reduce(sut, { name: SimulationActionName.Hatch });
 
     expect(actual).toEqual(sut);
+  });
+
+  it('can tick', () => {
+    const sut: SimulationState = {
+      name: SimulationStateName.Dead,
+      hunger: 0xDEAD,
+      happiness: 0xDEAD,
+      discipline: 0xDEAD,
+      weight: 0xDEAD,
+      ticks: 0,
+      timeOfDeath: 0xDEAD
+    };
+
+    vi.setSystemTime(0xDEAD);
+
+    const actual = reduce(sut, {
+      name: SimulationActionName.WelfareTick,
+      happiness: 20,
+      hunger: 20,
+      discipline: 20,
+    });
+
+    expect(actual).not.toEqual(sut);
+    expect(actual.name).toBe(SimulationStateName.Dead);
+    expect(actual.ticks).toBe(1);
+    expect(actual.timeOfDeath).toBe(0xDEAD);
+    expect(actual.hunger).toBe(0xDEAD);
+    expect(actual.happiness).toBe(0xDEAD);
+    expect(actual.discipline).toBe(0xDEAD);
+    expect(actual.weight).toBe(0xDEAD);
   });
 });

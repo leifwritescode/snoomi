@@ -21,3 +21,7 @@ export function getRandomElementFromArray<T>(inArray: T[]) : T {
 export function sparseArray<T>(size: number, defaultValue: T) : T[] {
    return new Array<T>(size).fill(defaultValue);
 }
+
+export function scalarInverse(value: number) : number {
+   return value * -1;
+}

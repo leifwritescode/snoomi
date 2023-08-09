@@ -1,8 +1,8 @@
 import { Activity } from "../enums/Activity.js";
-import { clamp } from "../utilities.js";
+import { clamp, scalarInverse } from "../utilities.js";
 import { Meal, getNutritionalValue } from "./Meal.js";
 import { VariantRecord } from "./VariantRecord.js";
-import { NUMERICS_MAX_DATE_MS, SIMULATION_THRESHOLD_EXPIRY, SIMULATION_THRESHOLD_HUNGER, SIMULATION_THRESHOLD_UNHAPPY } from "../constants.js";
+import { NUMERICS_MAX_DATE_MS, NUMERICS_SCALAR_HUNDRED, NUMERICS_SCALAR_NEGATIVE_ONE, NUMERICS_SCALAR_THIRTY, SIMULATION_THRESHOLD_DEFIANT_POOPING, SIMULATION_THRESHOLD_EXPIRY, SIMULATION_THRESHOLD_HUNGER, SIMULATION_THRESHOLD_RANDOM_EVENT, SIMULATION_THRESHOLD_UNHAPPY } from "../constants.js";
 
 export enum SimulationStateName {
     Egg = "Egg", // egg is a special simulation state where nothing can happen
@@ -99,9 +99,9 @@ type StateReducer<State extends SimulationState> = (state: State, action: Simula
 // random pooping occurs if (random number between 0 and 100) + (inverse discipline) > 75
 // todo could alternatively do this as a random between 0 and 100 and reduce the value by x% proportional to discipline
 function randomPoopingOccurs(discipline: number): boolean {
-  const r = Math.random() * 100;
-  const d = (discipline * -1) + 100;
-  return (r + d) > 75;
+  const r = Math.random() * NUMERICS_SCALAR_HUNDRED;
+  const d = scalarInverse(discipline) + NUMERICS_SCALAR_HUNDRED;
+  return (r + d) > SIMULATION_THRESHOLD_RANDOM_EVENT;
 }
 
 // random sickness occurs if (random number between 0 and number.max) == date.now()
@@ -279,15 +279,117 @@ const reduceSimulationStateUnsanitary: StateReducer<Unsanitary> = (state, action
   }
 };
 
+// todo remove magic numbers
+function defiantPoopingOccurs(discipline: number): boolean {
+  if (discipline > SIMULATION_THRESHOLD_DEFIANT_POOPING) {
+    return false;
+  }
+
+  // lower discipline levels make it more likely that the pet will poop defiantly
+  return (Math.random() * NUMERICS_SCALAR_THIRTY) > discipline;
+}
+
 const reduceSimulationStateUnhappy: StateReducer<Unhappy> = (state, action) => {
   switch (action.name) {
-    default:
-      return tickState(state);
+    case SimulationActionName.WelfareTick: {
+      const happiness = clamp(state.happiness - action.happiness, 0, 100);
+      const hunger = clamp(state.hunger - action.hunger, 0, 100);
+      const discipline = clamp(state.discipline - action.discipline, 0, 100);
+
+      if (state.ticks >= SIMULATION_THRESHOLD_EXPIRY) {
+        return <Sick> {
+          ...state,
+          name: SimulationStateName.Sick,
+          ticks: 0,
+          happiness: happiness,
+          hunger: hunger,
+          discipline: discipline
+        };
+      } else if (defiantPoopingOccurs(discipline)) {
+        return <Unsanitary> {
+          ...state,
+          name: SimulationStateName.Unsanitary,
+          ticks: 0,
+          happiness: happiness,
+          hunger: hunger,
+          discipline: discipline - 10 // todo remove magic number,
+        };
+      } else {
+        return {
+          ...state,
+          ticks: state.ticks + 1,
+          happiness: happiness,
+          hunger: hunger,
+          discipline: discipline
+        };
+      }
+    }
+
+    case SimulationActionName.Feed: {
+      const nutrition = getNutritionalValue(action.meal);
+      const happiness = clamp(state.happiness + nutrition.happiness, 0, 100);
+      const hunger = clamp(state.hunger + nutrition.hunger, 0, 100);
+      const weight = clamp(state.weight + nutrition.weight, 0, 100);
+
+      if (SIMULATION_THRESHOLD_UNHAPPY >= happiness) {
+        return <Unhappy> {
+          ...state,
+          happiness: happiness,
+          hunger: hunger,
+          weight: weight,
+          ticks: state.ticks + 1,
+        };
+      } else {
+        return <Idle> {
+          ...state,
+          name: SimulationStateName.Idle,
+          happiness: happiness,
+          hunger: hunger,
+          weight: weight,
+          ticks: 0,
+        };
+      }
+    }
+
+    case SimulationActionName.Play: {
+      // todo activities need an equivalent of nutrtional values
+      const happiness = clamp(state.happiness + 10, 0, 100);
+      const discipline = clamp(state.discipline + 10, 0, 100);
+
+      if (SIMULATION_THRESHOLD_UNHAPPY >= happiness) {
+        return {
+          ...state,
+          happiness: happiness,
+          discipline: discipline,
+          ticks: state.ticks + 1,
+        }
+      } else {
+        return <Idle> {
+          ...state,
+          name: SimulationStateName.Idle,
+          happiness: happiness,
+          discipline: discipline,
+          ticks: 0,
+        };
+      }
+    }
+
+    default: {
+      return state;
+    }
   }
 };
 
-// dead pets cannot transition to any other state
-const reduceSimulationStateDead: StateReducer<Dead> = (state, _) => state;
+// dead pets cannot transition to any other state, but can tick
+const reduceSimulationStateDead: StateReducer<Dead> = (state, action) => {
+  switch (action.name) {
+    case SimulationActionName.WelfareTick:
+      return tickState(state);
+
+    default:
+      return state;
+  }
+};
 
 /**
  * {@link SimulationState} reducer
