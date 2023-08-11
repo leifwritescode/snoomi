@@ -7,7 +7,7 @@ import {
   SimulationActionName,
   SimulationState,
   SimulationStateName
-} from "../src/VirtualPet/types/SimulationState.js";
+} from "../src/VirtualPet/types/Condition.js";
 import {
   vi,
   expect,

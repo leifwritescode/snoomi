@@ -2,7 +2,7 @@ import { ScheduledJobHandler } from "@devvit/public-api";
 import { clamp } from "../utilities.js";
 import { VirtualPet } from "../VirtualPet.js";
 import { REDIS_KEY_WELFARE_TICK_BATCHES } from "../constants.js";
-import { SimulationActionName, reduce } from "../types/SimulationState.js";
+import { SimulationActionName, reduce } from "../types/Condition.js";
 
 const welfareTickJob: ScheduledJobHandler = async (_, { kvStore }) => {
   const batches = await kvStore.get<string[][]>(REDIS_KEY_WELFARE_TICK_BATCHES);

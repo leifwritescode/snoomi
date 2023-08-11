@@ -1,7 +1,5 @@
-import { makeNewGene } from "./genetics.js";
-import { Genotype } from "./types/Genotype.js"
-import { SimulationState, initialSimulationState } from "./types/SimulationState.js"
-import { getRandomNumberInRange } from "./utilities.js"
+import { Genotype, Appearance, newFirstGenerationGenotype, newFirstGenerationPhenotype } from "./types/Genetics.js";
+import { SimulationState, initialSimulationState } from "./types/Condition.js"
 
 /**
  * A virtual pet
@@ -33,18 +31,19 @@ export type VirtualPet = {
     generation: number,
 
     /**
-     * The genetics of the pet
+     * The genetic makeup of the pet
      */
-    genes : Genotype,
+    genotype : Genotype,
+
+    /**
+     * The physical characteristics of the pet
+     */
+    phenotype : Appearance,
 
     /**
      * The current state of the pet
      */
     state: SimulationState,
-}
-
-function r() : number {
-    return getRandomNumberInRange(0, 10);
 }
 
 export function makeNewVirtualPet(name: string, owner: string) : VirtualPet {
@@ -54,21 +53,8 @@ export function makeNewVirtualPet(name: string, owner: string) : VirtualPet {
         birthdate: Date.now(),
         age: 0,
         generation: 0,
-        genes: {
-            top: makeNewGene(r),
-            bottom: makeNewGene(r),
-            hat: makeNewGene(r),
-            face: makeNewGene(r),
-            leftHand: makeNewGene(r),
-            rightHand: makeNewGene(r),
-            environment: makeNewGene(r),
-            happiness: makeNewGene(r),
-            discipline: makeNewGene(r),
-            hunger: makeNewGene(r),
-            weight: makeNewGene(r),
-            intelligence: makeNewGene(r),
-            aging: makeNewGene(r),
-        },
+        phenotype: newFirstGenerationPhenotype(),
+        genotype: newFirstGenerationGenotype(),
         state: initialSimulationState()
     }
 }

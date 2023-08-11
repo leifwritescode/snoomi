@@ -88,15 +88,3 @@ export function makeNewGeneFromSireAndDam(sire: Gene, dam: Gene, geneticValueFac
         hidden2: geneticValueFactory()
     }
 }
-
-/** Get a new gene with random values
- * @returns a new gene with random values
- */
-export function makeNewGene(geneticValueFactory: {():number}) : Gene {
-    return {
-        primary: geneticValueFactory(),
-        hidden0: geneticValueFactory(),
-        hidden1: geneticValueFactory(),
-        hidden2: geneticValueFactory()
-    }
-}
