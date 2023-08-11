@@ -1,4 +1,4 @@
-import { Genotype, Appearance, newFirstGenerationGenotype, newFirstGenerationPhenotype } from "./types/Genetics.js";
+import { Genotype, newFirstGenerationGenotype } from "./types/Genetics.js";
 import { SimulationState, initialSimulationState } from "./types/Condition.js"
 
 /**
@@ -36,11 +36,6 @@ export type VirtualPet = {
     genotype : Genotype,
 
     /**
-     * The physical characteristics of the pet
-     */
-    phenotype : Appearance,
-
-    /**
      * The current state of the pet
      */
     state: SimulationState,
@@ -53,7 +48,6 @@ export function makeNewVirtualPet(name: string, owner: string) : VirtualPet {
         birthdate: Date.now(),
         age: 0,
         generation: 0,
-        phenotype: newFirstGenerationPhenotype(),
         genotype: newFirstGenerationGenotype(),
         state: initialSimulationState()
     }

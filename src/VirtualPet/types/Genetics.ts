@@ -16,7 +16,7 @@ type Gene = {
 /**
  * Genes that express afinity for mini-game mechanics.
  */
-export type Personality = {
+type Personality = {
   /**
    * Influences affinity for physical games.
    */
@@ -43,9 +43,9 @@ export type Personality = {
   agile: Gene;
 
   /**
-   * Influences affinity for games that don't require precision.
+   * Influences affinity for spooky games.
    */
-  clumsy: Gene;
+  unafraid: Gene;
 
   /**
    * Influences affinity for creative games.
@@ -61,7 +61,7 @@ export type Personality = {
 /**
  * Genes that express virtual pet appearance.
  */
-export type Appearance = {
+type Appearance = {
   /**
    * Influences the pet's headwear.
    */
@@ -101,7 +101,7 @@ export type Appearance = {
 /**
  * Genes that express nutritional needs and preferences.
  */
-export type Nutrition = {
+type Nutrition = {
   /**
    * Influences affinity for red- and white meat.
    */
@@ -133,6 +133,28 @@ export type Nutrition = {
   fungivory: Gene;
 };
 
+type Health = {
+  /**
+   * Affects the rate of change in the pet's happiness measure.
+   */
+  resilience: Gene;
+
+  /**
+   * Affects the rate of change in the pet's hunger measure.
+   */
+  metabolism: Gene;
+
+  /**
+   * Affects the rate of change in the pet's discipline measure.
+   */
+  delinquency: Gene;
+
+  /**
+   * Affects the chance that the pet might become ill.
+   */
+  immunity: Gene;
+};
+
 /**
  * The complete set of genes that describe a virtual pet.
  */
@@ -157,22 +179,10 @@ export type Genotype = {
    */
   nutritionalPrefs: Nutrition;
 
-  // Interactivity: Influences rate of change in happiness, discpline, and hunger measures.
-  happiness: Gene;
-  discipline: Gene;
-  hunger: Gene;
-
-  // not sure if we actually need this one. the idea of the aging gene is to influence how rapidly the pet can evolve
-  // but there are already a lot of genes that influence the rate of change in the pet.
-  aging: Gene;
-
-  // okay, look, hear me out. what if disease exists in this world?
-  // the pet can get sick via failure to feed it, failure to clean its environment, or failure to entertain it.
-  // and there's a chance that the pet may randomly become unwell.
-  // what if there's a gene that influences the likelihood of the pet becoming unwell?
-  // and what if there's a gene that influences the likelihood of the pet recovering from illness?
-  // what if adult pets can experience decline?
-  // what if the pet has an adaptive metabolism, and its nutritional needs change over time?
+  /**
+   * Genes that express the pet's rate-of-change in health-related measures.
+   */
+  health: Health;
 };
 
 /** Get a new gene with random values
@@ -197,23 +207,46 @@ const randomPhenotypeGene = (): number => {
 
 export const newFirstGenerationGenotype = (): Genotype => {
   return {
-    happiness: makeNewGene(randomGenotypeGene),
-    discipline: makeNewGene(randomGenotypeGene),
-    hunger: makeNewGene(randomGenotypeGene),
-    weight: makeNewGene(randomGenotypeGene),
-    intelligence: makeNewGene(randomGenotypeGene),
-    aging: makeNewGene(randomGenotypeGene),
-  };
-};
-
-export const newFirstGenerationPhenotype = (): Appearance => {
-  return {
-    top: makeNewGene(randomPhenotypeGene),
-    bottom: makeNewGene(randomPhenotypeGene),
-    hat: makeNewGene(randomPhenotypeGene),
-    face: makeNewGene(randomPhenotypeGene),
-    leftHand: makeNewGene(randomPhenotypeGene),
-    rightHand: makeNewGene(randomPhenotypeGene),
-    environment: makeNewGene(randomPhenotypeGene)
+    appearance: {
+      top: makeNewGene(randomPhenotypeGene),
+      bottom: makeNewGene(randomPhenotypeGene),
+      hat: makeNewGene(randomPhenotypeGene),
+      face: makeNewGene(randomPhenotypeGene),
+      leftHand: makeNewGene(randomPhenotypeGene),
+      rightHand: makeNewGene(randomPhenotypeGene),
+      device: makeNewGene(randomPhenotypeGene)
+    },
+    personality: {
+      energetic: makeNewGene(randomGenotypeGene),
+      calm: makeNewGene(randomGenotypeGene),
+      curious: makeNewGene(randomGenotypeGene),
+      daredevil: makeNewGene(randomGenotypeGene),
+      agile: makeNewGene(randomGenotypeGene),
+      unafraid: makeNewGene(randomGenotypeGene),
+      imaginative: makeNewGene(randomGenotypeGene),
+      eidetic: makeNewGene(randomGenotypeGene)
+    },
+    nutritionalNeeds: {
+      carnivory: makeNewGene(randomGenotypeGene),
+      herbivory: makeNewGene(randomGenotypeGene),
+      entomophagy: makeNewGene(randomGenotypeGene),
+      piscivory: makeNewGene(randomGenotypeGene),
+      frugivory: makeNewGene(randomGenotypeGene),
+      fungivory: makeNewGene(randomGenotypeGene)
+    },
+    nutritionalPrefs: {
+      carnivory: makeNewGene(randomGenotypeGene),
+      herbivory: makeNewGene(randomGenotypeGene),
+      entomophagy: makeNewGene(randomGenotypeGene),
+      piscivory: makeNewGene(randomGenotypeGene),
+      frugivory: makeNewGene(randomGenotypeGene),
+      fungivory: makeNewGene(randomGenotypeGene)
+    },
+    health: {
+      resilience: makeNewGene(randomGenotypeGene),
+      metabolism: makeNewGene(randomGenotypeGene),
+      delinquency: makeNewGene(randomGenotypeGene),
+      immunity: makeNewGene(randomGenotypeGene)
+    }
   };
 };
