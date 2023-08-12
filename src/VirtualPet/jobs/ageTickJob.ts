@@ -1,7 +1,7 @@
 import { ScheduledJobHandler } from "@devvit/public-api";
 import { VirtualPet } from "../VirtualPet.js";
 import { REDIS_KEY_AGE_TICK_BATCHES } from "../constants.js";
-import { SimulationActionName, reduce } from "../types/Condition.js";
+import { Influences, reduce } from "../types/Condition.js";
 
 const ageTickJob: ScheduledJobHandler = async (_, { kvStore }) => {
   const batches = await kvStore.get<string[][]>(REDIS_KEY_AGE_TICK_BATCHES);
@@ -26,7 +26,7 @@ const ageTickJob: ScheduledJobHandler = async (_, { kvStore }) => {
       continue;
     }
 
-    virtualPet.state = reduce(virtualPet.state, { name: SimulationActionName.AgeTick });
+    virtualPet.state = reduce(virtualPet.state, { with: Influences.AgeTick });
 
     await kvStore.put(pet, virtualPet);
   }
