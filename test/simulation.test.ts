@@ -3,11 +3,12 @@ import {
 } from "../src/VirtualPet/constants.js";
 import { Meal } from "../src/VirtualPet/types/Meal.js";
 import {
-  reduce,
-  Influences,
   Condition,
   Conditions
-} from "../src/VirtualPet/types/Condition.js";
+} from "../src/VirtualPet/Simulation/Conditions.js";
+import {
+  Influences
+} from "../src/VirtualPet/Simulation/Influences.js";
 import {
   vi,
   expect,
