@@ -20,6 +20,7 @@ import {
   it
 } from 'vitest';
 import { Activity } from "../src/VirtualPet/enums/Activity.js";
+import { reduce } from "../src/VirtualPet/Simulation/index.js";
 
 const fakeRandom = vi.spyOn(global.Math, 'random');
 

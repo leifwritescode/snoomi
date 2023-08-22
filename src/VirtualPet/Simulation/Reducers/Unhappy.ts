@@ -4,6 +4,7 @@ import { Influences } from "../Influences.js";
 import { clamp } from "../../math.js";
 import { SIMULATION_THRESHOLD_UNHAPPY, SIMULATION_THRESHOLD_EXPIRY } from "../../constants.js";
 import { defiantPoopingOccurs } from "../Random.js";
+import { getNutritionalValue } from "../../types/Meal.js";
 
 export const reduceConditionUnhappy: Reducer<Unhappy> = (condition, influence) => {
   switch (influence.with) {

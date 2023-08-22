@@ -1,5 +1,4 @@
 import { Meal } from "./Meal.js";
-import { VariantRecord } from "./VariantRecord.js";
 
 export enum ViewStateName {
     VirtualPet = "VirtualPet",
@@ -9,13 +8,17 @@ export enum ViewStateName {
     FinishedActivity = "FinishedActivity"
 }
 
-type Home = VariantRecord<ViewStateName.VirtualPet>;
-type MealSelect = VariantRecord<ViewStateName.MealSelect>;
-type FinishedMeal = VariantRecord<ViewStateName.FinishedMeal> & {
+type BaseViewState<T extends ViewStateName> = {
+  name: T
+};
+
+type Home = BaseViewState<ViewStateName.VirtualPet>;
+type MealSelect = BaseViewState<ViewStateName.MealSelect>;
+type FinishedMeal = BaseViewState<ViewStateName.FinishedMeal> & {
   meal: Meal
 };
-type ActivitySelect = VariantRecord<ViewStateName.ActivitySelect>;
-type FinishedActivity = VariantRecord<ViewStateName.FinishedActivity> & {
+type ActivitySelect = BaseViewState<ViewStateName.ActivitySelect>;
+type FinishedActivity = BaseViewState<ViewStateName.FinishedActivity> & {
   activity: string
 };
 
@@ -29,13 +32,17 @@ export enum ViewActionName {
     GoToFinishedActivity = "GoToFinishedActivity"
 }
 
-type GoToVirtualPet = VariantRecord<ViewActionName.GoToVirtualPet>;
-type GoToMealSelect = VariantRecord<ViewActionName.GoToMealSelect>;
-type GoToFinishedMeal = VariantRecord<ViewActionName.GoToFinishedMeal> & {
+type BaseViewAction<T extends ViewActionName> = {
+  name: T
+};
+
+type GoToVirtualPet = BaseViewAction<ViewActionName.GoToVirtualPet>;
+type GoToMealSelect = BaseViewAction<ViewActionName.GoToMealSelect>;
+type GoToFinishedMeal = BaseViewAction<ViewActionName.GoToFinishedMeal> & {
   meal: Meal
 };
-type GoToActivitySelect = VariantRecord<ViewActionName.GoToActivitySelect>;
-type GoToFinishedActivity = VariantRecord<ViewActionName.GoToFinishedActivity> & {
+type GoToActivitySelect = BaseViewAction<ViewActionName.GoToActivitySelect>;
+type GoToFinishedActivity = BaseViewAction<ViewActionName.GoToFinishedActivity> & {
   activity: string
 };;
 

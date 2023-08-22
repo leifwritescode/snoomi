@@ -3,6 +3,7 @@ import { Reducer } from "../Reducer.js";
 import { Influences } from "../Influences.js";
 import { clamp } from "../../math.js";
 import { SIMULATION_THRESHOLD_HUNGER, SIMULATION_THRESHOLD_UNHAPPY, SIMULATION_THRESHOLD_EXPIRY } from "../../constants.js";
+import { getNutritionalValue } from "../../types/Meal.js";
 
 export const reduceConditionHungry: Reducer<Hungry> = (condition, influence) => {
   switch (influence.with) {
