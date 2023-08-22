@@ -7,3 +7,7 @@ yarn-debug.log*
 yarn-error.log*
 .devvitLocalStorage
 .DS_Store
+
+# build artefacts
+*.d*
+*.js*

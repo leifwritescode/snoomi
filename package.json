@@ -5,6 +5,7 @@
   "license": "BSD-3-Clause",
   "type": "module",
   "scripts": {
+    "build": "tsc --strict",
     "test": "npm run test:unit",
     "test:unit": "vitest --run"
   },
