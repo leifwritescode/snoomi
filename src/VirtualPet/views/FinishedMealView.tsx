@@ -1,6 +1,6 @@
 import { Devvit } from "@devvit/public-api";
 import { VirtualPetComponent } from "../types/VirtualPetComponent.js";
-import ProgressBar from "../components/ProgressBar.js";
+import ProgressBar from "./components/ProgressBar.js";
 import { ViewActionName, ViewStateName } from "../types/ViewState.js";
 import { getRandomElementFromArray } from "../utilities.js";
 
