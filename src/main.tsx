@@ -1,7 +1,7 @@
 import { Devvit } from '@devvit/public-api';
 import VirtualPetRoot from './VirtualPet/index.js';
 import { SCHEDULER_JOB_WELFARE_TICK, SCHEDULER_JOB_AGE_TICK, REDIS_KEY_AGE_TICK_JOB_ID, REDIS_KEY_WELFARE_TICK_JOB_ID, REDIS_KEY_KEITH, REDIS_KEY_WELFARE_TICK_BATCHES, REDIS_KEY_AGE_TICK_BATCHES } from './VirtualPet/constants.js';
-import { newSnoomagotchiForm, newSnoomagotchiFormSubmitHandler } from './VirtualPet/forms/newSnoomagotchiForm.js';
+import { newSnoomagotchiFormConfig } from './VirtualPet/forms/newSnoomagotchiForm.js';
 import welfareTickJob from './VirtualPet/jobs/welfareTickJob.js';
 import ageTickJob from './VirtualPet/jobs/ageTickJob.js';
 import onAppInstallOrUpgrade from './VirtualPet/triggers/onAppInstallOrUpgrade.js';
@@ -22,7 +22,7 @@ Devvit.addSchedulerJob({
   onRun: ageTickJob
 });
 
-const formKeyNewSnoomagotchi = Devvit.createForm(newSnoomagotchiForm, newSnoomagotchiFormSubmitHandler);
+const formKeyNewSnoomagotchi = Devvit.createForm(newSnoomagotchiFormConfig.form, newSnoomagotchiFormConfig.handler);
 
 Devvit.addMenuItem({
   label: "DEVMODE: Create My Snoomagotchi!",
