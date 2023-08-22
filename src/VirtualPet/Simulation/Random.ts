@@ -1,4 +1,5 @@
-import { NUMERICS_SCALAR_HUNDRED, SIMULATION_THRESHOLD_RANDOM_EVENT, NUMERICS_MAX_DATE_MS, NUMERICS_SCALAR_THIRTY, SIMULATION_THRESHOLD_DEFIANT_POOPING } from "../constants.js";
+import { NUMERICS_SCALAR_HUNDRED, NUMERICS_MAX_DATE_MS, NUMERICS_SCALAR_THIRTY } from "../constants.js";
+import { SIMULATION_THRESHOLD_DEFIANT_POOPING, SIMULATION_THRESHOLD_RANDOM_EVENT } from "./Constants.js";
 import { scalarInverse } from "../math.js";
 
 // random pooping occurs if (random number between 0 and 100) + (inverse discipline) > 75

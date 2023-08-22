@@ -43,7 +43,6 @@ export const initialCondition:{():Condition} = () => {
     is: Conditions.InEgg,
     happiness: 100,
     hunger: 100,
-    discipline: 50,
-    weight: 50
+    discipline: 50
   };
 }

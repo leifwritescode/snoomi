@@ -1,7 +1,7 @@
 import { Devvit } from "@devvit/public-api";
 import { VirtualPetComponent } from "./VirtualPetComponent.js";
 import { ViewActionName } from "../types/ViewState.js";
-import { Meal } from "../Nutrition/Meal.js";
+import { DefaultMeal } from "../Nutrition/Plate.js";
 
 /*
 
@@ -36,25 +36,27 @@ import { Meal } from "../Nutrition/Meal.js";
         </button>
       </hstack>*/
 
+      // todo meal creation screen!
+
 const MealSelectView: VirtualPetComponent = ({useState, setViewState}) => {
-  const [selectedMeal, setSelectedMeal] = useState<Meal>(Meal.None);
+  const [selectedMeal, setSelectedMeal] = useState<DefaultMeal>(DefaultMeal.OnePotMeal);
 
   return (
       <vstack grow alignment="middle center" backgroundColor="Lavender" gap="medium" padding="large">
         <text size="xxlarge" alignment="center">What Will You Feed Your Pet?</text>
         <text alignment="center">The food that you select has an impact on the hunger, happiness, and weight of your pet. Overweight, underweight, and unhappy pets could become sick.</text>
         <hstack gap="medium">
-          <button onPress={() => setSelectedMeal(Meal.Hamburger)}>{Meal.Hamburger}</button>
-          <button onPress={() => setSelectedMeal(Meal.Salad)}>{Meal.Salad}</button>
-          <button onPress={() => setSelectedMeal(Meal.Candy)}>{Meal.Candy}</button>
-          <button onPress={() => setSelectedMeal(Meal.Fruit)}>{Meal.Fruit}</button>
+          <button onPress={() => setSelectedMeal(DefaultMeal.Hamburger)}>{DefaultMeal.Hamburger}</button>
+          <button onPress={() => setSelectedMeal(DefaultMeal.Salad)}>{DefaultMeal.Salad}</button>
+          <button onPress={() => setSelectedMeal(DefaultMeal.MushroomSoup)}>{DefaultMeal.MushroomSoup}</button>
+          <button onPress={() => setSelectedMeal(DefaultMeal.OnePotMeal)}>{DefaultMeal.OnePotMeal}</button>
         </hstack>
         <hstack gap="medium">
           <button
             onPress={() => setViewState({ name: ViewActionName.GoToVirtualPet })}
             appearance="bordered">Go Back</button>
           <button
-            disabled={selectedMeal === Meal.None}
+            disabled={selectedMeal === DefaultMeal.OnePotMeal}
             onPress={() => setViewState({ name: ViewActionName.GoToFinishedMeal, meal: selectedMeal })}
             appearance="primary">Feed {selectedMeal}</button>
         </hstack>

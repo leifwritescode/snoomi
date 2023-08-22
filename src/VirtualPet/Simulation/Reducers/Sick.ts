@@ -1,8 +1,8 @@
 import { Sick, Hungry, Unhappy, Idle, Dead, Conditions } from "../Conditions.js"
 import { Reducer } from "../Reducer.js";
 import { Influences } from "../Influences.js";
-import { SIMULATION_THRESHOLD_EXPIRY, SIMULATION_THRESHOLD_HUNGER, SIMULATION_THRESHOLD_UNHAPPY } from "../../constants.js";
-import { reductiConditionGenericTick } from "./Generic.js";
+import { SIMULATION_THRESHOLD_EXPIRY, SIMULATION_THRESHOLD_HUNGER, SIMULATION_THRESHOLD_UNHAPPY } from "../Constants.js";
+import { reduceConditionGenericTick } from "./Generic.js";
 
 export const reduceConditionSick: Reducer<Sick> = (condition, influence) => {
   switch (influence.with) {
@@ -36,7 +36,7 @@ export const reduceConditionSick: Reducer<Sick> = (condition, influence) => {
           ticks: 0,
         };
       } else {
-        return reductiConditionGenericTick(condition, influence);
+        return reduceConditionGenericTick(condition, influence);
       }
 
     default:

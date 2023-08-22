@@ -4,28 +4,26 @@ import { Conditions } from "../Conditions.js";
 import { Idle, Sick, Pooping, Unhappy, Hungry } from "../Conditions.js";
 import { clamp } from "../../math.js";
 import { randomPoopingOccurs, randomSicknessOccurs } from "../Random.js";
-import { SIMULATION_THRESHOLD_HUNGER, SIMULATION_THRESHOLD_UNHAPPY } from "../../constants.js";
-import { getNutritionalValue } from "../../Nutrition/Meal.js";
+import { SIMULATION_THRESHOLD_HUNGER, SIMULATION_THRESHOLD_UNHAPPY } from "../Constants.js";
+import { calculateNutritionalScore } from "../../Nutrition/Algorithm.js";
 
 export const reduceConditionIdle: Reducer<Idle> = (condition, influence) => {
   var hunger: number;
   var happiness: number;
   var discipline: number;
-  var weight: number;
   var ticks: number = condition.ticks + 1;
 
   switch (influence.with) {
     case Influences.Feed: {
-      const nutrition = getNutritionalValue(influence.meal);
-      hunger = clamp(condition.hunger + nutrition.hunger, 0, 100);
-      happiness = clamp(condition.happiness + nutrition.happiness, 0, 100);
-      weight = clamp(condition.weight + nutrition.weight, 0, 100);
+      // todo nutritional scoring
+      const scores = calculateNutritionalScore(influence.plate, influence.genes);
+      hunger = clamp(condition.hunger + scores.needs, 0, 100);
+      happiness = clamp(condition.happiness + scores.wants, 0, 100);
 
       return {
         ...condition,
         hunger: hunger,
         happiness: happiness,
-        weight: weight,
         ticks: ticks
       };
     }

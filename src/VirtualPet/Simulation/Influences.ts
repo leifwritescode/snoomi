@@ -1,4 +1,5 @@
-import { Meal } from "../Nutrition/Meal.js";
+import { Genotype } from "../Genetics/Genotype.js";
+import { Plate } from "../Nutrition/Plate.js";
 import { Activity } from "../enums/Activity.js";
 
 export enum Influences {
@@ -18,7 +19,8 @@ export type BaseInfluence<T extends Influences> = {
 };
 
 export type Feed = BaseInfluence<Influences.Feed> & {
-  meal: Meal
+  plate: Plate,
+  genes: Genotype
 };
 
 export type AdministerMedicine = BaseInfluence<Influences.AdministerMedicine>;

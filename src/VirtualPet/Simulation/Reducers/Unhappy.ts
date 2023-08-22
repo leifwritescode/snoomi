@@ -2,9 +2,9 @@ import { Unhappy, Sick, Unsanitary, Idle, Conditions } from "../Conditions.js";
 import { Reducer } from "../Reducer.js";
 import { Influences } from "../Influences.js";
 import { clamp } from "../../math.js";
-import { SIMULATION_THRESHOLD_UNHAPPY, SIMULATION_THRESHOLD_EXPIRY } from "../../constants.js";
+import { SIMULATION_THRESHOLD_UNHAPPY, SIMULATION_THRESHOLD_EXPIRY } from "../Constants.js";
 import { defiantPoopingOccurs } from "../Random.js";
-import { getNutritionalValue } from "../../Nutrition/Meal.js";
+import { calculateNutritionalScore } from "../../Nutrition/Algorithm.js";
 
 export const reduceConditionUnhappy: Reducer<Unhappy> = (condition, influence) => {
   switch (influence.with) {
@@ -43,17 +43,15 @@ export const reduceConditionUnhappy: Reducer<Unhappy> = (condition, influence) =
     }
 
     case Influences.Feed: {
-      const nutrition = getNutritionalValue(influence.meal);
-      const happiness = clamp(condition.happiness + nutrition.happiness, 0, 100);
-      const hunger = clamp(condition.hunger + nutrition.hunger, 0, 100);
-      const weight = clamp(condition.weight + nutrition.weight, 0, 100);
+      const scores = calculateNutritionalScore(influence.plate, influence.genes);
+      const happiness = clamp(condition.happiness + scores.wants, 0, 100);
+      const hunger = clamp(condition.hunger + scores.needs, 0, 100);
 
       if (SIMULATION_THRESHOLD_UNHAPPY >= happiness) {
         return <Unhappy> {
           ...condition,
           happiness: happiness,
           hunger: hunger,
-          weight: weight,
           ticks: condition.ticks + 1,
         };
       } else {
@@ -62,7 +60,6 @@ export const reduceConditionUnhappy: Reducer<Unhappy> = (condition, influence) =
           is: Conditions.InGoodHealth,
           happiness: happiness,
           hunger: hunger,
-          weight: weight,
           ticks: 0,
         };
       }

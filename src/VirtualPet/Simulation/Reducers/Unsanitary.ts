@@ -2,7 +2,7 @@ import { Unsanitary, Hungry, Unhappy, Idle, Sick, Conditions } from "../Conditio
 import { Reducer } from "../Reducer.js";
 import { Influences } from "../Influences.js";
 import { clamp } from "../../math.js";
-import { SIMULATION_THRESHOLD_EXPIRY, SIMULATION_THRESHOLD_HUNGER, SIMULATION_THRESHOLD_UNHAPPY } from "../../constants.js";
+import { SIMULATION_THRESHOLD_EXPIRY, SIMULATION_THRESHOLD_HUNGER, SIMULATION_THRESHOLD_UNHAPPY } from "../Constants.js";
 
 export const reduceConditionUnsanitary: Reducer<Unsanitary> = (condition, influence) => {
   switch (influence.with) {

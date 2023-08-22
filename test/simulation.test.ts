@@ -1,7 +1,6 @@
 import {
   NUMERICS_MAX_DATE_MS
 } from "../src/VirtualPet/constants.js";
-import { Meal } from "../src/VirtualPet/Nutrition/Meal.js";
 import {
   Condition,
   Conditions
@@ -21,6 +20,8 @@ import {
 } from 'vitest';
 import { Activity } from "../src/VirtualPet/enums/Activity.js";
 import { reduce } from "../src/VirtualPet/Simulation/index.js";
+import { DefaultPlates } from "../src/VirtualPet/Nutrition/Plate.js";
+import { testVirtualPet } from "./pet.js";
 
 const fakeRandom = vi.spyOn(global.Math, 'random');
 
@@ -348,7 +349,8 @@ describe(`A virtual pet in the ${Conditions.Hungry} state`, () => {
 
     const actual = reduce(sut, {
       with: Influences.Feed,
-      meal: Meal.Hamburger
+      plate: DefaultPlates.Hamburger,
+      genes: testVirtualPet.genotype
     });
 
     expect(actual.is).toBe(Conditions.InGoodHealth);
@@ -371,7 +373,8 @@ describe(`A virtual pet in the ${Conditions.Hungry} state`, () => {
 
     const actual = reduce(sut, {
       with: Influences.Feed,
-      meal: Meal.Hamburger
+      plate: DefaultPlates.Hamburger,
+      genes: testVirtualPet.genotype
     });
 
     expect(actual.is).toBe(Conditions.Hungry);
@@ -394,7 +397,8 @@ describe(`A virtual pet in the ${Conditions.Hungry} state`, () => {
 
     const actual = reduce(sut, {
       with: Influences.Feed,
-      meal: Meal.Hamburger
+      plate: DefaultPlates.Hamburger,
+      genes: testVirtualPet.genotype
     });
 
     expect(actual.is).toBe(Conditions.Unhappy);
@@ -783,7 +787,8 @@ describe(`A virtual pet in the ${Conditions.Dead} state`, () => {
 
     const actual = reduce(sut, {
       with: Influences.Feed,
-      meal: Meal.Hamburger
+      plate: DefaultPlates.Hamburger,
+      genes: testVirtualPet.genotype
     });
 
     expect(actual).toEqual(sut);

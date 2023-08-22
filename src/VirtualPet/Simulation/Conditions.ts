@@ -14,7 +14,7 @@ export type BaseCondition<T extends Conditions> = {
   happiness: number,
   discipline: number,
   hunger: number,
-  weight: number,
+  weight: number, // needs replacing with "nutrition" -- goes up on needs met, down on needs not met, clamped at -3 to 3. if it goes below 0, the met is malnorished, if it goes to -3, the pet becomes sick. value starts at 3?
   ticks: number, // ticks in the current condition, useful for determining transitions e.g. unsanitary -> sick
 }
 

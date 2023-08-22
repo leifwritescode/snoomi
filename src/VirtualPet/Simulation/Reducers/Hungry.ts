@@ -2,23 +2,22 @@ import { Idle, Unhappy, Sick, Hungry, Conditions } from "../Conditions.js";
 import { Reducer } from "../Reducer.js";
 import { Influences } from "../Influences.js";
 import { clamp } from "../../math.js";
-import { SIMULATION_THRESHOLD_HUNGER, SIMULATION_THRESHOLD_UNHAPPY, SIMULATION_THRESHOLD_EXPIRY } from "../../constants.js";
-import { getNutritionalValue } from "../../Nutrition/Meal.js";
+import { SIMULATION_THRESHOLD_HUNGER, SIMULATION_THRESHOLD_UNHAPPY, SIMULATION_THRESHOLD_EXPIRY } from "../Constants.js";
+import { calculateNutritionalScore } from "../../Nutrition/Algorithm.js";
 
 export const reduceConditionHungry: Reducer<Hungry> = (condition, influence) => {
   switch (influence.with) {
     case Influences.Feed: {
-      const nutrition = getNutritionalValue(influence.meal);
-      const happiness = clamp(condition.happiness + nutrition.happiness, 0, 100);
-      const hunger = clamp(condition.hunger + nutrition.hunger, 0, 100);
-      const weight = clamp(condition.weight + nutrition.weight, 0, 100);
+      // todo nutritional scoring
+      const scores = calculateNutritionalScore(influence.plate, influence.genes);
+      const happiness = clamp(condition.happiness + scores.wants, 0, 100);
+      const hunger = clamp(condition.hunger + scores.needs, 0, 100);
 
       if (SIMULATION_THRESHOLD_HUNGER >= hunger) {
         return {
           ...condition,
           happiness: happiness,
           hunger: hunger,
-          weight: weight,
           ticks: condition.ticks + 1,
         };
       } else if (SIMULATION_THRESHOLD_UNHAPPY >= happiness) {
@@ -27,7 +26,6 @@ export const reduceConditionHungry: Reducer<Hungry> = (condition, influence) => 
           is: Conditions.Unhappy,
           happiness: happiness,
           hunger: hunger,
-          weight: weight,
           ticks: 0,
         };
       } else {
@@ -36,7 +34,6 @@ export const reduceConditionHungry: Reducer<Hungry> = (condition, influence) => 
           is: Conditions.InGoodHealth,
           happiness: happiness,
           hunger: hunger,
-          weight: weight,
           ticks: 0,
         };
       }

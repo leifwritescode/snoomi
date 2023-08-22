@@ -1,5 +1,3 @@
-import { Meal } from "../Nutrition/Meal.js";
-
 export enum ViewStateName {
     VirtualPet = "VirtualPet",
     MealSelect = "MealSelect",
@@ -15,7 +13,8 @@ type BaseViewState<T extends ViewStateName> = {
 type Home = BaseViewState<ViewStateName.VirtualPet>;
 type MealSelect = BaseViewState<ViewStateName.MealSelect>;
 type FinishedMeal = BaseViewState<ViewStateName.FinishedMeal> & {
-  meal: Meal
+  // todo what gets communicated?
+  meal: any
 };
 type ActivitySelect = BaseViewState<ViewStateName.ActivitySelect>;
 type FinishedActivity = BaseViewState<ViewStateName.FinishedActivity> & {
@@ -39,7 +38,8 @@ type BaseViewAction<T extends ViewActionName> = {
 type GoToVirtualPet = BaseViewAction<ViewActionName.GoToVirtualPet>;
 type GoToMealSelect = BaseViewAction<ViewActionName.GoToMealSelect>;
 type GoToFinishedMeal = BaseViewAction<ViewActionName.GoToFinishedMeal> & {
-  meal: Meal
+  // todo what gets communicated here
+  meal: any
 };
 type GoToActivitySelect = BaseViewAction<ViewActionName.GoToActivitySelect>;
 type GoToFinishedActivity = BaseViewAction<ViewActionName.GoToFinishedActivity> & {
