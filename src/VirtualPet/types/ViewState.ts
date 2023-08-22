@@ -1,4 +1,4 @@
-import { Meal } from "./Meal.js";
+import { Meal } from "../Nutrition/Meal.js";
 
 export enum ViewStateName {
     VirtualPet = "VirtualPet",

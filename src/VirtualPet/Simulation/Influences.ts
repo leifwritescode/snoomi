@@ -1,4 +1,4 @@
-import { Meal } from "../types/Meal.js";
+import { Meal } from "../Nutrition/Meal.js";
 import { Activity } from "../enums/Activity.js";
 
 export enum Influences {

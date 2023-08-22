@@ -1,7 +1,7 @@
 import { Devvit } from "@devvit/public-api";
 import { VirtualPetComponent } from "./VirtualPetComponent.js";
 import { ViewActionName } from "../types/ViewState.js";
-import { Meal } from "../types/Meal.js";
+import { Meal } from "../Nutrition/Meal.js";
 
 /*
 
@@ -37,7 +37,7 @@ import { Meal } from "../types/Meal.js";
       </hstack>*/
 
 const MealSelectView: VirtualPetComponent = ({useState, setViewState}) => {
-  const [selectedMeal, setSelectedMeal] = useState(Meal.None);
+  const [selectedMeal, setSelectedMeal] = useState<Meal>(Meal.None);
 
   return (
       <vstack grow alignment="middle center" backgroundColor="Lavender" gap="medium" padding="large">

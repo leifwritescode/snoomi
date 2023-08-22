@@ -1,7 +1,7 @@
 import {
   NUMERICS_MAX_DATE_MS
 } from "../src/VirtualPet/constants.js";
-import { Meal } from "../src/VirtualPet/types/Meal.js";
+import { Meal } from "../src/VirtualPet/Nutrition/Meal.js";
 import {
   Condition,
   Conditions
