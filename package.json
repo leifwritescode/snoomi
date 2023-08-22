@@ -8,9 +8,13 @@
     "setup": "npm run devvit:install && npm install && npm run vitest:fix && npm run devvit:login",
     "check": "npm run tsc:build-no-emit",
     "test": "npm run vitest:run",
+    "playtest": "npm run devvit:playtest",
+    "update-deps": "npm run devvit:update",
   
     "devvit:install": "npm install -g devvit",
     "devvit:login": "devvit login",
+    "devvit:playtest": "devvit playtest absurdlyangryhonking",
+    "devvit:update": "devvit update app",
     "vitest:fix": "npm install -D vitest",
     "vitest:run": "vitest --run",
     "tsc:build-no-emit": "tsc --strict --noEmit"
