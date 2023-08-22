@@ -5,9 +5,15 @@
   "license": "BSD-3-Clause",
   "type": "module",
   "scripts": {
-    "check": "tsc --strict --noEmit",
-    "test": "npm run test:unit",
-    "test:unit": "vitest --run"
+    "setup": "npm run devvit:install && npm install && npm run vitest:fix && npm run devvit:login",
+    "check": "npm run tsc:build-no-emit",
+    "test": "npm run vitest:run",
+  
+    "devvit:install": "npm install -g devvit",
+    "devvit:login": "devvit login",
+    "vitest:fix": "npm install -D vitest",
+    "vitest:run": "vitest --run",
+    "tsc:build-no-emit": "tsc --strict --noEmit"
   },
   "dependencies": {
     "@devvit/public-api": "0.10.3"
