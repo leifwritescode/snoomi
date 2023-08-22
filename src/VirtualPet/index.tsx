@@ -1,6 +1,6 @@
 import { CustomPostType, KVStore } from "@devvit/public-api";
 import { ViewStateName, initialViewState, reduce } from "./types/ViewState.js";
-import { VirtualPetComponentContext } from "./types/VirtualPetComponent.js";
+import { VirtualPetComponentContext } from "./views/VirtualPetComponent.js";
 import { REDIS_KEY_KEITH } from "./constants.js";
 import { VirtualPet, makeNewVirtualPet } from "./VirtualPet.js";
 import { Devvit } from "@devvit/public-api";

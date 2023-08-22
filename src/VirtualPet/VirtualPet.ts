@@ -1,4 +1,4 @@
-import { Genotype, newFirstGenerationGenotype } from "./types/Genetics.js";
+import { Genotype, newFirstGenerationGenotype } from "./Genetics/Genotype.js";
 import { initialCondition } from "./Simulation/index.js"
 import { Condition } from "./Simulation/Conditions.js";
 

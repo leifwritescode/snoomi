@@ -6,7 +6,7 @@ import { getRandomNumberInRange } from "../utilities.js";
  * The primary value is the gene's dominant expression.
  * The hidden values are recessive expressions that may be passed on to offspring but are not expressed in the parent.
  */
-type Gene = {
+export type Gene = {
   primary: number;
   hidden0: number;
   hidden1: number;

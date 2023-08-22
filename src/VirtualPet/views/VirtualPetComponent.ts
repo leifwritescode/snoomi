@@ -1,6 +1,6 @@
 import { Context } from "@devvit/public-api";
 import { VirtualPet } from "../VirtualPet.js";
-import { ViewAction, ViewState } from "./ViewState.js";
+import { ViewAction, ViewState } from "../types/ViewState.js";
 
 export type VirtualPetComponentContext = Context & {
   getVirtualPet: () => VirtualPet;

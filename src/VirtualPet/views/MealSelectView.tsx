@@ -1,5 +1,5 @@
 import { Devvit } from "@devvit/public-api";
-import { VirtualPetComponent } from "../types/VirtualPetComponent.js";
+import { VirtualPetComponent } from "./VirtualPetComponent.js";
 import { ViewActionName } from "../types/ViewState.js";
 import { Meal } from "../types/Meal.js";
 

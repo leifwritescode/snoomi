@@ -1,4 +1,4 @@
-import { Gene } from "./types/Gene.js";
+import { Gene } from "./Genotype.js";
 
 const GENETICS_SELECTION_PROBABILITIES = [0.375, 0.075, 0.035, 0.015];
 const GENETICS_GPP_INDEX_GENE = 0;
