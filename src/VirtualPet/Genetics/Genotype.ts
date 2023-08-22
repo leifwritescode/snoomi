@@ -101,7 +101,7 @@ type Appearance = {
 /**
  * Genes that express nutritional needs and preferences.
  */
-type Nutrition = {
+export type Nutrition = {
   /**
    * Influences affinity for red- and white meat.
    */

@@ -1,0 +1,3 @@
+export const NUTRITION_SCORE_MIN = -30;
+export const NUTRITION_SCORE_MAX = 30;
+export const NUTRITION_BASE_SCORE_PER_ITEM = 3;
