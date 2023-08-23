@@ -6,7 +6,7 @@ import { reduceConditionGenericTick } from "./Generic.js";
 
 export const reduceConditionSick: Reducer<Sick> = (condition, influence) => {
   switch (influence.with) {
-    case Influences.AdministerMedicine:
+    case Influences.Medicine:
       if (condition.hunger < SIMULATION_THRESHOLD_HUNGER) {
         return <Hungry> {
           ...condition,
@@ -27,7 +27,7 @@ export const reduceConditionSick: Reducer<Sick> = (condition, influence) => {
         };
       }
 
-    case Influences.WelfareTick:
+    case Influences.Time:
       if (condition.ticks >= SIMULATION_THRESHOLD_EXPIRY) {
         return <Dead> {
           ...condition,

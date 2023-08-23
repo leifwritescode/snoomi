@@ -3,5 +3,6 @@ export enum Lifecycle {
     Child,
     Adolescent,
     Adult,
+    Special,
     Dead
 }

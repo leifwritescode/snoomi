@@ -3,27 +3,28 @@ import { Plate } from "../Nutrition/Plate.js";
 import { Activity } from "../enums/Activity.js";
 
 export enum Influences {
-  Feed = "Feed",
-  AdministerMedicine = "AdministerMedicine",
+  Food = "Food",
+  Medicine = "Medicine",
   Play = "Play",
   Clean = "Clean",
-  Discipline = "Discipline",
-  WelfareTick = "Special_WelfareTick",
-  AgeTick = "Special_AgeTick",
+  Scold = "Discipline",
+  Potty = "Potty",
+
+  Time = "Special_Time",
+  Growth = "Special_Growth",
   Hatch = "Special_Hatch",
-  GoToBathroom = "GoToBathroom",
 };
 
 export type BaseInfluence<T extends Influences> = {
   with: T,
 };
 
-export type Feed = BaseInfluence<Influences.Feed> & {
+export type Food = BaseInfluence<Influences.Food> & {
   plate: Plate,
   genes: Genotype
 };
 
-export type AdministerMedicine = BaseInfluence<Influences.AdministerMedicine>;
+export type Medicine = BaseInfluence<Influences.Medicine>;
 
 export type Play = BaseInfluence<Influences.Play> & {
   activity: Activity
@@ -31,19 +32,19 @@ export type Play = BaseInfluence<Influences.Play> & {
 
 export type Clean = BaseInfluence<Influences.Clean>;
 
-export type Discipline = BaseInfluence<Influences.Discipline>;
+export type Discipline = BaseInfluence<Influences.Scold>;
 
-export type WelfareTick = BaseInfluence<Influences.WelfareTick> & {
+export type Time = BaseInfluence<Influences.Time> & {
   hunger: number,
   happiness: number,
   discipline: number,
 };
 
-export type AgeTick = BaseInfluence<Influences.AgeTick>;
+export type Growth = BaseInfluence<Influences.Growth>;
 
 export type Hatch = BaseInfluence<Influences.Hatch>;
 
-export type GoToBathroom = BaseInfluence<Influences.GoToBathroom>;
+export type Potty = BaseInfluence<Influences.Potty>;
 
 // union type of all possible simulation actions
-export type Influence = Feed | Play | AdministerMedicine | Clean | Discipline | WelfareTick | AgeTick | Hatch | GoToBathroom;
+export type Influence = Food | Play | Medicine | Clean | Discipline | Time | Growth | Hatch | Potty;

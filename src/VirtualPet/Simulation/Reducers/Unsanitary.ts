@@ -6,7 +6,7 @@ import { SIMULATION_THRESHOLD_EXPIRY, SIMULATION_THRESHOLD_HUNGER, SIMULATION_TH
 
 export const reduceConditionUnsanitary: Reducer<Unsanitary> = (condition, influence) => {
   switch (influence.with) {
-    case Influences.WelfareTick: {
+    case Influences.Time: {
       const happiness = clamp(condition.happiness - influence.happiness, 0, 100);
       const hunger = clamp(condition.hunger - influence.hunger, 0, 100);
       const discipline = clamp(condition.discipline - influence.discipline, 0, 100);

@@ -43,7 +43,7 @@ const MealSelectView: VirtualPetComponent = ({useState, setViewState}) => {
 
   return (
       <vstack grow alignment="middle center" backgroundColor="Lavender" gap="medium" padding="large">
-        <text size="xxlarge" alignment="center">What Will You Feed Your Pet?</text>
+        <text size="xxlarge" alignment="center">What Will You Food Your Pet?</text>
         <text alignment="center">The food that you select has an impact on the hunger, happiness, and weight of your pet. Overweight, underweight, and unhappy pets could become sick.</text>
         <hstack gap="medium">
           <button onPress={() => setSelectedMeal(DefaultMeal.Hamburger)}>{DefaultMeal.Hamburger}</button>
@@ -58,7 +58,7 @@ const MealSelectView: VirtualPetComponent = ({useState, setViewState}) => {
           <button
             disabled={selectedMeal === DefaultMeal.OnePotMeal}
             onPress={() => setViewState({ name: ViewActionName.GoToFinishedMeal, meal: selectedMeal })}
-            appearance="primary">Feed {selectedMeal}</button>
+            appearance="primary">Food {selectedMeal}</button>
         </hstack>
       </vstack>
   );

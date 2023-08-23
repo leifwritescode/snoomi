@@ -6,7 +6,7 @@ import { reduceConditionGenericTick } from "./Generic.js";
 // dead pets cannot transition to any other condition, but can tick
 export const reduceConditionDead: Reducer<Dead> = (condition, influence) => {
   switch (influence.with) {
-    case Influences.WelfareTick:
+    case Influences.Time:
       return reduceConditionGenericTick(condition, influence);
 
     default:

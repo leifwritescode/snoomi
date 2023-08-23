@@ -4,7 +4,7 @@ import { REDIS_KEY_WELFARE_TICK_BATCHES } from "../constants.js";
 import { reduce } from "../Simulation/index.js";
 import { Influences } from "../Simulation/Influences.js";
 
-const welfareTickJob: ScheduledJobHandler = async (_, { kvStore }) => {
+const TimeJob: ScheduledJobHandler = async (_, { kvStore }) => {
   const batches = await kvStore.get<string[][]>(REDIS_KEY_WELFARE_TICK_BATCHES);
   if (batches === undefined) {
     console.log("No welfare batches are configured.");
@@ -28,7 +28,7 @@ const welfareTickJob: ScheduledJobHandler = async (_, { kvStore }) => {
     }
 
     virtualPet.state = reduce(virtualPet.state, {
-      with: Influences.WelfareTick,
+      with: Influences.Time,
       hunger: 10,
       happiness: 10,
       discipline: 5,
@@ -40,4 +40,4 @@ const welfareTickJob: ScheduledJobHandler = async (_, { kvStore }) => {
   console.log(`Finished processing ${pets.length} pets in batch H+${now.getMinutes()}.`);
 }
 
-export default welfareTickJob;
+export default TimeJob;

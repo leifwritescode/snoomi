@@ -6,7 +6,7 @@ import { SIMULATION_THRESHOLD_HUNGER, SIMULATION_THRESHOLD_UNHAPPY, SIMULATION_T
 
 export const reduceConditionPooping: Reducer<Pooping> = (condition, influence) => {
   switch (influence.with) {
-    case Influences.GoToBathroom: {
+    case Influences.Potty: {
       // todo remove discipline++ magic number
       if (SIMULATION_THRESHOLD_HUNGER >= condition.hunger) {
         return <Hungry> {
@@ -32,7 +32,7 @@ export const reduceConditionPooping: Reducer<Pooping> = (condition, influence) =
       }
     }
 
-    case Influences.WelfareTick: {
+    case Influences.Time: {
       const happiness = clamp(condition.happiness - influence.happiness, 0, 100);
       const hunger = clamp(condition.hunger - influence.hunger, 0, 100);
       const discipline = clamp(condition.discipline - influence.discipline, 0, 100);

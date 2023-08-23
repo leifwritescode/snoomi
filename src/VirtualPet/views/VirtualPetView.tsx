@@ -22,7 +22,7 @@ const VirtualPetView: VirtualPetComponent = ({reddit, useState, getVirtualPet, s
   // todo control deck should change as the snoomagotchi ages
   const controlDeck = virtualPet.owner === currentUsername || virtualPet.owner === "The Computer" ? (
     <hstack backgroundColor="white" padding="medium" gap="large">
-      <button grow onPress={() => setViewState({ name: ViewActionName.GoToMealSelect })} disabled={getIsServerCall()}>Feed</button>
+      <button grow onPress={() => setViewState({ name: ViewActionName.GoToMealSelect })} disabled={getIsServerCall()}>Food</button>
       <button grow onPress={() => setViewState({ name: ViewActionName.GoToActivitySelect })} disabled={getIsServerCall()}>Play</button>
       <button grow onPress={() => setViewState({ name: ViewActionName.GoToActivitySelect })} disabled={getIsServerCall()}>Discipline</button>
       <button grow disabled={getIsServerCall()}>Toilet</button>

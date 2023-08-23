@@ -65,25 +65,25 @@ export const newSnoomagotchiFormConfig: FormConfig = {
   
     const now = new Date();
   
-    let welfareTickBatches = await context.kvStore.get<string[][]>(REDIS_KEY_WELFARE_TICK_BATCHES);
-    if (welfareTickBatches === undefined) {
-      throw new Error("welfareTickBatch record has not been created");
+    let TimeBatches = await context.kvStore.get<string[][]>(REDIS_KEY_WELFARE_TICK_BATCHES);
+    if (TimeBatches === undefined) {
+      throw new Error("TimeBatch record has not been created");
     }
   
-    // age tick happens once per minute, and all ids in ageTickBatches[minute] will be ticked.
+    // age tick happens once per minute, and all ids in GrowthBatches[minute] will be ticked.
     // each pet ticks once per hour
-    welfareTickBatches[now.getMinutes()].push(post.id);
-    await context.kvStore.put(REDIS_KEY_WELFARE_TICK_BATCHES, welfareTickBatches);
+    TimeBatches[now.getMinutes()].push(post.id);
+    await context.kvStore.put(REDIS_KEY_WELFARE_TICK_BATCHES, TimeBatches);
   
-    let ageTickBatches = await context.kvStore.get<string[][]>(REDIS_KEY_AGE_TICK_BATCHES);
-    if (ageTickBatches === undefined) {
-      throw new Error("ageTickBatch record has not been created");
+    let GrowthBatches = await context.kvStore.get<string[][]>(REDIS_KEY_AGE_TICK_BATCHES);
+    if (GrowthBatches === undefined) {
+      throw new Error("GrowthBatch record has not been created");
     }
   
-    // age tick happens once per hour, and all ids in ageTickBatches[hour] will be ticked.
+    // age tick happens once per hour, and all ids in GrowthBatches[hour] will be ticked.
     // each pet gets aged once per day
-    ageTickBatches[now.getHours()].push(post.id);
-    await context.kvStore.put(REDIS_KEY_AGE_TICK_BATCHES, ageTickBatches);
+    GrowthBatches[now.getHours()].push(post.id);
+    await context.kvStore.put(REDIS_KEY_AGE_TICK_BATCHES, GrowthBatches);
   
     context.ui.showToast(`Created a ${funMode ? "new fun-mode" : "new" } virtual pet, ${virtualPetName}, in age batch ${now.getHours()} and welfare batch ${now.getMinutes()} for ${owner.username} from egg #${eggNumber}. How eggciting!`);
   }

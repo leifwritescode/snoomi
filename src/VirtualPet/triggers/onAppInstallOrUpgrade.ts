@@ -20,30 +20,30 @@ const onAppInstallOrUpgrade: TriggerOnEventHandler<TriggerEventType[AppInstall] 
     // The age tickover happens once per hour.
     // During each tickover, a batch of virtual pets (determined by the hour of birth) is ticked over.
     // Each virtual pet has its age ticked over once per day using this mechanism.
-    let ageTickSchedulerJob = await context.kvStore.get<string>(REDIS_KEY_AGE_TICK_JOB_ID);
-    if (ageTickSchedulerJob === undefined) {
+    let GrowthSchedulerJob = await context.kvStore.get<string>(REDIS_KEY_AGE_TICK_JOB_ID);
+    if (GrowthSchedulerJob === undefined) {
       console.warn("No age tick scheduler job is configured. Creating one now.");
-      ageTickSchedulerJob = await context.scheduler.runJob({
+      GrowthSchedulerJob = await context.scheduler.runJob({
         name: SCHEDULER_JOB_AGE_TICK,
         cron: "0 * * * *"
       });
-      await context.kvStore.put(REDIS_KEY_AGE_TICK_JOB_ID, ageTickSchedulerJob);
+      await context.kvStore.put(REDIS_KEY_AGE_TICK_JOB_ID, GrowthSchedulerJob);
     }
-    console.log(`Age tick scheduler job is ${ageTickSchedulerJob}`);
+    console.log(`Age tick scheduler job is ${GrowthSchedulerJob}`);
 
     // The welfare tickover happens once per minute.
     // During each tickover, a batch of virtual pets (determined by the minute-past-the-hour of birth) is ticked over.
     // Each virtual pet has its welfare ticked over once per hour using this mechanism.
-    let welfareTickSchedulerJob = await context.kvStore.get<string>(REDIS_KEY_WELFARE_TICK_JOB_ID);
-    if (welfareTickSchedulerJob === undefined) {
+    let TimeSchedulerJob = await context.kvStore.get<string>(REDIS_KEY_WELFARE_TICK_JOB_ID);
+    if (TimeSchedulerJob === undefined) {
       console.warn("No welfare tick scheduler job is configured. Creating one now.")
-      welfareTickSchedulerJob = await context.scheduler.runJob({
+      TimeSchedulerJob = await context.scheduler.runJob({
         name: SCHEDULER_JOB_WELFARE_TICK,
         cron: "* * * * *"
       });
-      await context.kvStore.put(REDIS_KEY_WELFARE_TICK_JOB_ID, welfareTickSchedulerJob)
+      await context.kvStore.put(REDIS_KEY_WELFARE_TICK_JOB_ID, TimeSchedulerJob)
     }
-    console.log(`Welfare tick scheduler job is ${welfareTickSchedulerJob}`);;
+    console.log(`Welfare tick scheduler job is ${TimeSchedulerJob}`);;
 
     // The default virtual pet, Keith, exists to support local testing.
     // It is recalled in Devvit Studio when viewing the custom post tab.
@@ -55,17 +55,17 @@ const onAppInstallOrUpgrade: TriggerOnEventHandler<TriggerEventType[AppInstall] 
     }
 
     // record of virtual pet ids organised by minute of birth
-    let welfareTickBatches = await context.kvStore.get<string[][]>(REDIS_KEY_WELFARE_TICK_BATCHES);
-    if (welfareTickBatches === undefined) {
-      welfareTickBatches = sparseArray<string[]>(60, []);
-      await context.kvStore.put(REDIS_KEY_WELFARE_TICK_BATCHES, welfareTickBatches);
+    let TimeBatches = await context.kvStore.get<string[][]>(REDIS_KEY_WELFARE_TICK_BATCHES);
+    if (TimeBatches === undefined) {
+      TimeBatches = sparseArray<string[]>(60, []);
+      await context.kvStore.put(REDIS_KEY_WELFARE_TICK_BATCHES, TimeBatches);
     }
 
     // record of virtual pet ids organised by hour of birth
-    let ageTickBatches = await context.kvStore.get<string[][]>(REDIS_KEY_AGE_TICK_BATCHES);
-    if (ageTickBatches === undefined) {
-      ageTickBatches = sparseArray<string[]>(24, []);
-      await context.kvStore.put(REDIS_KEY_AGE_TICK_BATCHES, ageTickBatches);
+    let GrowthBatches = await context.kvStore.get<string[][]>(REDIS_KEY_AGE_TICK_BATCHES);
+    if (GrowthBatches === undefined) {
+      GrowthBatches = sparseArray<string[]>(24, []);
+      await context.kvStore.put(REDIS_KEY_AGE_TICK_BATCHES, GrowthBatches);
     }
 }
 

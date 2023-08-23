@@ -14,7 +14,7 @@ export const reduceConditionIdle: Reducer<Idle> = (condition, influence) => {
   var ticks: number = condition.ticks + 1;
 
   switch (influence.with) {
-    case Influences.Feed: {
+    case Influences.Food: {
       // todo nutritional scoring
       const scores = calculateNutritionalScore(influence.plate, influence.genes);
       hunger = clamp(condition.hunger + scores.needs, 0, 100);
@@ -32,7 +32,7 @@ export const reduceConditionIdle: Reducer<Idle> = (condition, influence) => {
      * suuuuuper naive welfare tick calculation
      * todo: account for genetics. this could be difficult, since the statemachine doesn't have access to the pet's genetics. perhaps the influence could accept a genetics object?
      */
-    case Influences.WelfareTick: {
+    case Influences.Time: {
       hunger = condition.hunger - influence.hunger;
       happiness = condition.happiness - influence.happiness;
       discipline = condition.discipline - influence.discipline;

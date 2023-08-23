@@ -74,7 +74,7 @@ describe(`A virtual pet in the ${Conditions.InGoodHealth} state`, () => {
     };
 
     const actual = reduce(sut, {
-      with: Influences.WelfareTick,
+      with: Influences.Time,
       hunger: 10,
       happiness: 20,
       discipline: 30,
@@ -99,7 +99,7 @@ describe(`A virtual pet in the ${Conditions.InGoodHealth} state`, () => {
     };
 
     const actual = reduce(sut, {
-      with: Influences.WelfareTick,
+      with: Influences.Time,
       hunger: 10,
       happiness: 0,
       discipline: 0,
@@ -124,7 +124,7 @@ describe(`A virtual pet in the ${Conditions.InGoodHealth} state`, () => {
     };
 
     const actual = reduce(sut, {
-      with: Influences.WelfareTick,
+      with: Influences.Time,
       happiness: 10,
       hunger: 10,
       discipline: 0,
@@ -150,7 +150,7 @@ describe(`A virtual pet in the ${Conditions.InGoodHealth} state`, () => {
     };
 
     const actual = reduce(sut, {
-      with: Influences.WelfareTick,
+      with: Influences.Time,
       hunger: 0,
       happiness: 10,
       discipline: 0,
@@ -178,7 +178,7 @@ describe(`A virtual pet in the ${Conditions.InGoodHealth} state`, () => {
     };
 
     const actual = reduce(sut, {
-      with: Influences.WelfareTick,
+      with: Influences.Time,
       happiness: 0,
       hunger: 0,
       discipline: 0,
@@ -206,7 +206,7 @@ describe(`A virtual pet in the ${Conditions.InGoodHealth} state`, () => {
     };
 
     const actual = reduce(sut, {
-      with: Influences.WelfareTick,
+      with: Influences.Time,
       happiness: 0,
       hunger: 0,
       discipline: 0,
@@ -232,7 +232,7 @@ describe(`A virtual pet in the ${Conditions.Sick} state`, () => {
       ticks: 2
     };
 
-    const actual = reduce(sut, { with: Influences.AdministerMedicine });
+    const actual = reduce(sut, { with: Influences.Medicine });
 
     expect(actual.is).toBe(Conditions.InGoodHealth);
     expect(actual.ticks).toBe(0);
@@ -255,7 +255,7 @@ describe(`A virtual pet in the ${Conditions.Sick} state`, () => {
       ticks: 3
     };
 
-    const actual = reduce(sut, { with: Influences.WelfareTick,
+    const actual = reduce(sut, { with: Influences.Time,
       happiness: 0,
       hunger: 0,
       discipline: 0,
@@ -285,7 +285,7 @@ describe(`A virtual pet in the ${Conditions.Sick} state`, () => {
       ticks: 0
     };
 
-    const actual = reduce(sut, { with: Influences.AdministerMedicine });
+    const actual = reduce(sut, { with: Influences.Medicine });
 
     expect(actual.is).toBe(Conditions.Hungry);
     expect(actual.ticks).toBe(0);
@@ -305,7 +305,7 @@ describe(`A virtual pet in the ${Conditions.Sick} state`, () => {
       ticks: 0
     };
 
-    const actual = reduce(sut, { with: Influences.AdministerMedicine });
+    const actual = reduce(sut, { with: Influences.Medicine });
 
     expect(actual.is).toBe(Conditions.Hungry);
     expect(actual.ticks).toBe(0);
@@ -325,7 +325,7 @@ describe(`A virtual pet in the ${Conditions.Sick} state`, () => {
       ticks: 0
     };
 
-    const actual = reduce(sut, { with: Influences.AdministerMedicine });
+    const actual = reduce(sut, { with: Influences.Medicine });
 
     expect(actual.is).toBe(Conditions.Unhappy);
     expect(actual.ticks).toBe(0);
@@ -348,7 +348,7 @@ describe(`A virtual pet in the ${Conditions.Hungry} state`, () => {
     };
 
     const actual = reduce(sut, {
-      with: Influences.Feed,
+      with: Influences.Food,
       plate: DefaultPlates.Hamburger,
       genes: testVirtualPet.genotype
     });
@@ -372,7 +372,7 @@ describe(`A virtual pet in the ${Conditions.Hungry} state`, () => {
     };
 
     const actual = reduce(sut, {
-      with: Influences.Feed,
+      with: Influences.Food,
       plate: DefaultPlates.Hamburger,
       genes: testVirtualPet.genotype
     });
@@ -396,7 +396,7 @@ describe(`A virtual pet in the ${Conditions.Hungry} state`, () => {
     };
 
     const actual = reduce(sut, {
-      with: Influences.Feed,
+      with: Influences.Food,
       plate: DefaultPlates.Hamburger,
       genes: testVirtualPet.genotype
     });
@@ -420,7 +420,7 @@ describe(`A virtual pet in the ${Conditions.Hungry} state`, () => {
     };
 
     const actual = reduce(sut, {
-      with: Influences.WelfareTick,
+      with: Influences.Time,
       happiness: 0,
       hunger: 0,
       discipline: 0,
@@ -447,7 +447,7 @@ describe(`A virtual pet in the ${Conditions.Pooping} state`, () => {
     };
 
     const actual = reduce(sut, {
-      with: Influences.WelfareTick,
+      with: Influences.Time,
       happiness: 0,
       hunger: 0,
       discipline: 0,
@@ -471,7 +471,7 @@ describe(`A virtual pet in the ${Conditions.Pooping} state`, () => {
       ticks: 3
     };
       
-    const actual = reduce(sut, { with: Influences.GoToBathroom });
+    const actual = reduce(sut, { with: Influences.Potty });
 
     expect(actual.is).toBe(Conditions.Unhappy);
     expect(actual.ticks).toBe(0);
@@ -491,7 +491,7 @@ describe(`A virtual pet in the ${Conditions.Pooping} state`, () => {
       ticks: 3
     };
 
-    const actual = reduce(sut, { with: Influences.GoToBathroom });
+    const actual = reduce(sut, { with: Influences.Potty });
 
     expect(actual.is).toBe(Conditions.Hungry);
     expect(actual.ticks).toBe(0);
@@ -511,7 +511,7 @@ describe(`A virtual pet in the ${Conditions.Pooping} state`, () => {
       ticks: 3
     };
 
-    const actual = reduce(sut, { with: Influences.GoToBathroom });
+    const actual = reduce(sut, { with: Influences.Potty });
 
     expect(actual.is).toBe(Conditions.Hungry);
     expect(actual.ticks).toBe(0);
@@ -531,7 +531,7 @@ describe(`A virtual pet in the ${Conditions.Pooping} state`, () => {
       ticks: 3
     };
 
-    const actual = reduce(sut, { with: Influences.GoToBathroom });
+    const actual = reduce(sut, { with: Influences.Potty });
 
     expect(actual.is).toBe(Conditions.InGoodHealth);
     expect(actual.ticks).toBe(0);
@@ -633,7 +633,7 @@ describe(`A virtual pet in the ${Conditions.Unsanitary} state`, () => {
       ticks: 3
     };
 
-    const actual = reduce(sut, { with: Influences.WelfareTick,
+    const actual = reduce(sut, { with: Influences.Time,
       happiness: 0,
       hunger: 0,
       discipline: 0,
@@ -660,7 +660,7 @@ describe(`A virtual pet in the ${Conditions.Unhappy} state`, () => {
     };
 
     const actual = reduce(sut, {
-      with: Influences.WelfareTick,
+      with: Influences.Time,
       hunger: 10,
       happiness: 20,
       discipline: 30,
@@ -731,7 +731,7 @@ describe(`A virtual pet in the ${Conditions.Unhappy} state`, () => {
     };
 
     const actual = reduce(sut, {
-      with: Influences.WelfareTick,
+      with: Influences.Time,
       happiness: 0,
       hunger: 0,
       discipline: 0,
@@ -758,7 +758,7 @@ describe(`A virtual pet in the ${Conditions.Unhappy} state`, () => {
     };
 
     const actual = reduce(sut, {
-      with: Influences.WelfareTick,
+      with: Influences.Time,
       happiness: 0,
       hunger: 0,
       discipline: 0,
@@ -786,7 +786,7 @@ describe(`A virtual pet in the ${Conditions.Dead} state`, () => {
     };
 
     const actual = reduce(sut, {
-      with: Influences.Feed,
+      with: Influences.Food,
       plate: DefaultPlates.Hamburger,
       genes: testVirtualPet.genotype
     });
@@ -840,7 +840,7 @@ describe(`A virtual pet in the ${Conditions.Dead} state`, () => {
       timeOfDeath: 0xDEAD
     };
 
-    const actual = reduce(sut, { with: Influences.AdministerMedicine });
+    const actual = reduce(sut, { with: Influences.Medicine });
 
     expect(actual).toEqual(sut);
   });
@@ -856,7 +856,7 @@ describe(`A virtual pet in the ${Conditions.Dead} state`, () => {
       timeOfDeath: 0xDEAD
     };
 
-    const actual = reduce(sut, { with: Influences.GoToBathroom });
+    const actual = reduce(sut, { with: Influences.Potty });
 
     expect(actual).toEqual(sut);
   });
@@ -891,7 +891,7 @@ describe(`A virtual pet in the ${Conditions.Dead} state`, () => {
     vi.setSystemTime(0xDEAD);
 
     const actual = reduce(sut, {
-      with: Influences.WelfareTick,
+      with: Influences.Time,
       happiness: 20,
       hunger: 20,
       discipline: 20,

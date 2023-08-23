@@ -16,7 +16,7 @@ export const reduceConditionEgg: Reducer<Egg> = (condition, influence) => {
       };
 
     // eggs tick, but their welfare is indeterminate until they hatch
-    case Influences.WelfareTick: {
+    case Influences.Time: {
       return reduceConditionGenericTick(condition, influence);
     }
 

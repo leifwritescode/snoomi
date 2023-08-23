@@ -8,7 +8,7 @@ import { calculateNutritionalScore } from "../../Nutrition/Algorithm.js";
 
 export const reduceConditionUnhappy: Reducer<Unhappy> = (condition, influence) => {
   switch (influence.with) {
-    case Influences.WelfareTick: {
+    case Influences.Time: {
       const happiness = clamp(condition.happiness - influence.happiness, 0, 100);
       const hunger = clamp(condition.hunger - influence.hunger, 0, 100);
       const discipline = clamp(condition.discipline - influence.discipline, 0, 100);
@@ -42,7 +42,7 @@ export const reduceConditionUnhappy: Reducer<Unhappy> = (condition, influence) =
       }
     }
 
-    case Influences.Feed: {
+    case Influences.Food: {
       const scores = calculateNutritionalScore(influence.plate, influence.genes);
       const happiness = clamp(condition.happiness + scores.wants, 0, 100);
       const hunger = clamp(condition.hunger + scores.needs, 0, 100);

@@ -4,7 +4,7 @@ import { REDIS_KEY_AGE_TICK_BATCHES } from "../constants.js";
 import { reduce } from "../Simulation/index.js";
 import { Influences } from "../Simulation/Influences.js";
 
-const ageTickJob: ScheduledJobHandler = async (_, { kvStore }) => {
+const GrowthJob: ScheduledJobHandler = async (_, { kvStore }) => {
   const batches = await kvStore.get<string[][]>(REDIS_KEY_AGE_TICK_BATCHES);
   if (batches === undefined) {
     console.log("No age batches are configured.");
@@ -27,7 +27,7 @@ const ageTickJob: ScheduledJobHandler = async (_, { kvStore }) => {
       continue;
     }
 
-    virtualPet.state = reduce(virtualPet.state, { with: Influences.AgeTick });
+    virtualPet.state = reduce(virtualPet.state, { with: Influences.Growth });
 
     await kvStore.put(pet, virtualPet);
   }
@@ -35,4 +35,4 @@ const ageTickJob: ScheduledJobHandler = async (_, { kvStore }) => {
   console.log(`Finished processing ${pets.length} pets in batch D+${now.getHours()}.`);
 }
 
-export default ageTickJob;
+export default GrowthJob;
