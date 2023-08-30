@@ -2,9 +2,11 @@ import { Devvit } from '@devvit/public-api';
 import VirtualPetRoot from './VirtualPet/index.js';
 import { SCHEDULER_JOB_WELFARE_TICK, SCHEDULER_JOB_AGE_TICK, REDIS_KEY_AGE_TICK_JOB_ID, REDIS_KEY_WELFARE_TICK_JOB_ID, REDIS_KEY_KEITH, REDIS_KEY_WELFARE_TICK_BATCHES, REDIS_KEY_AGE_TICK_BATCHES } from './VirtualPet/constants.js';
 import { newSnoomagotchiFormConfig } from './VirtualPet/forms/newSnoomagotchiForm.js';
-import welfareTickJob from './VirtualPet/jobs/welfareTickJob.js';
-import ageTickJob from './VirtualPet/jobs/ageTickJob.js';
+import TimeJob from './VirtualPet/jobs/welfareTickJob.js';
+import GrowthJob from './VirtualPet/jobs/ageTickJob.js';
 import onAppInstallOrUpgrade from './VirtualPet/triggers/onAppInstallOrUpgrade.js';
+import { VisualMealConstructionView } from './Experiments/VisualMealConstruction.js';
+import { DeviceLayout } from './Experiments/DeviceLayout.js';
 
 Devvit.configure({
   redditAPI: true,
@@ -14,12 +16,12 @@ Devvit.configure({
 
 Devvit.addSchedulerJob({
   name: SCHEDULER_JOB_WELFARE_TICK,
-  onRun: welfareTickJob
+  onRun: TimeJob
 });
 
 Devvit.addSchedulerJob({
   name: SCHEDULER_JOB_AGE_TICK,
-  onRun: ageTickJob
+  onRun: GrowthJob
 });
 
 const formKeyNewSnoomagotchi = Devvit.createForm(newSnoomagotchiFormConfig.form, newSnoomagotchiFormConfig.handler);
@@ -61,13 +63,18 @@ Devvit.addMenuItem({
   }
 });
 
+// Devvit.addCustomPostType({
+//   name: 'VirtualPet',
+//   render: (props) => (
+//     <blocks height="tall">
+//       <VirtualPetRoot {...props} />
+//     </blocks>
+//   ),
+// });
+
 Devvit.addCustomPostType({
   name: 'VirtualPet',
-  render: (props) => (
-    <blocks height="tall">
-      <VirtualPetRoot {...props} />
-    </blocks>
-  ),
+  render: (props) => <DeviceLayout {...props} />,
 });
 
 Devvit.addTrigger({
