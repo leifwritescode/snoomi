@@ -1,4 +1,4 @@
-import { Sick, Hungry, Unhappy, Idle, Dead, Conditions } from "../Conditions.js"
+import { Sick, Hungry, Unhappy, Idle, Hibernating, Conditions } from "../Conditions.js"
 import { Reducer } from "../Reducer.js";
 import { Influences } from "../Influences.js";
 import { SIMULATION_THRESHOLD_EXPIRY, SIMULATION_THRESHOLD_HUNGER, SIMULATION_THRESHOLD_UNHAPPY } from "../Constants.js";
@@ -29,10 +29,10 @@ export const reduceConditionSick: Reducer<Sick> = (condition, influence) => {
 
     case Influences.Time:
       if (condition.ticks >= SIMULATION_THRESHOLD_EXPIRY) {
-        return <Dead> {
+        return <Hibernating> {
           ...condition,
-          is: Conditions.Dead,
-          timeOfDeath: Date.now(),
+          is: Conditions.Hibernating,
+          timeOfHibernation: Date.now(),
           ticks: 0,
         };
       } else {

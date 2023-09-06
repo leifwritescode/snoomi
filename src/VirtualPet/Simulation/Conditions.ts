@@ -6,7 +6,7 @@ export enum Conditions {
   Pooping = "Pooping",
   Unsanitary = "Unsanitary",
   Unhappy = "Unhappy",
-  Dead = "Dead"
+  Hibernating = "Hibernating"
 };
 
 export type BaseCondition<T extends Conditions> = {
@@ -40,9 +40,9 @@ export type Unsanitary = BaseCondition<Conditions.Unsanitary>;
 export type Unhappy = BaseCondition<Conditions.Unhappy>;
 
 // the virtual pet has died
-export type Dead = BaseCondition<Conditions.Dead> & {
-  timeOfDeath: number // todo: cannot use Date because of JSON serialization
+export type Hibernating = BaseCondition<Conditions.Hibernating> & {
+  timeOfHibernation: number // todo: cannot use Date because of JSON serialization
 };
 
 // union type of all possible simulation states
-export type Condition = Egg | Idle | Sick | Hungry | Pooping | Unsanitary | Unhappy | Dead;
+export type Condition = Egg | Idle | Sick | Hungry | Pooping | Unsanitary | Unhappy | Hibernating;

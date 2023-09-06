@@ -243,8 +243,8 @@ describe(`A virtual pet in the ${Conditions.Sick} state`, () => {
   });
 
   it ('can die', () => {
-    const timeOfDeath = 1000;
-    vi.setSystemTime(timeOfDeath);
+    const timeOfHibernation = 1000;
+    vi.setSystemTime(timeOfHibernation);
 
     const sut: Condition = {
       is: Conditions.Sick,
@@ -262,13 +262,13 @@ describe(`A virtual pet in the ${Conditions.Sick} state`, () => {
     });
 
     // type narrowing to prevent editor from complaining
-    if (actual.is !== Conditions.Dead) {
-      expect(actual.is).toBe(Conditions.Dead);
+    if (actual.is !== Conditions.Hibernating) {
+      expect(actual.is).toBe(Conditions.Hibernating);
       return;
     }
 
     expect(actual.ticks).toBe(0);
-    expect(actual.timeOfDeath).toBe(timeOfDeath);
+    expect(actual.timeOfHibernation).toBe(timeOfHibernation);
     expect(actual.hunger).toBe(100);
     expect(actual.happiness).toBe(100);
     expect(actual.discipline).toBe(100);
@@ -773,16 +773,16 @@ describe(`A virtual pet in the ${Conditions.Unhappy} state`, () => {
   });
 });
 
-describe(`A virtual pet in the ${Conditions.Dead} state`, () => {
+describe(`A virtual pet in the ${Conditions.Hibernating} state`, () => {
   it('cannot be fed', () => {
     const sut: Condition = {
-      is: Conditions.Dead,
+      is: Conditions.Hibernating,
       hunger: 0xDEAD,
       happiness: 0xDEAD,
       discipline: 0xDEAD,
       weight: 0xDEAD,
       ticks: 0,
-      timeOfDeath: 0xDEAD
+      timeOfHibernation: 0xDEAD
     };
 
     const actual = reduce(sut, {
@@ -796,13 +796,13 @@ describe(`A virtual pet in the ${Conditions.Dead} state`, () => {
 
   it('cannot be played with', () => {
     const sut: Condition = {
-      is: Conditions.Dead,
+      is: Conditions.Hibernating,
       hunger: 0xDEAD,
       happiness: 0xDEAD,
       discipline: 0xDEAD,
       weight: 0xDEAD,
       ticks: 0,
-      timeOfDeath: 0xDEAD
+      timeOfHibernation: 0xDEAD
     };
 
     const actual = reduce(sut, {
@@ -815,13 +815,13 @@ describe(`A virtual pet in the ${Conditions.Dead} state`, () => {
 
   it('cannot be cleaned', () => {
     const sut: Condition = {
-      is: Conditions.Dead,
+      is: Conditions.Hibernating,
       hunger: 0xDEAD,
       happiness: 0xDEAD,
       discipline: 0xDEAD,
       weight: 0xDEAD,
       ticks: 0,
-      timeOfDeath: 0xDEAD
+      timeOfHibernation: 0xDEAD
     };
 
     const actual = reduce(sut, { with: Influences.Clean });
@@ -831,13 +831,13 @@ describe(`A virtual pet in the ${Conditions.Dead} state`, () => {
 
   it('cannot be administered medicine', () => {
     const sut: Condition = {
-      is: Conditions.Dead,
+      is: Conditions.Hibernating,
       hunger: 0xDEAD,
       happiness: 0xDEAD,
       discipline: 0xDEAD,
       weight: 0xDEAD,
       ticks: 0,
-      timeOfDeath: 0xDEAD
+      timeOfHibernation: 0xDEAD
     };
 
     const actual = reduce(sut, { with: Influences.Medicine });
@@ -847,13 +847,13 @@ describe(`A virtual pet in the ${Conditions.Dead} state`, () => {
 
   it('cannot go to the bathroom', () => {
     const sut: Condition = {
-      is: Conditions.Dead,
+      is: Conditions.Hibernating,
       hunger: 0xDEAD,
       happiness: 0xDEAD,
       discipline: 0xDEAD,
       weight: 0xDEAD,
       ticks: 0,
-      timeOfDeath: 0xDEAD
+      timeOfHibernation: 0xDEAD
     };
 
     const actual = reduce(sut, { with: Influences.Potty });
@@ -863,13 +863,13 @@ describe(`A virtual pet in the ${Conditions.Dead} state`, () => {
 
   it('cannot hatch', () => {
     const sut: Condition = {
-      is: Conditions.Dead,
+      is: Conditions.Hibernating,
       hunger: 0xDEAD,
       happiness: 0xDEAD,
       discipline: 0xDEAD,
       weight: 0xDEAD,
       ticks: 0,
-      timeOfDeath: 0xDEAD
+      timeOfHibernation: 0xDEAD
     };
 
     const actual = reduce(sut, { with: Influences.Hatch });
@@ -879,13 +879,13 @@ describe(`A virtual pet in the ${Conditions.Dead} state`, () => {
 
   it('can tick', () => {
     const sut: Condition = {
-      is: Conditions.Dead,
+      is: Conditions.Hibernating,
       hunger: 0xDEAD,
       happiness: 0xDEAD,
       discipline: 0xDEAD,
       weight: 0xDEAD,
       ticks: 0,
-      timeOfDeath: 0xDEAD
+      timeOfHibernation: 0xDEAD
     };
 
     vi.setSystemTime(0xDEAD);
@@ -898,14 +898,14 @@ describe(`A virtual pet in the ${Conditions.Dead} state`, () => {
     });
 
     // type narrowing to prevent editor from complaining
-    if (actual.is !== Conditions.Dead) {
-      expect(actual.is).toBe(Conditions.Dead);
+    if (actual.is !== Conditions.Hibernating) {
+      expect(actual.is).toBe(Conditions.Hibernating);
       return;
     }
 
     expect(actual).not.toEqual(sut);
     expect(actual.ticks).toBe(1);
-    expect(actual.timeOfDeath).toBe(0xDEAD);
+    expect(actual.timeOfHibernation).toBe(0xDEAD);
     expect(actual.hunger).toBe(0xDEAD);
     expect(actual.happiness).toBe(0xDEAD);
     expect(actual.discipline).toBe(0xDEAD);

@@ -1,6 +1,6 @@
 import { Egg, Condition, Conditions } from "./Conditions.js";
 import { Reducer } from "./Reducer.js";
-import { reduceConditionDead } from "./Reducers/Dead.js";
+import { reduceConditionHibernating } from "./Reducers/Hibernating.js";
 import { reduceConditionEgg } from "./Reducers/Egg.js";
 import { reduceConditionHungry } from "./Reducers/Hungry.js";
 import { reduceConditionIdle } from "./Reducers/Idle.js";
@@ -31,8 +31,8 @@ export const reduce: Reducer<Condition> = (condition, influence) => {
       return reduceConditionUnsanitary(condition, influence);
     case Conditions.Unhappy:
       return reduceConditionUnhappy(condition, influence);
-    case Conditions.Dead:
-      return reduceConditionDead(condition, influence);
+    case Conditions.Hibernating:
+      return reduceConditionHibernating(condition, influence);
     default:
       return condition;
   }
