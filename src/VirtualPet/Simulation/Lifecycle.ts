@@ -4,7 +4,7 @@ export enum Lifecycle {
     Adolescent,
     Adult,
     Special,
-    Dead
+    Hibernation // previously, pets could die. legal tell me snoo cannot die.
 }
 /**
  * 30x egg -- shapes, colours, patterns
