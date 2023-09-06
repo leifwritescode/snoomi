@@ -1,7 +1,7 @@
 import { Devvit } from '@devvit/public-api';
 import VirtualPetRoot from './VirtualPet/index.js';
 import { SCHEDULER_JOB_WELFARE_TICK, SCHEDULER_JOB_AGE_TICK, REDIS_KEY_AGE_TICK_JOB_ID, REDIS_KEY_WELFARE_TICK_JOB_ID, REDIS_KEY_KEITH, REDIS_KEY_WELFARE_TICK_BATCHES, REDIS_KEY_AGE_TICK_BATCHES } from './VirtualPet/constants.js';
-import { newSnoomagotchiFormConfig } from './VirtualPet/forms/newSnoomagotchiForm.js';
+import { newSnoomiFormConfig } from './VirtualPet/forms/newSnoomiForm.js';
 import TimeJob from './VirtualPet/jobs/welfareTickJob.js';
 import GrowthJob from './VirtualPet/jobs/ageTickJob.js';
 import onAppInstallOrUpgrade from './VirtualPet/triggers/onAppInstallOrUpgrade.js';
@@ -24,14 +24,14 @@ Devvit.addSchedulerJob({
   onRun: GrowthJob
 });
 
-const formKeyNewSnoomagotchi = Devvit.createForm(newSnoomagotchiFormConfig.form, newSnoomagotchiFormConfig.handler);
+const formKeyNewSnoomi = Devvit.createForm(newSnoomiFormConfig.form, newSnoomiFormConfig.handler);
 
 Devvit.addMenuItem({
-  label: "DEVMODE: Create My Snoomagotchi!",
-  description: "Create a new Snoomagotchi for the currently logged in user.",
+  label: "DEVMODE: Create My Snoomi!",
+  description: "Create a new Snoomi for the currently logged in user.",
   location: "subreddit",
   forUserType: ["moderator"],
-  onPress: (_, context) => context.ui.showForm(formKeyNewSnoomagotchi)
+  onPress: (_, context) => context.ui.showForm(formKeyNewSnoomi)
 });
 
 Devvit.addMenuItem({

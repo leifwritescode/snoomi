@@ -19,7 +19,7 @@ const VirtualPetView: VirtualPetComponent = ({reddit, useState, getVirtualPet, s
   const virtualPet = getVirtualPet();
 
   // hide the control deck if this pet belongs to a different user (but show it if its the default)
-  // todo control deck should change as the snoomagotchi ages
+  // todo control deck should change as the Snoomi ages
   const controlDeck = virtualPet.owner === currentUsername || virtualPet.owner === "The Computer" ? (
     <hstack backgroundColor="white" padding="medium" gap="large">
       <button grow onPress={() => setViewState({ name: ViewActionName.GoToMealSelect })} disabled={getIsServerCall()}>Food</button>

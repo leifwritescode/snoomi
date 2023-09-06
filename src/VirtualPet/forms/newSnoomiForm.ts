@@ -2,18 +2,18 @@ import { makeNewVirtualPet } from "../VirtualPet.js";
 import { REDIS_KEY_AGE_TICK_BATCHES, REDIS_KEY_WELFARE_TICK_BATCHES } from "../constants.js";
 import { FormConfig } from "./Form.js";
 
-export const newSnoomagotchiFormConfig: FormConfig = {
+export const newSnoomiFormConfig: FormConfig = {
   form: {
-    title: "Create a new Snoomagotchi",
-    description: "Use this form to create a brand new snoomagotchi woohoo",
+    title: "Create a new Snoomi",
+    description: "Use this form to create a brand new Snoomi woohoo",
     acceptLabel: "Hatch!",
     cancelLabel: "Cancel",
     fields: [
     {
       type: "string",
       name: "virtualPetName",
-      label: "What Will Your Snoomagotchi's Name Be?",
-      helpText: "Snoomagotchi are genderless. We reserve the right to destroy Snoomagotchi that have inappropriate or offensive names.",
+      label: "What Will Your Snoomi's Name Be?",
+      helpText: "Snoomi are genderless. We reserve the right to destroy Snoomi that have inappropriate or offensive names.",
       required: true,
     },
     {
@@ -41,7 +41,7 @@ export const newSnoomagotchiFormConfig: FormConfig = {
         type: "boolean",
         name: "funMode",
         label: "Enable Fun Mode",
-        helpText: "Fun-Mode Snoomagotchi cannot die, cannot breed, and do not contribute to population metrics. You may have up to three fun-mode Snoomagotchi."
+        helpText: "Fun-Mode Snoomi cannot die, cannot breed, and do not contribute to population metrics. You may have up to three fun-mode Snoomi."
       }
     ]
   },
@@ -56,9 +56,9 @@ export const newSnoomagotchiFormConfig: FormConfig = {
   
     const subreddit = await context.reddit.getCurrentSubreddit();
     const post = await context.reddit.submitPost({
-      title: `${owner.username}'s Snoomagotchi, ${virtualPetName}`,
+      title: `${owner.username}'s Snoomi, ${virtualPetName}`,
       subredditName: subreddit.name,
-      preview: `Loading ${owner.username}'s Snoomagotchi...`
+      preview: `Loading ${owner.username}'s Snoomi...`
     });
   
     await context.kvStore.put(post.id, virtualPet);
