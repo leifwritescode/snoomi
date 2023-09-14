@@ -1,4 +1,4 @@
-import { CustomPostType, Devvit } from "@devvit/public-api";
+import { Devvit } from "@devvit/public-api";
 import { ViewStateName } from "../types/ViewState.js";
 import { exception } from "../utilities.js";
 import Element = JSX.Element;
@@ -26,9 +26,4 @@ const VirtualPet: CustomPostComponent = (context) => {
   );
 };
 
-const VirtualPetCustomPost: CustomPostType = {
-  name: 'VirtualPet',
-  render: (context) => <VirtualPet { ...context } />
-};
-
-export default VirtualPetCustomPost;
+export default VirtualPet;

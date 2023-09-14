@@ -2,7 +2,7 @@ import { AppInstall, AppUpgrade, Devvit, MultiTriggerDefinition } from '@devvit/
 import { SCHEDULER_JOB_WELFARE_TICK, SCHEDULER_JOB_AGE_TICK, REDIS_KEY_AGE_TICK_JOB_ID, REDIS_KEY_WELFARE_TICK_JOB_ID, REDIS_KEY_KEITH, REDIS_KEY_WELFARE_TICK_BATCHES, REDIS_KEY_AGE_TICK_BATCHES } from './constants.js';
 import { newSnoomiFormConfig } from './devvit/forms/newSnoomiForm.js';
 import AppInstallOrUpgradeTrigger from './devvit/triggers/onAppInstallOrUpgrade.js';
-import VirtualPetCustomPost from './components/VirtualPet.js';
+import VirtualPetCustomPost from './devvit/custom-posts/VirtualPetCustomPost.js';
 import ScheduledJobTime from './devvit/jobs/welfareTickJob.js';
 import ScheduledJobGrowth from './devvit/jobs/ageTickJob.js';
 
