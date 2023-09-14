@@ -20,6 +20,7 @@ export function sparseArray<T>(size: number, defaultValue: T) : T[] {
    return new Array<T>(size).fill(defaultValue);
 }
 
+// provides a way to use throw as if it were an expression
 export function exception(message: string | undefined) : never {
    throw new Error(message);
 }

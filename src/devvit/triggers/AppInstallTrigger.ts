@@ -1,7 +1,6 @@
 import {
   AppInstall,
-  AppUpgrade,
-  MultiTriggerDefinition,
+  AppInstallDefinition,
   TriggerEventType,
   TriggerOnEventHandler
 } from "@devvit/public-api";
@@ -17,7 +16,7 @@ import {
 import { VirtualPet, makeNewVirtualPet } from "../../VirtualPet.js";
 import { sparseArray } from "../../utilities.js";
 
-const onAppInstallOrUpgrade: TriggerOnEventHandler<TriggerEventType[AppInstall] | TriggerEventType[AppUpgrade]> = async (_, context) => {
+const onAppInstall: TriggerOnEventHandler<TriggerEventType[AppInstall]> = async (_, context) => {
     // The age tickover happens once per hour.
     // During each tickover, a batch of virtual pets (determined by the hour of birth) is ticked over.
     // Each virtual pet has its age ticked over once per day using this mechanism.
@@ -70,9 +69,9 @@ const onAppInstallOrUpgrade: TriggerOnEventHandler<TriggerEventType[AppInstall] 
     }
 }
 
-const AppInstallOrUpgradeTrigger: MultiTriggerDefinition<AppInstall | AppUpgrade> = {
-  events: [ 'AppInstall', 'AppUpgrade' ],
-  onEvent: onAppInstallOrUpgrade
+const AppInstallTrigger: AppInstallDefinition = {
+  event: 'AppInstall',
+  onEvent: onAppInstall
 };
 
-export default AppInstallOrUpgradeTrigger;
+export default AppInstallTrigger;
