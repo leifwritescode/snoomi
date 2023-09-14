@@ -1,5 +1,5 @@
 import { Devvit } from "@devvit/public-api";
-import { Component } from "./Component.js";
+import { Component } from "../views/components/Component.js";
 
 interface ProgressBarProps {
   progress: number,

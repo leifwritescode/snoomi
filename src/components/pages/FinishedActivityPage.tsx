@@ -1,8 +1,8 @@
 import { Devvit } from "@devvit/public-api";
-import { VirtualPetComponent } from "./VirtualPetComponent.js";
-import { getRandomElementFromArray } from "../utilities.js";
-import { ViewActionName, ViewStateName } from "../types/ViewState.js";
-import ProgressBar from "./components/ProgressBar.js";
+import { getRandomElementFromArray } from "../../utilities.js";
+import { ViewActionName, ViewStateName } from "../../types/ViewState.js";
+import ProgressBar from "../ProgressBar.js";
+import { Page } from "../Page.js";
 
 const exclamations = [
   "That was an absolute blast – so much fun!"
@@ -47,9 +47,9 @@ const exclamations = [
   ,"Today was a reminder that happiness is found in simple pleasures!"
 ];
 
-const FinishedActivityView: VirtualPetComponent = ({setViewState, getViewState, getVirtualPet, useState}) => {
-    const virtualPet = getVirtualPet();
-    const viewState = getViewState();
+const FinishedActivityPage: Page = ({ game }, { useState }) => {
+    const virtualPet = game.virtualPet;
+    const viewState = game.viewState;
 
     const [exclamation] = useState(getRandomElementFromArray(exclamations));
 
@@ -66,9 +66,9 @@ const FinishedActivityView: VirtualPetComponent = ({setViewState, getViewState, 
           <ProgressBar progress={60} icon="👮" text="+10 Discipline"/>
         </vstack>
         <text size="large" style="body">{exclamation}</text>
-        <button appearance="success" onPress={() => setViewState({ name: ViewActionName.GoToVirtualPet })}>Go to Pet</button>
+        <button appearance="success" onPress={() => game.navigate({ name: ViewActionName.GoToVirtualPet })}>Go to Pet</button>
       </vstack>
     );
 };
 
-export default FinishedActivityView;
+export default FinishedActivityPage;

@@ -1,13 +1,13 @@
 import { Egg, Condition, Conditions } from "./Conditions.js";
 import { Reducer } from "./Reducer.js";
-import { reduceConditionHibernating } from "./Reducers/Hibernating.js";
-import { reduceConditionEgg } from "./Reducers/Egg.js";
-import { reduceConditionHungry } from "./Reducers/Hungry.js";
-import { reduceConditionIdle } from "./Reducers/Idle.js";
-import { reduceConditionPooping } from "./Reducers/Pooping.js";
-import { reduceConditionSick } from "./Reducers/Sick.js";
-import { reduceConditionUnhappy } from "./Reducers/Unhappy.js";
-import { reduceConditionUnsanitary } from "./Reducers/Unsanitary.js";
+import { reduceConditionHibernating } from "./reducers/Hibernating.js";
+import { reduceConditionEgg } from "./reducers/Egg.js";
+import { reduceConditionHungry } from "./reducers/Hungry.js";
+import { reduceConditionIdle } from "./reducers/Idle.js";
+import { reduceConditionPooping } from "./reducers/Pooping.js";
+import { reduceConditionSick } from "./reducers/Sick.js";
+import { reduceConditionUnhappy } from "./reducers/Unhappy.js";
+import { reduceConditionUnsanitary } from "./reducers/Unsanitary.js";
 
 /**
  * {@link Condition} reducer

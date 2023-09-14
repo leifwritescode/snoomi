@@ -1,7 +1,7 @@
 import { Devvit } from "@devvit/public-api";
-import { VirtualPetComponent } from "./VirtualPetComponent.js";
-import { ViewActionName } from "../types/ViewState.js";
-import { DefaultMeal } from "../Nutrition/Plate.js";
+import { ViewActionName } from "../../types/ViewState.js";
+import { DefaultMeal } from "../../Nutrition/Plate.js";
+import { Page } from "../Page.js";
 
 /*
 
@@ -38,7 +38,7 @@ import { DefaultMeal } from "../Nutrition/Plate.js";
 
       // todo meal creation screen!
 
-const MealSelectView: VirtualPetComponent = ({useState, setViewState}) => {
+const MealSelectPage: Page = ({ game }, { useState }) => {
   const [selectedMeal, setSelectedMeal] = useState<DefaultMeal>(DefaultMeal.OnePotMeal);
 
   return (
@@ -53,15 +53,15 @@ const MealSelectView: VirtualPetComponent = ({useState, setViewState}) => {
         </hstack>
         <hstack gap="medium">
           <button
-            onPress={() => setViewState({ name: ViewActionName.GoToVirtualPet })}
+            onPress={() => game.navigate({ name: ViewActionName.GoToVirtualPet })}
             appearance="bordered">Go Back</button>
           <button
             disabled={selectedMeal === DefaultMeal.OnePotMeal}
-            onPress={() => setViewState({ name: ViewActionName.GoToFinishedMeal, meal: selectedMeal })}
+            onPress={() => game.navigate({ name: ViewActionName.GoToFinishedMeal, meal: selectedMeal })}
             appearance="primary">Food {selectedMeal}</button>
         </hstack>
       </vstack>
   );
 };
 
-export default MealSelectView;
+export default MealSelectPage;
