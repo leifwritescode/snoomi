@@ -1,12 +1,13 @@
 import { Devvit } from '@devvit/public-api';
-import VirtualPetRoot from './VirtualPet/index.js';
-import { SCHEDULER_JOB_WELFARE_TICK, SCHEDULER_JOB_AGE_TICK, REDIS_KEY_AGE_TICK_JOB_ID, REDIS_KEY_WELFARE_TICK_JOB_ID, REDIS_KEY_KEITH, REDIS_KEY_WELFARE_TICK_BATCHES, REDIS_KEY_AGE_TICK_BATCHES } from './VirtualPet/constants.js';
-import { newSnoomiFormConfig } from './VirtualPet/forms/newSnoomiForm.js';
-import TimeJob from './VirtualPet/jobs/welfareTickJob.js';
-import GrowthJob from './VirtualPet/jobs/ageTickJob.js';
-import onAppInstallOrUpgrade from './VirtualPet/triggers/onAppInstallOrUpgrade.js';
+import VirtualPetRoot from './index.js';
+import { SCHEDULER_JOB_WELFARE_TICK, SCHEDULER_JOB_AGE_TICK, REDIS_KEY_AGE_TICK_JOB_ID, REDIS_KEY_WELFARE_TICK_JOB_ID, REDIS_KEY_KEITH, REDIS_KEY_WELFARE_TICK_BATCHES, REDIS_KEY_AGE_TICK_BATCHES } from './constants.js';
+import { newSnoomiFormConfig } from './forms/newSnoomiForm.js';
+import TimeJob from './jobs/welfareTickJob.js';
+import GrowthJob from './jobs/ageTickJob.js';
+import onAppInstallOrUpgrade from './triggers/onAppInstallOrUpgrade.js';
 import { VisualMealConstructionView } from './Experiments/VisualMealConstruction.js';
 import { DeviceLayout } from './Experiments/DeviceLayout.js';
+import VirtualPet from './components/VirtualPet.js';
 
 Devvit.configure({
   redditAPI: true,
@@ -63,18 +64,9 @@ Devvit.addMenuItem({
   }
 });
 
-// Devvit.addCustomPostType({
-//   name: 'VirtualPet',
-//   render: (props) => (
-//     <blocks height="tall">
-//       <VirtualPetRoot {...props} />
-//     </blocks>
-//   ),
-// });
-
 Devvit.addCustomPostType({
   name: 'VirtualPet',
-  render: (props) => <DeviceLayout {...props} />,
+  render: (context) => <VirtualPet { ...context } />
 });
 
 Devvit.addTrigger({

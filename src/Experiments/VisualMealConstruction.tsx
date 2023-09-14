@@ -1,6 +1,6 @@
 import { Devvit } from "@devvit/public-api";
-import { FoodGroup } from "../VirtualPet/Nutrition/FoodGroups.js";
-import { Plate } from "../VirtualPet/Nutrition/Plate.js";
+import { FoodGroup } from "../Nutrition/FoodGroups.js";
+import { Plate } from "../Nutrition/Plate.js";
 
 const FoodGroupColor = {
   [FoodGroup.Meat]: 'firebrick',

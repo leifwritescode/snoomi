@@ -1,13 +1,13 @@
 import {
   NUMERICS_MAX_DATE_MS
-} from "../src/VirtualPet/constants.js";
+} from "../src/constants.js";
 import {
   Condition,
   Conditions
-} from "../src/VirtualPet/Simulation/Conditions.js";
+} from "../src/Simulation/Conditions.js";
 import {
   Influences
-} from "../src/VirtualPet/Simulation/Influences.js";
+} from "../src/Simulation/Influences.js";
 import {
   vi,
   expect,
@@ -18,9 +18,9 @@ import {
   describe,
   it
 } from 'vitest';
-import { Activity } from "../src/VirtualPet/enums/Activity.js";
-import { reduce } from "../src/VirtualPet/Simulation/index.js";
-import { DefaultPlates } from "../src/VirtualPet/Nutrition/Plate.js";
+import { Activity } from "../src/enums/Activity.js";
+import { reduce } from "../src/Simulation/index.js";
+import { DefaultPlates } from "../src/Nutrition/Plate.js";
 import { testVirtualPet } from "./pet.js";
 
 const fakeRandom = vi.spyOn(global.Math, 'random');
