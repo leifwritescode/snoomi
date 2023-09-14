@@ -1,14 +1,8 @@
-import { Context } from "@devvit/public-api";
-import { VirtualPet } from "../VirtualPet.js";
-import { ViewAction, ViewState } from "../types/ViewState.js";
+import { Devvit } from "@devvit/public-api";
+import VirtualPetGame from "../VirtualPetGame.js";
 
-export type VirtualPetComponentContext = Context & {
-  getVirtualPet: () => VirtualPet;
-  setVirtualPet: (virtualPet: VirtualPet) => void;
-  getViewState: () => ViewState
-  setViewState: (action: ViewAction) => void;
-  onServer: (delegate: {():void}) => void;
-  getIsServerCall: () => boolean;
-}
+export type VirtualPetComponentProps = {
+  game: VirtualPetGame
+};
 
-export type VirtualPetComponent = (context: VirtualPetComponentContext) => JSX.Element;
+export type VirtualPetComponent = Devvit.BlockComponent<VirtualPetComponentProps>;

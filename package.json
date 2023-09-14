@@ -10,7 +10,6 @@
     "test": "npm run vitest:run",
     "playtest": "npm run devvit:playtest",
     "update-deps": "npm run devvit:update",
-  
     "devvit:install": "npm install -g devvit",
     "devvit:login": "devvit login",
     "devvit:playtest": "devvit playtest absurdlyangryhonking",
@@ -20,10 +19,10 @@
     "tsc:build-no-emit": "tsc --strict --noEmit"
   },
   "dependencies": {
-    "@devvit/public-api": "0.10.3"
+    "@devvit/public-api": "0.10.4"
   },
   "devDependencies": {
-    "@devvit/tsconfig": "0.10.3",
+    "@devvit/tsconfig": "0.10.4",
     "typescript": "4.9.3",
     "vitest": "^0.32.4"
   }
