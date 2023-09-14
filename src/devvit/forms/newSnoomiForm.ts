@@ -1,6 +1,6 @@
-import { makeNewVirtualPet } from "../VirtualPet.js";
-import { REDIS_KEY_AGE_TICK_BATCHES, REDIS_KEY_WELFARE_TICK_BATCHES } from "../constants.js";
-import { FormConfig } from "./Form.js";
+import { makeNewVirtualPet } from "../../VirtualPet.js";
+import { REDIS_KEY_AGE_TICK_BATCHES, REDIS_KEY_WELFARE_TICK_BATCHES } from "../../constants.js";
+import FormConfig from "../extensions/FormConfig.js";
 
 export const newSnoomiFormConfig: FormConfig = {
   form: {

@@ -1,5 +1,5 @@
-import { Genotype } from "../Genetics/Genotype.js";
-import { Plate } from "../Nutrition/Plate.js";
+import { Genotype } from "../genetics/Genotype.js";
+import { Plate } from "../nutrition/Plate.js";
 import { Activity } from "../enums/Activity.js";
 
 export enum Influences {

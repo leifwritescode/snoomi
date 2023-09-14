@@ -1,6 +1,6 @@
-import { Genotype, newFirstGenerationGenotype } from "./Genetics/Genotype.js";
-import { initialCondition } from "./Simulation/index.js"
-import { Condition } from "./Simulation/Conditions.js";
+import { Genotype, newFirstGenerationGenotype } from "./genetics/Genotype.js";
+import { initialCondition } from "./simulation/index.js"
+import { Condition } from "./simulation/Conditions.js";
 
 /**
  * A virtual pet

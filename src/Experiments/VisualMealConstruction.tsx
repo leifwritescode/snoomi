@@ -1,6 +1,6 @@
 import { Devvit } from "@devvit/public-api";
-import { FoodGroup } from "../Nutrition/FoodGroups.js";
-import { Plate } from "../Nutrition/Plate.js";
+import { FoodGroup } from "../nutrition/FoodGroups.js";
+import { Plate } from "../nutrition/Plate.js";
 
 const FoodGroupColor = {
   [FoodGroup.Meat]: 'firebrick',

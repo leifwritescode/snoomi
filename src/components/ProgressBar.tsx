@@ -1,15 +1,8 @@
 import { Devvit } from "@devvit/public-api";
-import { Component } from "../views/components/Component.js";
+import { ProgressBarProps } from "./ProgressBarProps.js";
+import BlockComponent = Devvit.BlockComponent;
 
-interface ProgressBarProps {
-  progress: number,
-  icon?: string,
-  text?: string,
-  bgcolor?: string,
-  fgcolor?: string,
-}
-
-const ProgressBar: Component<ProgressBarProps> = ({ progress, icon, text, bgcolor, fgcolor }) => {
+const ProgressBar: BlockComponent<ProgressBarProps> = ({ progress, icon, text, bgcolor, fgcolor }) => {
   return (
     <hstack grow gap="small">
       <text size="large" color="black" outline="none">{icon}</text>

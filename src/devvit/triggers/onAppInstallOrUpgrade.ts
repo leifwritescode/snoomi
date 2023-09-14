@@ -1,6 +1,7 @@
 import {
   AppInstall,
   AppUpgrade,
+  MultiTriggerDefinition,
   TriggerEventType,
   TriggerOnEventHandler
 } from "@devvit/public-api";
@@ -12,9 +13,9 @@ import {
   REDIS_KEY_KEITH,
   REDIS_KEY_WELFARE_TICK_BATCHES,
   REDIS_KEY_AGE_TICK_BATCHES
-} from "../constants.js";
-import { VirtualPet, makeNewVirtualPet } from "../VirtualPet.js";
-import { sparseArray } from "../utilities.js";
+} from "../../constants.js";
+import { VirtualPet, makeNewVirtualPet } from "../../VirtualPet.js";
+import { sparseArray } from "../../utilities.js";
 
 const onAppInstallOrUpgrade: TriggerOnEventHandler<TriggerEventType[AppInstall] | TriggerEventType[AppUpgrade]> = async (_, context) => {
     // The age tickover happens once per hour.
@@ -69,4 +70,9 @@ const onAppInstallOrUpgrade: TriggerOnEventHandler<TriggerEventType[AppInstall] 
     }
 }
 
-export default onAppInstallOrUpgrade;
+const AppInstallOrUpgradeTrigger: MultiTriggerDefinition<AppInstall | AppUpgrade> = {
+  events: [ 'AppInstall', 'AppUpgrade' ],
+  onEvent: onAppInstallOrUpgrade
+};
+
+export default AppInstallOrUpgradeTrigger;

@@ -1,6 +1,6 @@
 import { Devvit } from "@devvit/public-api";
 import { ViewActionName } from "../../types/ViewState.js";
-import { DefaultMeal } from "../../Nutrition/Plate.js";
+import { DefaultMeal } from "../../nutrition/Plate.js";
 import { Page } from "../Page.js";
 
 /*

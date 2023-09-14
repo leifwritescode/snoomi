@@ -5,7 +5,7 @@ import { Idle, Sick, Pooping, Unhappy, Hungry } from "../Conditions.js";
 import { clamp } from "../../math.js";
 import { randomPoopingOccurs, randomSicknessOccurs } from "../Random.js";
 import { SIMULATION_THRESHOLD_HUNGER, SIMULATION_THRESHOLD_UNHAPPY } from "../Constants.js";
-import { calculateNutritionalScore } from "../../Nutrition/Algorithm.js";
+import { calculateNutritionalScore } from "../../nutrition/Algorithm.js";
 
 export const reduceConditionIdle: Reducer<Idle> = (condition, influence) => {
   var hunger: number;

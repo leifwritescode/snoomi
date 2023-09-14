@@ -4,10 +4,10 @@ import {
 import {
   Condition,
   Conditions
-} from "../src/Simulation/Conditions.js";
+} from "../src/simulation/Conditions.js";
 import {
   Influences
-} from "../src/Simulation/Influences.js";
+} from "../src/simulation/Influences.js";
 import {
   vi,
   expect,
@@ -19,8 +19,8 @@ import {
   it
 } from 'vitest';
 import { Activity } from "../src/enums/Activity.js";
-import { reduce } from "../src/Simulation/index.js";
-import { DefaultPlates } from "../src/Nutrition/Plate.js";
+import { reduce } from "../src/simulation/index.js";
+import { DefaultPlates } from "../src/nutrition/Plate.js";
 import { testVirtualPet } from "./pet.js";
 
 const fakeRandom = vi.spyOn(global.Math, 'random');

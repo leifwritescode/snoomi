@@ -1,6 +1,6 @@
 import { VirtualPet } from "../src/VirtualPet.js";
-import { Gene } from "../src/Genetics/Genotype.js";
-import { Conditions } from "../src/Simulation/Conditions.js";
+import { Gene } from "../src/genetics/Genotype.js";
+import { Conditions } from "../src/simulation/Conditions.js";
 
 const zero: Gene = { primary: 0, hidden0: 0, hidden1: 0, hidden2: 0 };
 

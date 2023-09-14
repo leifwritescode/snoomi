@@ -7,6 +7,7 @@ class VirtualPetGame {
   private readonly _petId: string;
   private readonly _virtualPet: UseStateResult<VirtualPet>;
   private readonly _viewState: UseStateResult<ViewState>;
+  private _onServer: boolean;
 
   constructor({ useState, kvStore, postId }: Context) {
     this._petId = postId ?? exception('postId is not set');
@@ -17,6 +18,8 @@ class VirtualPetGame {
     this._viewState = useState(initialViewState());
 
     // todo interval for refreshing pet information
+
+    this._onServer = false;
   }
 
   get virtualPet() : VirtualPet {
@@ -37,6 +40,10 @@ class VirtualPetGame {
     const reducedViewState = reduce(this._viewState[0], action);
     this._viewState[0] = reducedViewState;
     this._viewState[1](reducedViewState);
+  }
+
+  get onServer() : boolean {
+    return this._onServer;
   }
 }
 

@@ -1,10 +1,10 @@
-import { ScheduledJobHandler } from "@devvit/public-api";
-import { VirtualPet } from "../VirtualPet.js";
-import { REDIS_KEY_WELFARE_TICK_BATCHES } from "../constants.js";
-import { reduce } from "../Simulation/index.js";
-import { Influences } from "../Simulation/Influences.js";
+import { ScheduledJobHandler, ScheduledJobType } from "@devvit/public-api";
+import { VirtualPet } from "../../VirtualPet.js";
+import { REDIS_KEY_WELFARE_TICK_BATCHES, SCHEDULER_JOB_WELFARE_TICK } from "../../constants.js";
+import { reduce } from "../../simulation/index.js";
+import { Influences } from "../../simulation/Influences.js";
 
-const TimeJob: ScheduledJobHandler = async (_, { kvStore }) => {
+const schedulerJobTime: ScheduledJobHandler = async (_, { kvStore }) => {
   const batches = await kvStore.get<string[][]>(REDIS_KEY_WELFARE_TICK_BATCHES);
   if (batches === undefined) {
     console.log("No welfare batches are configured.");
@@ -40,4 +40,9 @@ const TimeJob: ScheduledJobHandler = async (_, { kvStore }) => {
   console.log(`Finished processing ${pets.length} pets in batch H+${now.getMinutes()}.`);
 }
 
-export default TimeJob;
+const ScheduledJobTime: ScheduledJobType = {
+  name: SCHEDULER_JOB_WELFARE_TICK,
+  onRun: schedulerJobTime
+};
+
+export default ScheduledJobTime;

@@ -1,4 +1,4 @@
-import { Genotype, Nutrition } from "../Genetics/Genotype.js";
+import { Genotype, Nutrition } from "../genetics/Genotype.js";
 import { clamp } from "../math.js";
 import { NUTRITION_BASE_SCORE_PER_ITEM, NUTRITION_SCORE_MAX, NUTRITION_SCORE_MIN } from "./Constants.js";
 import { Plate } from "./Plate.js";
