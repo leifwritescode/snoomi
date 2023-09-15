@@ -19,7 +19,7 @@ import {
   it
 } from 'vitest';
 import { Activity } from "../src/enums/Activity.js";
-import { reduce } from "../src/simulation/index.js";
+import { simulate } from "../src/simulation/index.js";
 import { DefaultPlates } from "../src/nutrition/Plate.js";
 import { testVirtualPet } from "./pet.js";
 
@@ -50,7 +50,7 @@ describe(`A virtual pet in the ${Conditions.InEgg} state`, () => {
       ticks: 0
     };
 
-    const actual = reduce(sut, { with: Influences.Hatch });
+    const actual = simulate(sut, { with: Influences.Hatch });
 
     // todo these will change to "sensible" defaults that are based on genetics
     expect(actual.is).toBe(Conditions.InGoodHealth);
@@ -73,7 +73,7 @@ describe(`A virtual pet in the ${Conditions.InGoodHealth} state`, () => {
       ticks: 3
     };
 
-    const actual = reduce(sut, {
+    const actual = simulate(sut, {
       with: Influences.Time,
       hunger: 10,
       happiness: 20,
@@ -98,7 +98,7 @@ describe(`A virtual pet in the ${Conditions.InGoodHealth} state`, () => {
       ticks: 1
     };
 
-    const actual = reduce(sut, {
+    const actual = simulate(sut, {
       with: Influences.Time,
       hunger: 10,
       happiness: 0,
@@ -123,7 +123,7 @@ describe(`A virtual pet in the ${Conditions.InGoodHealth} state`, () => {
       ticks: 1
     };
 
-    const actual = reduce(sut, {
+    const actual = simulate(sut, {
       with: Influences.Time,
       happiness: 10,
       hunger: 10,
@@ -149,7 +149,7 @@ describe(`A virtual pet in the ${Conditions.InGoodHealth} state`, () => {
       ticks: 0
     };
 
-    const actual = reduce(sut, {
+    const actual = simulate(sut, {
       with: Influences.Time,
       hunger: 0,
       happiness: 10,
@@ -177,7 +177,7 @@ describe(`A virtual pet in the ${Conditions.InGoodHealth} state`, () => {
       ticks: 2
     };
 
-    const actual = reduce(sut, {
+    const actual = simulate(sut, {
       with: Influences.Time,
       happiness: 0,
       hunger: 0,
@@ -205,7 +205,7 @@ describe(`A virtual pet in the ${Conditions.InGoodHealth} state`, () => {
       ticks: 2
     };
 
-    const actual = reduce(sut, {
+    const actual = simulate(sut, {
       with: Influences.Time,
       happiness: 0,
       hunger: 0,
@@ -232,7 +232,7 @@ describe(`A virtual pet in the ${Conditions.Sick} state`, () => {
       ticks: 2
     };
 
-    const actual = reduce(sut, { with: Influences.Medicine });
+    const actual = simulate(sut, { with: Influences.Medicine });
 
     expect(actual.is).toBe(Conditions.InGoodHealth);
     expect(actual.ticks).toBe(0);
@@ -255,7 +255,7 @@ describe(`A virtual pet in the ${Conditions.Sick} state`, () => {
       ticks: 3
     };
 
-    const actual = reduce(sut, { with: Influences.Time,
+    const actual = simulate(sut, { with: Influences.Time,
       happiness: 0,
       hunger: 0,
       discipline: 0,
@@ -285,7 +285,7 @@ describe(`A virtual pet in the ${Conditions.Sick} state`, () => {
       ticks: 0
     };
 
-    const actual = reduce(sut, { with: Influences.Medicine });
+    const actual = simulate(sut, { with: Influences.Medicine });
 
     expect(actual.is).toBe(Conditions.Hungry);
     expect(actual.ticks).toBe(0);
@@ -305,7 +305,7 @@ describe(`A virtual pet in the ${Conditions.Sick} state`, () => {
       ticks: 0
     };
 
-    const actual = reduce(sut, { with: Influences.Medicine });
+    const actual = simulate(sut, { with: Influences.Medicine });
 
     expect(actual.is).toBe(Conditions.Hungry);
     expect(actual.ticks).toBe(0);
@@ -325,7 +325,7 @@ describe(`A virtual pet in the ${Conditions.Sick} state`, () => {
       ticks: 0
     };
 
-    const actual = reduce(sut, { with: Influences.Medicine });
+    const actual = simulate(sut, { with: Influences.Medicine });
 
     expect(actual.is).toBe(Conditions.Unhappy);
     expect(actual.ticks).toBe(0);
@@ -347,7 +347,7 @@ describe(`A virtual pet in the ${Conditions.Hungry} state`, () => {
       ticks: 2
     };
 
-    const actual = reduce(sut, {
+    const actual = simulate(sut, {
       with: Influences.Food,
       plate: DefaultPlates.Hamburger,
       genes: testVirtualPet.genotype
@@ -371,7 +371,7 @@ describe(`A virtual pet in the ${Conditions.Hungry} state`, () => {
       ticks: 2
     };
 
-    const actual = reduce(sut, {
+    const actual = simulate(sut, {
       with: Influences.Food,
       plate: DefaultPlates.Hamburger,
       genes: testVirtualPet.genotype
@@ -395,7 +395,7 @@ describe(`A virtual pet in the ${Conditions.Hungry} state`, () => {
       ticks: 2
     };
 
-    const actual = reduce(sut, {
+    const actual = simulate(sut, {
       with: Influences.Food,
       plate: DefaultPlates.Hamburger,
       genes: testVirtualPet.genotype
@@ -419,7 +419,7 @@ describe(`A virtual pet in the ${Conditions.Hungry} state`, () => {
       ticks: 3
     };
 
-    const actual = reduce(sut, {
+    const actual = simulate(sut, {
       with: Influences.Time,
       happiness: 0,
       hunger: 0,
@@ -446,7 +446,7 @@ describe(`A virtual pet in the ${Conditions.Pooping} state`, () => {
       ticks: 3
     };
 
-    const actual = reduce(sut, {
+    const actual = simulate(sut, {
       with: Influences.Time,
       happiness: 0,
       hunger: 0,
@@ -471,7 +471,7 @@ describe(`A virtual pet in the ${Conditions.Pooping} state`, () => {
       ticks: 3
     };
       
-    const actual = reduce(sut, { with: Influences.Potty });
+    const actual = simulate(sut, { with: Influences.Potty });
 
     expect(actual.is).toBe(Conditions.Unhappy);
     expect(actual.ticks).toBe(0);
@@ -491,7 +491,7 @@ describe(`A virtual pet in the ${Conditions.Pooping} state`, () => {
       ticks: 3
     };
 
-    const actual = reduce(sut, { with: Influences.Potty });
+    const actual = simulate(sut, { with: Influences.Potty });
 
     expect(actual.is).toBe(Conditions.Hungry);
     expect(actual.ticks).toBe(0);
@@ -511,7 +511,7 @@ describe(`A virtual pet in the ${Conditions.Pooping} state`, () => {
       ticks: 3
     };
 
-    const actual = reduce(sut, { with: Influences.Potty });
+    const actual = simulate(sut, { with: Influences.Potty });
 
     expect(actual.is).toBe(Conditions.Hungry);
     expect(actual.ticks).toBe(0);
@@ -531,7 +531,7 @@ describe(`A virtual pet in the ${Conditions.Pooping} state`, () => {
       ticks: 3
     };
 
-    const actual = reduce(sut, { with: Influences.Potty });
+    const actual = simulate(sut, { with: Influences.Potty });
 
     expect(actual.is).toBe(Conditions.InGoodHealth);
     expect(actual.ticks).toBe(0);
@@ -553,7 +553,7 @@ describe(`A virtual pet in the ${Conditions.Unsanitary} state`, () => {
       ticks: 3
     };
 
-    const actual = reduce(sut, { with: Influences.Clean });
+    const actual = simulate(sut, { with: Influences.Clean });
 
     expect(actual.is).toBe(Conditions.InGoodHealth);
     expect(actual.ticks).toBe(0);
@@ -573,7 +573,7 @@ describe(`A virtual pet in the ${Conditions.Unsanitary} state`, () => {
       ticks: 3
     };
 
-    const actual = reduce(sut, { with: Influences.Clean });
+    const actual = simulate(sut, { with: Influences.Clean });
 
     expect(actual.is).toBe(Conditions.Unhappy);
     expect(actual.ticks).toBe(0);
@@ -593,7 +593,7 @@ describe(`A virtual pet in the ${Conditions.Unsanitary} state`, () => {
       ticks: 3
     };
 
-    const actual = reduce(sut, { with: Influences.Clean });
+    const actual = simulate(sut, { with: Influences.Clean });
 
     expect(actual.is).toBe(Conditions.Hungry);
     expect(actual.ticks).toBe(0);
@@ -613,7 +613,7 @@ describe(`A virtual pet in the ${Conditions.Unsanitary} state`, () => {
       ticks: 3
     };
 
-    const actual = reduce(sut, { with: Influences.Clean });
+    const actual = simulate(sut, { with: Influences.Clean });
 
     expect(actual.is).toBe(Conditions.Hungry);
     expect(actual.ticks).toBe(0);
@@ -633,7 +633,7 @@ describe(`A virtual pet in the ${Conditions.Unsanitary} state`, () => {
       ticks: 3
     };
 
-    const actual = reduce(sut, { with: Influences.Time,
+    const actual = simulate(sut, { with: Influences.Time,
       happiness: 0,
       hunger: 0,
       discipline: 0,
@@ -659,7 +659,7 @@ describe(`A virtual pet in the ${Conditions.Unhappy} state`, () => {
       ticks: 1
     };
 
-    const actual = reduce(sut, {
+    const actual = simulate(sut, {
       with: Influences.Time,
       hunger: 10,
       happiness: 20,
@@ -684,7 +684,7 @@ describe(`A virtual pet in the ${Conditions.Unhappy} state`, () => {
       ticks: 3
     };
 
-    const actual = reduce(sut, {
+    const actual = simulate(sut, {
       with: Influences.Play,
       activity: Activity.Football
     });
@@ -707,7 +707,7 @@ describe(`A virtual pet in the ${Conditions.Unhappy} state`, () => {
       ticks: 2
     };
 
-    const actual = reduce(sut, {
+    const actual = simulate(sut, {
       with: Influences.Play,
       activity: Activity.Football
     });
@@ -730,7 +730,7 @@ describe(`A virtual pet in the ${Conditions.Unhappy} state`, () => {
       ticks: 3
     };
 
-    const actual = reduce(sut, {
+    const actual = simulate(sut, {
       with: Influences.Time,
       happiness: 0,
       hunger: 0,
@@ -757,7 +757,7 @@ describe(`A virtual pet in the ${Conditions.Unhappy} state`, () => {
       ticks: 1
     };
 
-    const actual = reduce(sut, {
+    const actual = simulate(sut, {
       with: Influences.Time,
       happiness: 0,
       hunger: 0,
@@ -785,7 +785,7 @@ describe(`A virtual pet in the ${Conditions.Hibernating} state`, () => {
       timeOfHibernation: 0xDEAD
     };
 
-    const actual = reduce(sut, {
+    const actual = simulate(sut, {
       with: Influences.Food,
       plate: DefaultPlates.Hamburger,
       genes: testVirtualPet.genotype
@@ -805,7 +805,7 @@ describe(`A virtual pet in the ${Conditions.Hibernating} state`, () => {
       timeOfHibernation: 0xDEAD
     };
 
-    const actual = reduce(sut, {
+    const actual = simulate(sut, {
       with: Influences.Play,
       activity: Activity.Football
     });
@@ -824,7 +824,7 @@ describe(`A virtual pet in the ${Conditions.Hibernating} state`, () => {
       timeOfHibernation: 0xDEAD
     };
 
-    const actual = reduce(sut, { with: Influences.Clean });
+    const actual = simulate(sut, { with: Influences.Clean });
 
     expect(actual).toEqual(sut);
   });
@@ -840,7 +840,7 @@ describe(`A virtual pet in the ${Conditions.Hibernating} state`, () => {
       timeOfHibernation: 0xDEAD
     };
 
-    const actual = reduce(sut, { with: Influences.Medicine });
+    const actual = simulate(sut, { with: Influences.Medicine });
 
     expect(actual).toEqual(sut);
   });
@@ -856,7 +856,7 @@ describe(`A virtual pet in the ${Conditions.Hibernating} state`, () => {
       timeOfHibernation: 0xDEAD
     };
 
-    const actual = reduce(sut, { with: Influences.Potty });
+    const actual = simulate(sut, { with: Influences.Potty });
 
     expect(actual).toEqual(sut);
   });
@@ -872,7 +872,7 @@ describe(`A virtual pet in the ${Conditions.Hibernating} state`, () => {
       timeOfHibernation: 0xDEAD
     };
 
-    const actual = reduce(sut, { with: Influences.Hatch });
+    const actual = simulate(sut, { with: Influences.Hatch });
 
     expect(actual).toEqual(sut);
   });
@@ -890,7 +890,7 @@ describe(`A virtual pet in the ${Conditions.Hibernating} state`, () => {
 
     vi.setSystemTime(0xDEAD);
 
-    const actual = reduce(sut, {
+    const actual = simulate(sut, {
       with: Influences.Time,
       happiness: 20,
       hunger: 20,

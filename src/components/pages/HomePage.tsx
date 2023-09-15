@@ -35,7 +35,7 @@ const HomePage: Page = ({ game }, { reddit, useState }) => {
         <zstack grow alignment="middle center">
           <image url="https://i.imgur.com/EDhRCgI.gif" imageHeight={150} imageWidth={150} resizeMode="fit" />
         </zstack>
-      { controlDeck }
+        { controlDeck }
       </vstack>
     </zstack>
   );

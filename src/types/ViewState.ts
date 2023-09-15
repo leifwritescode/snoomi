@@ -108,7 +108,7 @@ const reduceViewStateFinishedActivity: StateReducer<FinishedActivity> = (state, 
  * @param {ViewState} state the state
  * @returns a new {@link ViewState} made by applying {@link action} to {@link state}, or {@link state} if no transition occurs
  */
-export const reduce: StateReducer<ViewState> = (state, action) => {
+export const navigate: StateReducer<ViewState> = (state, action) => {
   switch (state.name) {
     case ViewStateName.VirtualPet:
       return reduceViewStateHome(state, action);

@@ -1,7 +1,7 @@
 import { ScheduledJobHandler, ScheduledJobType } from "@devvit/public-api";
 import { VirtualPet } from "../../VirtualPet.js";
 import { REDIS_KEY_AGE_TICK_BATCHES, SCHEDULER_JOB_AGE_TICK } from "../../constants.js";
-import { reduce } from "../../simulation/index.js";
+import { simulate } from "../../simulation/index.js";
 import { Influences } from "../../simulation/Influences.js";
 
 const schedulerJobGrowth: ScheduledJobHandler = async (_, { kvStore }) => {
@@ -27,7 +27,7 @@ const schedulerJobGrowth: ScheduledJobHandler = async (_, { kvStore }) => {
       continue;
     }
 
-    virtualPet.state = reduce(virtualPet.state, { with: Influences.Growth });
+    virtualPet.state = simulate(virtualPet.state, { with: Influences.Growth });
 
     await kvStore.put(pet, virtualPet);
   }

@@ -15,7 +15,7 @@ import { reduceConditionUnsanitary } from "./reducers/Unsanitary.js";
  * @param {Condition} condition the condition
  * @returns a new {@link Condition} made by applying {@link influence} to {@link condition}, or {@link condition} if no transition occurs
  */
-export const reduce: Reducer<Condition> = (condition, influence) => {
+export const simulate: Reducer<Condition> = (condition, influence) => {
   switch (condition.is) {
     case Conditions.InEgg:
       return reduceConditionEgg(condition, influence);
